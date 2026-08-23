@@ -1,15 +1,15 @@
 {
   "nav": {
-    "placeBid": "Teklif at",
+    "placeBid": "Destek ver",
     "rules": "Kurallar",
     "howToPlay": "Nasıl oynanır?",
     "language": "Dil"
   },
   "home": {
-    "tagline": "Teklifler birikir, oyunun yükselir.",
-    "startBidding": "Hadi teklif ver",
+    "tagline": "Destekler birikir, oyunun yükselir.",
+    "startBidding": "Hadi destek ver",
     "leaderboard": "Sıralama",
-    "leaderboardDesc": "Ödemeler onaylandıkça sıralama ve sponsor sahipleri güncellenir.",
+    "leaderboardDesc": "Ödemeler onaylandıkça sıralama güncellenir.",
     "refresh": "Yenile",
     "tookFirst": "{game} az önce #1 oldu",
     "dismiss": "Kapat"
@@ -20,59 +20,45 @@
     "emptyHint": "1. sırayı kapmak isteyen var mı?",
     "supportFirst": "İlk oyunu destekle",
     "ranksBelow": "Sıralaması 4 ve altı olanlar",
-    "searchPlaceholder": "Oyun adı yaz, bulalım…",
+    "searchPlaceholder": "4 ve altını ara…",
     "scrollMore": "Daha fazla oyun için kaydır…",
     "loadingMore": "Daha fazla oyun geliyor…",
     "noResults": "Bu rafta öyle bir oyun yok. Başka bir isim dene."
   },
   "bid": {
-    "title": "Teklifini koy",
-    "subtitle": "Oyunu yükseltmek için destekle ya da karttaki sponsor koltuğunu kap.",
+    "title": "Destek ver",
+    "subtitle": "Oyunu yükseltmek için destek ver. Her destekle isteğe bağlı Oyun Yönetmeni Mesajı bırakabilirsin.",
     "supportGame": "Oyunu destekle",
-    "claimSponsor": "Sponsor ol",
-    "gameHelpStack": "1$'dan başlayarak istediğin kadar ekle. Teklifin öncekilerle birleşir ve oyunu yukarı taşır.",
-    "sponsorHeldAt": "Sponsor koltuğu şu an {current}$'da. En az {min}$ teklif etmen gerekiyor.",
-    "sponsorNoClaim": "Bu kartta henüz sponsor yok. 1$'dan koltuğu alabilirsin.",
+    "gameHelpStack": "1$'dan başlayarak istediğin kadar ekle. Desteğin öncekilerle birleşir ve oyunu yukarı taşır.",
     "gameLabel": "Oyun",
-    "gameDesc": "Desteklemek veya sponsor olmak istediğin oyunu ara ve seç.",
+    "gameDesc": "Desteklemek istediğin oyunu ara ve seç.",
     "supportAmount": "Destek tutarı (USD)",
-    "sponsorBid": "Sponsor teklifi (USD)",
     "amountHintGame": "Sadece tam sayılar. Minimum 1$, maksimum 999.999$.",
-    "amountHintSponsorBeat": "Mevcut sponsoru geçmelisin. Minimum: {min}$. Maksimum 999.999$.",
-    "amountHintSponsorFirst": "Bu kartta ilk sponsor sensin. Minimum 1$, maksimum 999.999$.",
     "quoteGame": "Ödeme geçerse {amount}$ ödersin, tahta toplamı {total}$ olur ve oyun #{rank} sıraya oturur.",
     "quoteGameFree": "Ücretsiz 1$ destek: tahta toplamı {total}$ olur, oyun #{rank} sıraya oturur. Ödeme yok.",
-    "quoteSponsorHeld": "Mevcut sponsor: {current}$. Senin teklifin: {amount}$. Koltuğu almak için en az {min}$ gerekli.",
-    "quoteSponsorFirst": "Henüz sponsor yok. {amount}$ teklifin ödeme onaylanırsa koltuğu alır.",
     "nameLabel": "Tahtadaki ismin",
     "nameDesc": "İsteğe bağlı. Boş bırakırsan Anonim olarak görünürsün.",
     "namePlaceholder": "Anonim kahraman",
-    "sponsorDetails": "Sponsor detayları",
-    "sponsorDetailsDesc": "Sponsor koltuğunu tuttuğun sürece kartın üzerinde görünecek içerik.",
-    "adTitleLabel": "Başlık",
-    "adTitleDesc": "Kısa bir manşet. Maksimum 120 karakter.",
-    "adTitlePlaceholder": "Resmi strateji rehberleri",
-    "adDescLabel": "Açıklama",
-    "adDescDesc": "Başlığın altında bir-iki satır. Maksimum 280 karakter.",
-    "adDescPlaceholder": "Yama notları, ürün lansmanı, turnuva kaydı. Oyuncuların bilmesi gerekenleri yaz.",
-    "adLinkLabel": "Bağlantı",
-    "adLinkDesc": "Oyuncular sponsor alanına dokunduğunda gidecekleri adres. https:// kullan.",
-    "adLinkPlaceholder": "https://seninsiten.com",
-    "adImageLabel": "Görsel URL",
-    "adImageDescFavicon": "İsteğe bağlı. Boş bırakırsan yukarıdaki bağlantı faviconu kullanılır.",
-    "adImageDescUrl": "İsteğe bağlı afiş veya logo. Sadece herkese açık https:// resim bağlantısı.",
-    "adImagePlaceholder": "https://...",
+    "directorDetails": "Oyun Yönetmeni Mesajı",
+    "directorDetailsDesc": "İsteğe bağlı sitede kalan bir not (başlık + markdown metin). Kartta yalnızca en yüksek destekçinin mesajı görünür. Görsel yok.",
+    "directorTitleLabel": "Başlık",
+    "directorTitleDesc": "Mesajının kısa başlığı. Maksimum 120 karakter.",
+    "directorTitlePlaceholder": "Hâlâ en iyi kooperatif",
+    "directorDescLabel": "Mesaj",
+    "directorDescDesc": "Başlığın altında bir-iki satır. En fazla 280 görünür karakter — markdown işaretleri sayılmaz.",
+    "directorDescPlaceholder": "Destekleyenlere teşekkürler. Bu oyun 1.liği hak ediyor.",
+    "directorDescCounter": "{used} / {max} görünür karakter",
+    "directorMarkdownGuide": "Markdown rehberi",
     "submitSupport": "Oyunu destekle",
-    "submitSponsor": "Sponsor koltuğunu al",
     "submitFree": "Ücretsiz destekle (1$)",
-    "freeToggle": "Ücretsiz 1$ desteğimi kullan",
-    "freeHint": "Cihaz ve ağ başına bir kez, sonsuza dek. Kart yok, ödeme yok. Tahtaya 1$ yazılır.",
-    "freeUsed": "Ücretsiz desteğini zaten kullandın.",
+    "freeToggle": "Ücretsiz 1$ hakkımı kullan",
+    "freeHint": "Tek seferlik bir destek hakkı verir. Kart yok, ödeme yok; oyunun skoruna 1$ ekler.",
+    "freeUsed": "Ücretsiz hakkını zaten kullandın.",
     "errorPickGame": "Önce bir oyun seç.",
-    "errorSponsorRequired": "Sponsor başlığı ve bağlantısı gerekli.",
-    "errorSponsorDescRequired": "Sponsor açıklaması gerekli.",
-    "errorSponsorMin": "Minimum sponsor teklifi {min}$.",
-    "errorAmountMax": "Maksimum teklif 999.999$.",
+    "errorDirectorRequired": "Oyun Yönetmeni Mesajı için başlık gerekli.",
+    "errorDirectorDescRequired": "Oyun Yönetmeni Mesajı için metin gerekli.",
+    "errorDirectorDescMax": "Mesaj 280 görünür karakteri aşıyor (markdown işaretleri sayılmaz).",
+    "errorAmountMax": "Maksimum destek 999.999$.",
     "errorTurnstile": "Önce güvenlik doğrulamasını tamamla.",
     "errorTurnstileExpired": "Doğrulama süresi doldu. Kutucuğu bir kez daha işaretle.",
     "errorTurnstileFailed": "Güvenlik doğrulaması takıldı. Sayfayı yenile veya biraz sonra tekrar dene.",
@@ -81,63 +67,58 @@
     "errorFreeFallback": "Ücretsiz destek olmadı"
   },
   "card": {
-    "stackedBids": "{count} toplam teklif",
-    "sponsor": "sponsor",
+    "stackedBids": "{count} toplam destek",
+    "directorMessage": "Oyun Yönetmeni Mesajı",
     "decayingIn": "{days} gün içinde sönecek",
     "rankTotal": "Sıra toplamı",
     "support": "Destekle",
-    "outbid": "Devral",
-    "claim": "Al",
-    "noSponsor": "Henüz sponsor yok",
-    "claimFrom": "Sponsor koltuğunu {price}'dan al.",
+    "noDirector": "Henüz yönetmen mesajı yok",
+    "supportToDirect": "Mesajını bırakmak için destek ver.",
     "moreAbout": "Bu oyunun detayına bak",
     "top": "En yüksek destekçi",
     "latest": "Son destekçi",
-    "visit": "Ziyaret et",
-    "clicks": "{count} tıklama",
     "total": "Toplam",
-    "openSummary": "Tam IGDB özeti için oyun detaylarını aç."
+    "openSummary": "Tam özet için oyun detaylarını aç."
   },
   "activity": {
     "title": "Son aktiviteler",
     "tookFirst": "{game} #1 oldu",
     "climbedTo": "{game} #{rank} sıraya tırmandı",
     "hitRank": "{game} #{rank} sıraya ulaştı",
-    "sponsorFlipped": "{game} kartında sponsor değişti",
+    "directorFlipped": "{game} kartında yönetmen mesajı değişti",
     "leftBoard": "{game} tahtadan düştü",
-    "sponsorDecayed": "{game} kartında sponsor süresi doldu",
+    "directorDecayed": "{game} kartındaki yönetmen mesajı süresi doldu",
     "slippedTo": "{game} #{rank} sıraya geriledi",
     "isDecaying": "{game} sönüyor",
     "atRank": "{game} #{rank} sırada",
-    "bidsExpired": "Teklifler süresi doldu",
+    "bidsExpired": "Destekler süresi doldu",
     "was": "Önceki: {title}"
   },
   "stats": {
     "raised": "Kasada",
     "games": "Oyun",
-    "paidBids": "Ödenen teklif",
-    "liveSponsors": "Canlı sponsor",
-    "allTimeSponsors": "Sponsorlar · tümü",
+    "paidBids": "Ödenen destek",
+    "liveDirectors": "Canlı yönetmen",
+    "allTimeDirectors": "Yönetmenler · tümü",
     "livePlayers": "Canlı oyuncu",
     "livePlayersNote": "24 sa",
     "allTimePlayers": "Oyuncular · tümü",
-    "sponsorClicks": "Sponsor tıkı",
-    "sponsorRaised": "Sponsor kasası"
+    "directorRaised": "Yönetmen kasası"
   },
-  "sponsors": {
-    "title": "En iyi sponsorlar",
+  "directors": {
+    "title": "Oyun Yönetmenleri",
     "on": "{game}"
   },
   "success": {
-    "missingRef": "Teklif referansı eksik",
+    "missingRef": "Destek referansı eksik",
     "backToBoard": "Sıralamaya dön",
     "confirmed": "Ödeme onaylandı",
-    "bidLive": "{amount} tutarındaki teklifin artık tahtada.",
+    "bidLive": "{amount} tutarındaki desteğin artık tahtada.",
     "stack": "Yığın {amount}",
     "viewPlaque": "Plaketi gör",
     "leaderboard": "Sıralama",
     "notCompleted": "Ödeme tamamlanmadı",
-    "notCompletedDesc": "Bu ödeme iptal edildi veya süresi doldu. Herhangi bir ücret alınmadı ve teklifin tahtada değil.",
+    "notCompletedDesc": "Bu ödeme iptal edildi veya süresi doldu. Herhangi bir ücret alınmadı ve desteğin tahtada değil.",
     "confirming": "Ödeme doğrulanıyor...",
     "confirmingDesc": "Ödeme onayı bekleniyor. Bu genellikle birkaç saniye sürer.",
     "checkingStatus": "Durum kontrol ediliyor"
@@ -145,15 +126,15 @@
   "plaque": {
     "loading": "Plaket yükleniyor...",
     "notFound": "Plaket bulunamadı",
-    "notFoundDesc": "Sadece doğrulanmış ödenmiş teklifler herkese açık plaket alır.",
+    "notFoundDesc": "Sadece doğrulanmış ödenmiş destekler herkese açık plaket alır.",
     "backToBoard": "Sıralamaya dön",
-    "bidPlaque": "Teklif plaketi",
+    "bidPlaque": "Destek plaketi",
     "unranked": "Sırasız",
-    "gameBid": "oyun teklifi",
-    "sponsorBid": "sponsor teklifi",
-    "thisBid": "Bu teklif",
-    "stackTotal": "Toplam teklif",
-    "bidDate": "Teklif tarihi",
+    "gameBid": "oyun desteği",
+    "withDirectorMessage": "Oyun Yönetmeni Mesajı ile",
+    "thisBid": "Bu destek",
+    "stackTotal": "Toplam destek",
+    "bidDate": "Destek tarihi",
     "copied": "Kopyalandı",
     "sharePlaque": "Plaketi paylaş",
     "copyLink": "Bağlantıyı kopyala",
@@ -163,13 +144,13 @@
   },
   "gameDetail": {
     "title": "Oyun detayları",
-    "subtitle": "Tahta durumu, oyun bilgileri ve teklif seçenekleri.",
+    "subtitle": "Tahta durumu, oyun bilgileri ve destek seçenekleri.",
     "loading": "Oyun detayları yükleniyor...",
     "boardRank": "Tahta sırası",
     "rankTotal": "Sıra toplamı",
-    "igdbScore": "IGDB puanı",
-    "sponsorLabel": "Sponsor:",
-    "noSponsorYet": "Bu kartta henüz sponsor yok.",
+    "igdbScore": "Puan",
+    "directorLabel": "Oyun Yönetmeni Mesajı:",
+    "noDirectorYet": "Bu kartın henüz bir yönetmen mesajı yok.",
     "viewOnIgdb": "Daha fazla gör",
     "noSummary": "Bu oyun için henüz özet mevcut değil.",
     "screenshots": "Ekran görüntüleri",
@@ -177,7 +158,6 @@
     "copied": "Kopyalandı",
     "copyEmbed": "Rozet kodunu kopyala",
     "supportGame": "Oyunu destekle",
-    "claimSponsor": "Sponsor ol",
     "released": "Çıkış tarihi",
     "developers": "Geliştiriciler",
     "publishers": "Yayıncılar",
@@ -190,14 +170,14 @@
     "searchPlaceholder": "Destekçi ara",
     "noMatch": "Aramanızla eşleşen destekçi yok.",
     "none": "Henüz destekçi yok.",
-    "bids": "{count} teklif"
+    "bids": "{count} destek"
   },
   "search": {
     "placeholder": "Bir oyun adı yaz..."
   },
   "footer": {
     "tagline": "Sevdiğin oyunu tahtaya çıkar.",
-    "desc": "Teklif ver, oyunun yükselsin. Sponsor ol, kartta yerini al.",
+    "desc": "Destek ver, oyunun yükselsin. Yönetmen mesajınla kartında iz bırak.",
     "copyrightBefore": "{year} © mybestgame.lol — ",
     "copyrightAfter": " tarafından sevgiyle yapıldı",
     "legalNav": "Yasal",
@@ -213,6 +193,7 @@
   },
   "common": {
     "close": "Kapat",
+    "clear": "Aramayı temizle",
     "mAgo": "{n}dk önce",
     "hAgo": "{n}sa önce",
     "dAgo": "{n}g önce",
@@ -220,20 +201,19 @@
   },
   "seo": {
     "title": "mybestgame.lol — Oyun Sıralama Liderlik Tablosu",
-    "description": "Favori oyunlarına teklif ver, canlı liderlik tablosunda yüksel. Oyun tekliflerini biriktir, sponsor koltuğunu kap ve sıralamayı anlık izle.",
-    "keywords": "oyun liderlik tablosu, oyun sıralama, teklif ver, sponsor koltuğu, IGDB oyunlar, mybestgame",
-    "legalDescription": "mybestgame.lol pay-to-rank oyun liderlik tablosu için yasal bilgiler."
+    "description": "Favori oyunlarına destek ver, canlı liderlik tablosunda yüksel. Oyun desteklerini biriktir ve Oyun Yönetmeni Mesajı bırak.",
+    "keywords": "oyun liderlik tablosu, oyun sıralama, destek ver, oyun yönetmeni mesajı, IGDB oyunlar, mybestgame",
+    "legalDescription": "mybestgame.lol canlı oyun panosu için yasal bilgiler."
   },
   "rules": {
     "title": "Kurallar",
     "items": [
-      "Oyun teklifleri 1$'dan başlar. Sadece tam sayılar kabul edilir.",
-      "Aynı oyuna verdiğin her teklif birikir. Toplam arttıkça oyun sıralamada yükselir.",
-      "Sponsor teklifi ayrı bir şey: kartta premium özelleştirme (öne çıkan destekçi koltuğu) açar. En yüksek ödenen teklif koltuğu tutar.",
-      "Dolu bir koltuğu devralmak için mevcut tekliften en az 1$ fazla vermen gerekir.",
-      "Her teklif 30 gün geçerlidir. Süre dolunca tutar, oyunun sıralama toplamından düşer.",
+      "Oyun destekleri 1$'dan başlar. Sadece tam sayılar kabul edilir.",
+      "Aynı oyuna verdiğin her destek birikir. Toplam arttıkça oyun sıralamada yükselir.",
+      "Ücretsiz 1$ dahil her destekte isteğe bağlı Oyun Yönetmeni Mesajı bırakabilirsin. Kartın üzerinde sadece en yüksek destekçinin mesajı görünür.",
+      "Her destek 30 gün geçerlidir. Süre dolunca tutar, oyunun sıralama toplamından düşer.",
       "Yalnızca onaylanmış ödemeler geçerlidir. Tamamlanmayan ödemeler tahtaya yansımaz.",
-      "Ödemeler iade edilmez. Onay sonrası teklif kesindir.",
+      "Ödemeler iade edilmez. Onay sonrası destek kesindir.",
       "İsim yazmak zorunlu değil. Yazarsan tahtada herkes görür.",
       "Sıralama, ödeme ve süre dolması oldukça anında yenilenir."
     ]
@@ -246,20 +226,20 @@
         "desc": "Tahtada yükseltmek istediğin oyunu ara."
       },
       {
-        "title": "Ne yapmak istediğine karar ver",
-        "desc": "Oyunu destekleyip toplamını büyüt ya da karttaki sponsor koltuğunu al."
+        "title": "Destekle ve yönetmen ol",
+        "desc": "Oyunu destekleyip toplamını büyüt. İstersen Oyun Yönetmeni Mesajı ekle — kartın üzerinde sadece en büyük destekçinin mesajı görünür."
       },
       {
         "title": "Tutarını belirle",
-        "desc": "Oyun teklifleri 1$'dan başlar. Sponsor koltuğu için mevcut tekliften en az 1$ fazla vermen gerekir."
+        "desc": "Oyun destekleri 1$'dan başlar. Ne kadar çok birikirse, oyun o kadar yükselir ve yönetmen koltuğu o kadar güvende olur."
       },
       {
         "title": "Güvenli öde",
-        "desc": "Ödemen güvende. Onaylanır onaylanmaz teklifin tahtada görünür."
+        "desc": "Ödemen güvende. Onaylanır onaylanmaz desteğin tahtada görünür."
       },
       {
         "title": "Tahtayı takip et",
-        "desc": "Sıralama anında güncellenir. Teklifler 30 gün sürer — tepede kalmak için biriktirmeye devam et."
+        "desc": "Sıralama anında güncellenir. Destekler 30 gün sürer — tepede kalmak için biriktirmeye devam et."
       }
     ]
   },
@@ -270,11 +250,11 @@
       "sections": [
         {
           "heading": "Ne topluyoruz",
-          "body": "mybestgame.lol sıralamayı işletmek için gereken minimum veriyi toplar. Teklif verdiğinizde isteğe bağlı olarak bir görünen ad (kullanıcı adı) sağlayabilirsiniz. E-posta adresinizi talep etmiyor veya saklamıyoruz. E-postaya benzeyen bir metin girerseniz, görünen ad olarak saklanır. IP adresiniz hız sınırlama ve Cloudflare Turnstile doğrulaması için geçici olarak işlenir ancak veritabanımızda kalıcı olarak saklanmaz."
+          "body": "mybestgame.lol sıralamayı işletmek için gereken minimum veriyi toplar. Destek verdiğinizde isteğe bağlı olarak bir görünen ad (kullanıcı adı) sağlayabilirsiniz. E-posta adresinizi talep etmiyor veya saklamıyoruz. E-postaya benzeyen bir metin girerseniz, görünen ad olarak saklanır. IP adresiniz hız sınırlama ve Cloudflare Turnstile doğrulaması için geçici olarak işlenir ancak veritabanımızda kalıcı olarak saklanmaz."
         },
         {
           "heading": "Ödeme verileri",
-          "body": "Tüm ödemeler Polar.sh tarafından işlenir. Kredi kartı numaranızı, fatura adresinizi veya diğer ödeme kişisel bilgilerinizi görmüyor, saklamıyor veya bunlara erişmiyoruz. Polar PCI uyumluluğu ve ödeme güvenliğini yönetir. Yalnızca ödeme onayı, sipariş kimliği ve eklediğimiz metadata'yı (teklif kimliği, oyun kimliği, tutar) alırız."
+          "body": "Tüm ödemeler Polar.sh tarafından işlenir. Kredi kartı numaranızı, fatura adresinizi veya diğer ödeme kişisel bilgilerinizi görmüyor, saklamıyor veya bunlara erişmiyoruz. Polar PCI uyumluluğu ve ödeme güvenliğini yönetir. Yalnızca ödeme onayı, sipariş kimliği ve eklediğimiz metadata'yı (destek kimliği, oyun kimliği, tutar) alırız."
         },
         {
           "heading": "Üçüncü taraf hizmetler",
@@ -286,15 +266,15 @@
         },
         {
           "heading": "Herkese açık gösterilen veriler",
-          "body": "Bir görünen ad sağlarsanız, sıralama, aktivite akışı, plaketler ve destekçi listelerinde herkese açık olarak gösterilecektir. Ad bir e-posta adresine benziyorsa kısmen maskelenir (ör. ab•••{'@'}domain.com). Ad alanını boş bırakarak Anonim olarak teklif verebilirsiniz."
+          "body": "Bir görünen ad sağlarsanız, sıralama, aktivite akışı, plaketler ve destekçi listelerinde herkese açık olarak gösterilecektir. Ad bir e-posta adresine benziyorsa kısmen maskelenir (ör. ab•••{'@'}domain.com). Ad alanını boş bırakarak Anonim olarak destek verebilirsiniz."
         },
         {
           "heading": "Veri saklama",
-          "body": "Teklif kayıtları (görünen ad, teklif tutarı, oyun, zaman damgaları) sıralama bütünlüğü ve denetim amaçları için hizmetin ömrü boyunca saklanır. Süresi dolan teklifler (30 günlük süre) veritabanımızda 'expired' durumunda kalır."
+          "body": "Destek kayıtları (görünen ad, destek tutarı, oyun, zaman damgaları) sıralama bütünlüğü ve denetim amaçları için hizmetin ömrü boyunca saklanır. Süresi dolan destekler (30 günlük süre) veritabanımızda 'expired' durumunda kalır."
         },
         {
           "heading": "Haklarınız (KVKK / GDPR)",
-          "body": "privacy{'@'}mybestgame.lol adresine e-posta göndererek verilerinize erişim, düzeltme veya silme talebinde bulunabilirsiniz. 30 gün içinde yanıt vereceğiz. Not: Teklif verilerinin silinmesi sıralama geçmişini etkileyebilir."
+          "body": "privacy{'@'}mybestgame.lol adresine e-posta göndererek verilerinize erişim, düzeltme veya silme talebinde bulunabilirsiniz. 30 gün içinde yanıt vereceğiz. Not: Destek verilerinin silinmesi sıralama geçmişini etkileyebilir."
         },
         {
           "heading": "Veri konumu",
@@ -316,23 +296,23 @@
         },
         {
           "heading": "Hizmet tanımı",
-          "body": "mybestgame.lol, ödeme ile sıralanan bir video oyunu liderlik tablosudur (tüketici eğlence yazılımı). Kullanıcılar oyunlar için dijital sıralama desteği satın alır. Sponsor teklifleri premium kart özelleştirmesi açar — yalnızca platformumuzdaki o oyun kartında görünen öne çıkan destekçi koltuğu. Bu üçüncü taraf reklamcılığı, lead generation veya pazarlama hizmeti değildir. Hizmet eğlence amaçlı olduğu gibi sağlanır."
+          "body": "mybestgame.lol tüketici eğlence yazılımıdır: canlı bir video oyunu panosu. Kullanıcılar, sitemizde anında tanımlanan ve bir oyunun herkese açık listesine eklenen tek seferlik dijital katılım kredisi satın alır. Krediler birikir. Destekler isteğe bağlı Oyun Yönetmeni Mesajı içerebilir — yalnızca başlık ve metin (dış bağlantı yok); yalnızca o oyunun en yüksek destekçisinde kartta görünür. Bu reklamcılık, lead generation, sponsor envanteri veya pazarlama hizmeti değildir. Hizmet eğlence amaçlı olduğu gibi sağlanır."
         },
         {
-          "heading": "Teklifler ve ödemeler",
-          "body": "Tüm teklifler Polar.sh aracılığıyla işlenir. Sıralamada yalnızca doğrulanmış ödenmiş teklifler görünür. Teklifler ödeme onayından 30 gün sonra sona erer. Tüm satışlar kesindir ve iade edilemez. Herhangi bir belirli sıralama sonucunu garanti etmiyoruz — sıralamanız diğer kullanıcıların tekliflerine bağlıdır."
+          "heading": "Destekler ve ödemeler",
+          "body": "Tüm destekler Polar.sh aracılığıyla işlenir. Sıralamada yalnızca doğrulanmış ödenmiş destekler görünür. Destekler ödeme onayından 30 gün sonra sona erer. Tüm satışlar kesindir ve iade edilemez. Herhangi bir belirli sıralama sonucunu garanti etmiyoruz — sıralamanız diğer kullanıcıların desteklerine bağlıdır."
         },
         {
           "heading": "Hesap yok",
-          "body": "mybestgame.lol'da kullanıcı hesabı yoktur. Teklifler isteğe bağlı bir görünen ad ile tanımlanır. Giriş, şifre veya profil sistemi yoktur."
+          "body": "mybestgame.lol'da kullanıcı hesabı yoktur. Destekler isteğe bağlı bir görünen ad ile tanımlanır. Giriş, şifre veya profil sistemi yoktur."
         },
         {
-          "heading": "Premium kart içeriği",
-          "body": "Sponsor teklifleri, teklif aktifken oyun kartında gösterilen kullanıcı tarafından sağlanan premium kart özelleştirmesi (başlık, açıklama, bağlantı, isteğe bağlı görsel URL) içerir. Yasa dışı, saldırgan, yanıltıcı veya üçüncü taraf haklarını ihlal eden içeriği iade yapmadan kaldırma hakkını saklı tutarız."
+          "heading": "Oyun Yönetmeni Mesajı içeriği",
+          "body": "Destekler, destek aktifken ve en yüksek destekçi konumunda iken oyun kartında gösterilen kullanıcı tarafından sağlanan içerik (yalnızca başlık ve metin) içerebilir. Mesajlarda dış bağlantı veya görsel yoktur. Yasa dışı, saldırgan, yanıltıcı veya üçüncü taraf haklarını ihlal eden içeriği iade yapmadan kaldırma hakkını saklı tutarız."
         },
         {
           "heading": "Garanti yok",
-          "body": "Çalışma süresi, erişilebilirlik, sıralama pozisyonu veya teklifinizin 30 günlük süre sona erme penceresi dışında herhangi bir belirli süre boyunca tahtada kalacağını garanti etmiyoruz. Teklifler diğer kullanıcıların teklifleri, süre sonu veya hizmet değişikliklerinden etkilenebilir."
+          "body": "Çalışma süresi, erişilebilirlik, sıralama pozisyonu veya desteğinizin 30 günlük süre sona erme penceresi dışında herhangi bir belirli süre boyunca tahtada kalacağını garanti etmiyoruz. Destekler diğer kullanıcıların destekleri, süre sonu veya hizmet değişikliklerinden etkilenebilir."
         },
         {
           "heading": "Sorumluluk sınırlaması",
@@ -366,7 +346,7 @@
         },
         {
           "heading": "İşlenen veriler",
-          "body": "Görünen ad (isteğe bağlı, kullanıcı tarafından sağlanan), teklif tutarı, oyun seçimi, zaman damgaları ve hız sınırlama için geçici IP. Hassas/özel kategori veri işlemiyoruz."
+          "body": "Görünen ad (isteğe bağlı, kullanıcı tarafından sağlanan), destek tutarı, oyun seçimi, zaman damgaları ve hız sınırlama için geçici IP. Hassas/özel kategori veri işlemiyoruz."
         },
         {
           "heading": "Alıcılar",
@@ -378,7 +358,7 @@
         },
         {
           "heading": "Saklama",
-          "body": "Teklif verileri hizmetin operasyonel ömrü boyunca saklanır. İstediğiniz zaman silme talebinde bulunabilirsiniz."
+          "body": "Destek verileri hizmetin operasyonel ömrü boyunca saklanır. İstediğiniz zaman silme talebinde bulunabilirsiniz."
         },
         {
           "heading": "Uluslararası aktarımlar",
@@ -422,19 +402,19 @@
       "sections": [
         {
           "heading": "İade yok",
-          "body": "mybestgame.lol'daki tüm teklifler, Polar.sh tarafından ödeme onaylandıktan sonra kesindir ve iade edilemez. Teklif vererek, sıralamaya anında dahil edilmek için ödeme yaptığınızı kabul etmiş olursunuz."
+          "body": "mybestgame.lol'daki tüm destekler, Polar.sh tarafından ödeme onaylandıktan sonra kesindir ve iade edilemez. Destek vererek, sıralamaya anında dahil edilmek için ödeme yaptığınızı kabul etmiş olursunuz."
         },
         {
           "heading": "Neden iade yok",
-          "body": "Teklifler onaylandıkları an herkese açık sıralamayı doğrudan etkiler. Bir teklifi iade etmek geriye dönük olarak sıralamaları değiştirir ve diğer kullanıcıların pozisyonlarını etkiler. Bu politika tüm katılımcılar için adaleti sağlar."
+          "body": "Destekler onaylandıkları an herkese açık sıralamayı doğrudan etkiler. Bir desteği iade etmek geriye dönük olarak sıralamaları değiştirir ve diğer kullanıcıların pozisyonlarını etkiler. Bu politika tüm katılımcılar için adaleti sağlar."
         },
         {
           "heading": "İptal edilen ödemeler",
-          "body": "Ödeme tamamlanmadan önce ödemeyi iptal eder veya bırakırsanız, herhangi bir ücret alınmaz ve tahtada teklif görünmez. Bu bir iade değildir — para toplanmamıştır."
+          "body": "Ödeme tamamlanmadan önce ödemeyi iptal eder veya bırakırsanız, herhangi bir ücret alınmaz ve tahtada destek görünmez. Bu bir iade değildir — para toplanmamıştır."
         },
         {
-          "heading": "Teklif süresi dolması",
-          "body": "Teklifler 30 gün sonra otomatik olarak sona erer. Süre sonu bir iade değildir — teklifiniz için 30 günlük sıralama varlığı aldınız."
+          "heading": "Destek süresi dolması",
+          "body": "Destekler 30 gün sonra otomatik olarak sona erer. Süre sonu bir iade değildir — desteğiniz için 30 günlük sıralama varlığı aldınız."
         },
         {
           "heading": "İtirazlar",

@@ -1,6 +1,6 @@
 import { getRecentActivity, getSiteStats } from '../utils/bidding'
 import {
-  buildTopSponsors,
+  buildTopDirectors,
   getCachedLeaderboardEntries,
   slimLeaderboardEntry
 } from '../utils/board-cache'
@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
       offset: 0,
       limit,
       hasMore: all.length > limit,
-      topSponsors: buildTopSponsors(all).map(slimLeaderboardEntry)
+      topDirectors: buildTopDirectors(all).map(slimLeaderboardEntry)
     }
   }
 })

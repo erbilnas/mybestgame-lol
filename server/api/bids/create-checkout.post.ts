@@ -1,32 +1,24 @@
 import { and, eq } from 'drizzle-orm'
 import { randomUUID } from 'node:crypto'
 import { useDb } from '../../database/index'
-import { bids, games, type BidType } from '../../database/schema'
+import { bids, games } from '../../database/schema'
 import {
   getFreshLeaderboardTotals,
-  getMinSponsorBidCents,
-  parseBidType,
   projectRank,
-  validateIncrementCents,
-  validateSponsorBidCents
+  validateIncrementCents
 } from '../../utils/bidding'
 import { checkoutMetadata } from '../../utils/checkout-product'
+import { parseOptionalDirectorFields } from '../../utils/director-fields'
 import { failBid } from '../../utils/fulfill-bid'
 import { fetchGameDetails } from '../../utils/igdb'
 import { usePolar } from '../../utils/polar'
 import { rateLimitByIp } from '../../utils/rate-limit'
 import { getTrustedClientIp } from '../../utils/request-ip'
-import {
-  sanitizeAdDescription,
-  sanitizeAdImage,
-  sanitizeAdLink,
-  sanitizeAdTitle,
-  sanitizeDisplayName
-} from '../../utils/sanitize'
+import { sanitizeDisplayName } from '../../utils/sanitize'
 import { verifyTurnstile } from '../../utils/turnstile'
 
 interface CreateCheckoutBody {
-  bidType?: BidType
+  bidType?: string
   gameId: number
   title: string
   slug: string
@@ -49,7 +41,13 @@ export default defineEventHandler(async (event) => {
 
   await verifyTurnstile(body.turnstileToken, ip)
 
-  const bidType = parseBidType(body.bidType ?? 'game')
+  if (body.bidType === 'sponsor') {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Separate contribution types are no longer available. Use support with an optional Game Director Message.'
+    })
+  }
+
   const gameId = Number(body.gameId)
   const incrementCents = Math.round(Number(body.amount) * 100)
 
@@ -58,33 +56,9 @@ export default defineEventHandler(async (event) => {
   }
 
   const displayName = sanitizeDisplayName(body.displayName)
+  validateIncrementCents(incrementCents)
 
-  // Fast fail before locking the DB / calling IGDB.
-  if (bidType === 'game') {
-    validateIncrementCents(incrementCents)
-  } else {
-    const minSponsorBidCents = await getMinSponsorBidCents(gameId)
-    validateSponsorBidCents(incrementCents, minSponsorBidCents)
-  }
-
-  let adTitle = ''
-  let adLink = ''
-  let adImage: string | null = null
-  let adDescription: string | null = null
-
-  if (bidType === 'sponsor') {
-    adTitle = sanitizeAdTitle(body.adTitle ?? '')
-    adLink = sanitizeAdLink(body.adLink ?? '')
-    adImage = sanitizeAdImage(body.adImage)
-    adDescription = sanitizeAdDescription(body.adDescription)
-
-    if (!adTitle) {
-      throw createError({ statusCode: 400, statusMessage: 'Sponsor title is required for premium card customization' })
-    }
-    if (!adDescription) {
-      throw createError({ statusCode: 400, statusMessage: 'Sponsor description is required for premium card customization' })
-    }
-  }
+  const director = parseOptionalDirectorFields(body)
 
   const db = useDb()
   const config = useRuntimeConfig()
@@ -109,15 +83,9 @@ export default defineEventHandler(async (event) => {
 
   const bidId = randomUUID()
 
-  // Re-validate with fresh board state immediately before insert.
-  if (bidType === 'game') {
-    validateIncrementCents(incrementCents)
-    const totals = await getFreshLeaderboardTotals()
-    projectRank(totals, gameId, incrementCents)
-  } else {
-    const minSponsorBidCents = await getMinSponsorBidCents(gameId)
-    validateSponsorBidCents(incrementCents, minSponsorBidCents)
-  }
+  validateIncrementCents(incrementCents)
+  const totals = await getFreshLeaderboardTotals()
+  projectRank(totals, gameId, incrementCents)
 
   const stalePending = await db
     .select({ id: bids.id })
@@ -150,14 +118,14 @@ export default defineEventHandler(async (event) => {
 
   await db.insert(bids).values({
     id: bidId,
-    bidType,
+    bidType: 'game',
     gameId,
     displayName,
     amount: incrementCents,
-    adTitle,
-    adLink,
-    adImage,
-    adDescription,
+    adTitle: director.adTitle,
+    adLink: director.adLink,
+    adImage: director.adImage,
+    adDescription: director.adDescription,
     status: 'pending'
   })
 
@@ -177,9 +145,9 @@ export default defineEventHandler(async (event) => {
         }]
       },
       locale: polarLocale,
-      metadata: checkoutMetadata(bidType, title, {
+      metadata: checkoutMetadata(title, {
         bidId,
-        bidType,
+        bidType: 'game',
         gameId: String(gameId),
         incrementCents: String(incrementCents)
       }),

@@ -118,6 +118,98 @@ body {
     inset 0 2px 4px rgba(80, 0, 10, 0.28) !important;
 }
 
+/* Leaderboard search — matches arcade-shell / Switch-style controls */
+.arcade-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 3rem;
+  border: 2px solid var(--play-rim);
+  border-radius: 1.15rem;
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      color-mix(in oklab, var(--play-soft) 55%, #fff) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 0 color-mix(in oklab, var(--play-ink) 4%, transparent),
+    0 1px 0 color-mix(in oklab, var(--play-ink) 3%, transparent);
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.arcade-search:focus-within {
+  border-color: color-mix(in oklab, var(--color-play-sky) 55%, var(--play-rim));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 0 0 3px color-mix(in oklab, var(--color-play-sky) 22%, transparent);
+}
+
+.arcade-search__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: 0.85rem;
+  color: color-mix(in oklab, var(--color-play-sky) 70%, var(--play-ink));
+  pointer-events: none;
+}
+
+.arcade-search__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  padding: 0.75rem 0.7rem;
+  border: 0;
+  background: transparent;
+  color: var(--play-ink);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  outline: none;
+  appearance: none;
+}
+
+.arcade-search__input::placeholder {
+  color: color-mix(in oklab, var(--play-ink) 38%, transparent);
+  font-weight: 500;
+}
+
+.arcade-search__input::-webkit-search-cancel-button {
+  appearance: none;
+}
+
+.arcade-search__clear {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin-inline-end: 0.55rem;
+  border: 2px solid var(--play-rim);
+  border-radius: 999px;
+  background: var(--play-panel);
+  color: color-mix(in oklab, var(--play-ink) 55%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  transition: color 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+.arcade-search__clear:hover {
+  border-color: color-mix(in oklab, var(--color-arcade-500) 35%, var(--play-rim));
+  color: var(--color-arcade-600);
+  background: color-mix(in oklab, var(--color-arcade-50) 70%, #fff);
+}
+
+.arcade-search__clear:focus-visible {
+  outline: 2px solid color-mix(in oklab, var(--color-play-sky) 55%, transparent);
+  outline-offset: 2px;
+}
+
 button[data-slot='close'] {
   display: inline-flex;
   align-items: center;
@@ -231,13 +323,13 @@ button[data-slot='close'] [data-slot='leadingIcon'] {
   color: #9a4010;
 }
 
-.sponsor-row {
+.director-row {
   border: 1px solid var(--play-rim);
   border-radius: 0.85rem;
   background: color-mix(in oklab, var(--play-panel) 92%, var(--play-soft));
 }
 
-.sponsor-row--gold {
+.director-row--gold {
   border-color: color-mix(in oklab, var(--color-play-sun) 55%, var(--play-rim));
   background: linear-gradient(
     152deg,
@@ -247,7 +339,7 @@ button[data-slot='close'] [data-slot='leadingIcon'] {
   );
 }
 
-.sponsor-row--silver {
+.director-row--silver {
   border-color: color-mix(in oklab, var(--color-play-sky) 40%, var(--play-rim));
   background: linear-gradient(
     152deg,
@@ -257,7 +349,7 @@ button[data-slot='close'] [data-slot='leadingIcon'] {
   );
 }
 
-.sponsor-row--bronze {
+.director-row--bronze {
   border-color: color-mix(in oklab, #e07a3a 35%, var(--play-rim));
   background: linear-gradient(
     152deg,
@@ -267,7 +359,7 @@ button[data-slot='close'] [data-slot='leadingIcon'] {
   );
 }
 
-.sponsor-rank {
+.director-rank {
   display: flex;
   width: 1.5rem;
   height: 1.5rem;
@@ -285,25 +377,25 @@ button[data-slot='close'] [data-slot='leadingIcon'] {
   font-variant-numeric: tabular-nums;
 }
 
-.sponsor-rank--gold {
+.director-rank--gold {
   border-color: color-mix(in oklab, #c99500 45%, transparent);
   background: linear-gradient(180deg, #fff6c8 0%, #ffd24a 100%);
   color: #5a3d00;
 }
 
-.sponsor-rank--silver {
+.director-rank--silver {
   border-color: color-mix(in oklab, var(--color-play-sky) 35%, transparent);
   background: linear-gradient(180deg, #f0f9ff 0%, #7ec8e8 100%);
   color: #0f3a52;
 }
 
-.sponsor-rank--bronze {
+.director-rank--bronze {
   border-color: color-mix(in oklab, #c45f22 30%, transparent);
   background: linear-gradient(180deg, #ffe0c8 0%, #e8924a 100%);
   color: #4a2208;
 }
 
-.sponsor-tip {
+.director-tip {
   position: absolute;
   left: 0;
   right: 0;
@@ -323,8 +415,78 @@ button[data-slot='close'] [data-slot='leadingIcon'] {
   transition: opacity 0.15s ease, visibility 0.15s ease;
 }
 
-.sponsor-row:hover .sponsor-tip,
-.sponsor-row:focus-within .sponsor-tip {
+.director-md {
+  overflow-wrap: anywhere;
+}
+
+.director-md :where(p, ul, ol, pre, blockquote) {
+  margin: 0.35em 0;
+}
+
+.director-md :where(p:first-child, ul:first-child, ol:first-child, pre:first-child, blockquote:first-child) {
+  margin-top: 0;
+}
+
+.director-md :where(p:last-child, ul:last-child, ol:last-child, pre:last-child, blockquote:last-child) {
+  margin-bottom: 0;
+}
+
+.director-md :where(ul, ol) {
+  padding-left: 1.2em;
+}
+
+.director-md :where(h1, h2, h3, h4) {
+  margin: 0.4em 0 0.2em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--play-ink);
+  line-height: 1.25;
+}
+
+.director-md h1 { font-size: 1.05em; }
+.director-md h2 { font-size: 1em; }
+.director-md h3,
+.director-md h4 { font-size: 0.95em; }
+
+.director-md :where(code) {
+  font-size: 0.9em;
+  padding: 0.1em 0.3em;
+  border-radius: 0.3em;
+  background: color-mix(in oklab, var(--play-soft) 80%, var(--play-panel));
+}
+
+.director-md :where(pre) {
+  padding: 0.5em 0.65em;
+  border-radius: 0.45rem;
+  overflow-x: auto;
+  background: color-mix(in oklab, var(--play-soft) 80%, var(--play-panel));
+}
+
+.director-md :where(pre code) {
+  padding: 0;
+  background: transparent;
+}
+
+.director-md :where(blockquote) {
+  padding-left: 0.65em;
+  border-left: 3px solid var(--play-rim);
+  color: color-mix(in oklab, var(--play-ink) 72%, transparent);
+}
+
+.director-md :where(a) {
+  color: var(--play-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--play-rim);
+  text-underline-offset: 2px;
+}
+
+.director-md :where(a:hover) {
+  text-decoration-color: var(--play-ink);
+}
+
+.director-row:hover .director-tip,
+.director-row:focus-within .director-tip {
   opacity: 1;
   visibility: visible;
 }

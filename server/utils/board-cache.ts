@@ -68,9 +68,9 @@ export async function getGameBoardPosition(gameId: number): Promise<{ rank: numb
   return { rank: index + 1, totalCents: totals[index]!.totalCents }
 }
 
-export function buildTopSponsors(entries: LeaderboardEntryPayload[], limit = 10): LeaderboardEntryPayload[] {
+export function buildTopDirectors(entries: LeaderboardEntryPayload[], limit = 10): LeaderboardEntryPayload[] {
   return entries
-    .filter(entry => entry.ad)
-    .sort((a, b) => b.sponsorCents - a.sponsorCents)
+    .filter(entry => entry.director)
+    .sort((a, b) => (b.director?.priceCents ?? 0) - (a.director?.priceCents ?? 0))
     .slice(0, limit)
 }

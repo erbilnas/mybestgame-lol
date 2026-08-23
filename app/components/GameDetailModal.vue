@@ -20,8 +20,8 @@ export interface GameDetail {
   board: {
     rank: number | null
     totalCents: number
-    sponsorCents: number
-    sponsorTitle: string | null
+    directorCents: number
+    directorTitle: string | null
   }
 }
 
@@ -104,19 +104,6 @@ function startSupport() {
   if (!detail.value) return
   open.value = false
   openBidModal({
-    type: 'game',
-    gameId: detail.value.id,
-    title: detail.value.title,
-    slug: detail.value.slug,
-    coverUrl: detail.value.coverUrl
-  })
-}
-
-function startSponsor() {
-  if (!detail.value) return
-  open.value = false
-  openBidModal({
-    type: 'sponsor',
     gameId: detail.value.id,
     title: detail.value.title,
     slug: detail.value.slug,
@@ -239,18 +226,18 @@ const metaRows = computed(() => {
             </div>
 
             <p
-              v-if="detail.board.sponsorTitle"
+              v-if="detail.board.directorTitle"
               class="text-sm text-muted text-pretty"
             >
-              {{ t('card.sponsor') }}:
-              <span class="font-semibold text-[var(--play-ink)]">{{ detail.board.sponsorTitle }}</span>
-              · {{ formatDollars(detail.board.sponsorCents) }}
+              {{ t('gameDetail.directorLabel') }}:
+              <span class="font-semibold text-[var(--play-ink)]">{{ detail.board.directorTitle }}</span>
+              · {{ formatDollars(detail.board.directorCents) }}
             </p>
             <p
               v-else
               class="text-sm text-muted"
             >
-              {{ t('gameDetail.noSponsorYet') }}
+              {{ t('gameDetail.noDirectorYet') }}
             </p>
 
             <a
@@ -357,18 +344,10 @@ const metaRows = computed(() => {
     >
       <div class="flex w-full flex-col gap-2 sm:flex-row sm:justify-end">
         <UButton
-          variant="soft"
-          color="neutral"
-          class="rounded-2xl border-2"
+          class="arcade-cta"
           @click="startSupport"
         >
-          {{ t('card.support') }}
-        </UButton>
-        <UButton
-          class="arcade-cta"
-          @click="startSponsor"
-        >
-          {{ t('gameDetail.claimSponsor') }}
+          {{ t('gameDetail.supportGame') }}
         </UButton>
       </div>
     </template>

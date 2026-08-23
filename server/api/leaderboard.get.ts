@@ -1,5 +1,5 @@
 import {
-  buildTopSponsors,
+  buildTopDirectors,
   getCachedLeaderboardEntries,
   slimLeaderboardEntry
 } from '../utils/board-cache'
@@ -17,11 +17,13 @@ export default defineEventHandler(async (event) => {
   const q = String(query.q ?? '').trim().toLowerCase()
 
   const all = await getCachedLeaderboardEntries()
+  // Search only ranks 4+ so the podium (1–3) stays pinned on the client.
+  const pool = q ? all.filter(entry => entry.rank > 3) : all
   const filtered = q
-    ? all.filter(entry =>
+    ? pool.filter(entry =>
         entry.title.toLowerCase().includes(q) || entry.slug.toLowerCase().includes(q)
       )
-    : all
+    : pool
 
   const entries = filtered
     .slice(offset, offset + limit)
@@ -34,7 +36,7 @@ export default defineEventHandler(async (event) => {
     offset: number
     limit: number
     hasMore: boolean
-    topSponsors?: typeof entries
+    topDirectors?: typeof entries
   } = {
     entries,
     total,
@@ -44,7 +46,7 @@ export default defineEventHandler(async (event) => {
   }
 
   if (offset === 0 && !q) {
-    payload.topSponsors = buildTopSponsors(all).map(slimLeaderboardEntry)
+    payload.topDirectors = buildTopDirectors(all).map(slimLeaderboardEntry)
   }
 
   setResponseHeader(event, 'Cache-Control', 'public, max-age=15, stale-while-revalidate=30')

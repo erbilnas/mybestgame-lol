@@ -9,7 +9,6 @@ defineProps<{
 const emit = defineEmits<{
   'open-game': [gameId: number]
   'support-game': []
-  'claim-sponsor': []
 }>()
 
 const { t } = useI18n()
@@ -40,18 +39,6 @@ function timeAgo(isoDate: string) {
   const hours = Math.floor(minutes / 60)
   if (hours < 48) return t('common.hAgo', { n: hours })
   return t('common.dAgo', { n: Math.floor(hours / 24) })
-}
-
-function sponsorClickUrl(bidId: string) {
-  return `/api/ads/click?bidId=${encodeURIComponent(bidId)}`
-}
-
-function openTrackedSponsor(bidId: string) {
-  window.open(sponsorClickUrl(bidId), '_blank', 'noopener,noreferrer')
-}
-
-function sponsorThumb(ad: { image: string | null, link: string }) {
-  return adVisualUrl(ad.image, ad.link, 128)
 }
 
 function daysUntil(iso: string | null | undefined) {
@@ -104,9 +91,6 @@ function decayingSoon(iso: string | null | undefined) {
           </h3>
           <p class="mt-0.5 text-xs text-muted sm:text-sm">
             {{ t('card.stackedBids', { count: entry.bidCount }) }}
-            <template v-if="entry.sponsorCents > 0">
-              · {{ t('card.sponsor') }} {{ formatDollars(entry.sponsorCents) }}
-            </template>
             <template v-if="decayingSoon(entry.nextExpiresAt)">
               · {{ t('card.decayingIn', { days: daysUntil(entry.nextExpiresAt) }) }}
             </template>
@@ -126,26 +110,13 @@ function decayingSoon(iso: string | null | undefined) {
             </p>
           </div>
 
-          <div
-            class="flex gap-2"
+          <UButton
+            size="sm"
+            class="arcade-cta"
+            @click="emit('support-game')"
           >
-            <UButton
-              size="sm"
-              variant="soft"
-              color="neutral"
-              class="rounded-xl border-2"
-              @click="emit('support-game')"
-            >
-              {{ t('card.support') }}
-            </UButton>
-            <UButton
-              size="sm"
-              class="arcade-cta"
-              @click="emit('claim-sponsor')"
-            >
-              {{ t('card.outbid') }} · {{ formatDollars(entry.sponsorClaimCents) }}
-            </UButton>
-          </div>
+            {{ t('card.support') }}
+          </UButton>
         </div>
       </div>
 
@@ -201,90 +172,22 @@ function decayingSoon(iso: string | null | undefined) {
         </div>
       </div>
 
-      <!-- Sponsor strip -->
+      <!-- Director message strip (text only) -->
       <div
-        v-if="entry.ad"
-        class="overflow-hidden rounded-xl border-2 podium-surface"
+        v-if="entry.director"
+        class="rounded-xl border-2 podium-surface px-3 py-2.5 sm:px-4 sm:py-3"
       >
-        <div class="flex items-stretch">
-          <a
-            :href="sponsorClickUrl(entry.ad.bidId)"
-            rel="sponsored nofollow"
-            target="_blank"
-            class="group relative block w-16 shrink-0 bg-muted/40 sm:w-20"
-          >
-            <img
-              v-if="entry.ad.image"
-              :src="entry.ad.image"
-              :alt="entry.ad.title"
-              class="size-full min-h-[4.5rem] object-cover transition-[filter] group-hover:brightness-[1.03] sm:min-h-[5rem]"
-            >
-            <div
-              v-else-if="sponsorThumb(entry.ad)"
-              class="flex size-full min-h-[4.5rem] items-center justify-center bg-[var(--play-panel)] sm:min-h-[5rem]"
-            >
-              <img
-                :src="sponsorThumb(entry.ad)!"
-                :alt="entry.ad.title"
-                class="size-8 object-contain sm:size-10"
-              >
-            </div>
-            <div
-              v-else-if="entry.coverUrl"
-              class="relative size-full min-h-[4.5rem] overflow-hidden sm:min-h-[5rem]"
-            >
-              <img
-                :src="entry.coverUrl"
-                :alt="''"
-                aria-hidden="true"
-                class="size-full scale-110 object-cover opacity-35 blur-[1px] saturate-50"
-              >
-              <div class="absolute inset-0 flex items-center justify-center bg-default/20">
-                <span class="text-[0.65rem] font-medium text-muted">Sponsor</span>
-              </div>
-            </div>
-            <div
-              v-else
-              class="flex size-full min-h-[4.5rem] items-center justify-center sm:min-h-[5rem]"
-            >
-              <span class="text-[0.65rem] font-medium text-muted">Sponsor</span>
-            </div>
-          </a>
-
-          <div class="flex min-w-0 flex-1 flex-col justify-center gap-1 px-3 py-2.5 sm:flex-row sm:items-center sm:gap-4 sm:px-4 sm:py-3">
-            <div class="min-w-0 flex-1">
-              <a
-                :href="sponsorClickUrl(entry.ad.bidId)"
-                rel="sponsored nofollow"
-                target="_blank"
-                class="block truncate font-display text-sm font-bold text-[var(--play-ink)] transition-colors hover:text-primary sm:text-base"
-              >
-                {{ entry.ad.title }}
-              </a>
-              <p
-                v-if="entry.ad.description"
-                class="truncate text-xs text-muted sm:text-sm"
-              >
-                {{ entry.ad.description }}
-              </p>
-            </div>
-
-            <div class="flex shrink-0 items-center gap-3 text-xs text-muted">
-              <span>{{ formatDollars(entry.ad.priceCents) }}</span>
-              <span>{{ t('card.clicks', { count: entry.ad.clickCount }) }}</span>
-              <button
-                type="button"
-                class="inline-flex items-center gap-1 font-medium text-[var(--play-ink)] transition-colors hover:text-primary"
-                @click="openTrackedSponsor(entry.ad.bidId)"
-              >
-                {{ t('card.visit') }}
-                <UIcon
-                  name="i-lucide-arrow-up-right"
-                  class="size-3.5"
-                />
-              </button>
-            </div>
-          </div>
+        <p class="text-[0.65rem] font-medium uppercase tracking-wide text-muted">
+          {{ t('card.directorMessage') }}
+        </p>
+        <p class="mt-0.5 font-display text-sm font-bold text-[var(--play-ink)] sm:text-base">
+          {{ entry.director.title }}
+        </p>
+        <div
+          v-if="entry.director.description"
+          class="mt-0.5 text-xs text-muted text-pretty sm:text-sm"
+        >
+          <DirectorMarkdown :source="entry.director.description" />
         </div>
       </div>
 
@@ -294,18 +197,18 @@ function decayingSoon(iso: string | null | undefined) {
       >
         <div class="min-w-0">
           <p class="text-sm font-semibold text-[var(--play-ink)]">
-            {{ t('card.noSponsor') }}
+            {{ t('card.noDirector') }}
           </p>
           <p class="text-xs text-muted">
-            {{ t('card.claimFrom', { price: formatDollars(entry.sponsorClaimCents) }) }}
+            {{ t('card.supportToDirect') }}
           </p>
         </div>
         <UButton
           size="sm"
           class="arcade-cta shrink-0 self-start sm:self-center"
-          @click="emit('claim-sponsor')"
+          @click="emit('support-game')"
         >
-          {{ t('card.claim') }} · {{ formatDollars(entry.sponsorClaimCents) }}
+          {{ t('card.support') }}
         </UButton>
       </div>
 
@@ -323,28 +226,14 @@ function decayingSoon(iso: string | null | undefined) {
           </p>
         </div>
 
-        <div
-          class="grid grid-cols-2 gap-2"
+        <UButton
+          block
+          size="sm"
+          class="arcade-cta"
+          @click="emit('support-game')"
         >
-          <UButton
-            block
-            size="sm"
-            variant="soft"
-            color="neutral"
-            class="rounded-xl border-2"
-            @click="emit('support-game')"
-          >
-            {{ t('card.support') }}
-          </UButton>
-          <UButton
-            block
-            size="sm"
-            class="arcade-cta"
-            @click="emit('claim-sponsor')"
-          >
-            {{ t('card.outbid') }} · {{ formatDollars(entry.sponsorClaimCents) }}
-          </UButton>
-        </div>
+          {{ t('card.support') }}
+        </UButton>
       </div>
     </div>
   </article>

@@ -66,7 +66,14 @@ export function getClientIp(event: H3Event): string | null {
   return getTrustedClientIp(event)
 }
 
+/** Dev: free $1 promo stays available (no device/IP lock). Prod: one claim forever. */
+export function isUnlimitedFreeSupport(): boolean {
+  return import.meta.dev || process.env.NODE_ENV !== 'production'
+}
+
 export async function hasClaimedFreeSupport(deviceId: string, ip: string): Promise<boolean> {
+  if (isUnlimitedFreeSupport()) return false
+
   const db = useDb()
   const [row] = await db
     .select({ deviceId: deviceFreeClaims.deviceId })

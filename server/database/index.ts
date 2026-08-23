@@ -66,10 +66,10 @@ export function initDb() {
 
     CREATE INDEX IF NOT EXISTS bids_game_id_idx ON bids(game_id);
     CREATE INDEX IF NOT EXISTS bids_status_idx ON bids(status);
-    CREATE INDEX IF NOT EXISTS bids_polar_checkout_id_idx ON bids(polar_checkout_id);
     CREATE INDEX IF NOT EXISTS bids_status_game_id_idx ON bids(status, game_id);
     CREATE INDEX IF NOT EXISTS bids_status_type_game_idx ON bids(status, bid_type, game_id);
     CREATE INDEX IF NOT EXISTS bids_status_created_idx ON bids(status, created_at);
+    -- bids_polar_checkout_id_idx created after column migrations (existing DBs may lack the column)
 
     CREATE TABLE IF NOT EXISTS rate_limit_buckets (
       key TEXT PRIMARY KEY NOT NULL,
@@ -101,7 +101,7 @@ export function initDb() {
     sqlite.exec('ALTER TABLE games ADD COLUMN summary TEXT')
   }
 
-  const bidColumns = sqlite.prepare('PRAGMA table_info(bids)').all() as { name: string }[]
+  let bidColumns = sqlite.prepare('PRAGMA table_info(bids)').all() as { name: string }[]
   if (!bidColumns.some(column => column.name === 'click_count')) {
     sqlite.exec('ALTER TABLE bids ADD COLUMN click_count INTEGER NOT NULL DEFAULT 0')
   }
@@ -115,6 +115,29 @@ export function initDb() {
   if (bidColumns.some(column => column.name === 'email') && !bidColumns.some(column => column.name === 'display_name')) {
     sqlite.exec('ALTER TABLE bids RENAME COLUMN email TO display_name')
   }
+
+  // Local DBs from a reverted Stripe rename may still have stripe_* columns.
+  bidColumns = sqlite.prepare('PRAGMA table_info(bids)').all() as { name: string }[]
+  const hasPolarCheckout = bidColumns.some(column => column.name === 'polar_checkout_id')
+  const hasPolarOrder = bidColumns.some(column => column.name === 'polar_order_id')
+  const hasStripeCheckout = bidColumns.some(column => column.name === 'stripe_checkout_id')
+  const hasStripePayment = bidColumns.some(column => column.name === 'stripe_payment_id')
+
+  if (hasStripeCheckout && !hasPolarCheckout) {
+    sqlite.exec('DROP INDEX IF EXISTS bids_stripe_checkout_id_idx')
+    sqlite.exec('ALTER TABLE bids RENAME COLUMN stripe_checkout_id TO polar_checkout_id')
+  } else if (!hasPolarCheckout) {
+    sqlite.exec('ALTER TABLE bids ADD COLUMN polar_checkout_id TEXT')
+  }
+
+  if (hasStripePayment && !hasPolarOrder) {
+    sqlite.exec('DROP INDEX IF EXISTS bids_stripe_payment_id_uidx')
+    sqlite.exec('ALTER TABLE bids RENAME COLUMN stripe_payment_id TO polar_order_id')
+  } else if (!hasPolarOrder) {
+    sqlite.exec('ALTER TABLE bids ADD COLUMN polar_order_id TEXT')
+  }
+
+  sqlite.exec('CREATE INDEX IF NOT EXISTS bids_polar_checkout_id_idx ON bids(polar_checkout_id)')
 
   const freeClaimColumns = sqlite.prepare('PRAGMA table_info(device_free_claims)').all() as { name: string }[]
   if (freeClaimColumns.length > 0 && !freeClaimColumns.some(column => column.name === 'ip')) {
@@ -165,4 +188,8 @@ export function initDb() {
   `)
 
   sqlite.exec('DROP TABLE IF EXISTS weekly_snapshots')
+
+  // Merge legacy sponsor auction into support + Game Director Message.
+  sqlite.exec(`UPDATE bids SET bid_type = 'game' WHERE bid_type = 'sponsor'`)
+  sqlite.exec(`UPDATE board_events SET type = 'director_takeover' WHERE type = 'sponsor_takeover'`)
 }

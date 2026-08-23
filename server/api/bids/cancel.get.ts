@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     .limit(1)
 
   if (!bid) {
-    throw createError({ statusCode: 404, statusMessage: 'Bid not found' })
+    throw createError({ statusCode: 404, statusMessage: 'Contribution not found' })
   }
 
   if (bid.status === 'paid' || bid.status === 'failed') {

@@ -33,7 +33,7 @@ const seoDescription = computed(() => {
   if (!isPaid.value || !data.value) return t('seo.description')
   const parts = [`${data.value.contributor} stacked $${Math.round(data.value.amount / 100)}`]
   if (data.value.createdAt) {
-    parts.push(`bid ${formatBidDate(data.value.createdAt)}`)
+    parts.push(`${t('plaque.bidDate')} ${formatBidDate(data.value.createdAt)}`)
   }
   return parts.join(' · ')
 })
@@ -175,7 +175,7 @@ async function sharePlaque() {
               {{ data.gameTitle }}
             </h1>
             <p class="text-sm text-muted">
-              {{ data.contributor }} · {{ data.bidType === 'sponsor' ? t('plaque.sponsorBid') : t('plaque.gameBid') }}
+              {{ data.contributor }} · {{ t('plaque.gameBid') }}<template v-if="data.hasDirectorMessage"> · {{ t('plaque.withDirectorMessage') }}</template>
             </p>
           </div>
         </div>

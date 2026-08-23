@@ -1,40 +1,21 @@
-import type { BidType } from '../database/schema'
-
 /** Category string for payment processor onboarding and checkout metadata. */
 export const PROCESSOR_PRODUCT_CATEGORY = 'consumer_software_games'
 
-export function checkoutProductLabel(bidType: BidType): string {
-  switch (bidType) {
-    case 'game':
-      return 'Leaderboard rank boost'
-    case 'sponsor':
-      return 'Premium card customization'
-    default: {
-      const _exhaustive: never = bidType
-      return _exhaustive
-    }
-  }
+/** Polar-facing label: avoid "rank boost" / advertising / sponsorship wording. */
+export function checkoutProductLabel(): string {
+  return 'Board participation credit'
 }
 
-export function checkoutProductDescription(bidType: BidType, gameTitle: string): string {
-  switch (bidType) {
-    case 'game':
-      return `Digital leaderboard rank boost for "${gameTitle}" on mybestgame.lol. Instant on-site fulfillment.`
-    case 'sponsor':
-      return `Featured supporter slot with premium card customization for "${gameTitle}" on mybestgame.lol. Displayed only on our platform. Instant on-site fulfillment. Not third-party advertising.`
-    default: {
-      const _exhaustive: never = bidType
-      return _exhaustive
-    }
-  }
+export function checkoutProductDescription(gameTitle: string): string {
+  return `One-time digital board participation credit for "${gameTitle}" on mybestgame.lol (consumer entertainment software). Instant on-site fulfillment updates the live game board listing. Optional on-site text note (title + message only, no outbound links) may display if the buyer is the top contributor for that game. Not advertising, lead generation, sponsorship inventory, or marketing services.`
 }
 
-export function checkoutMetadata(bidType: BidType, gameTitle: string, extras: Record<string, string>): Record<string, string> {
+export function checkoutMetadata(gameTitle: string, extras: Record<string, string>): Record<string, string> {
   return {
     ...extras,
     productCategory: PROCESSOR_PRODUCT_CATEGORY,
-    productLabel: checkoutProductLabel(bidType),
-    productDescription: checkoutProductDescription(bidType, gameTitle),
+    productLabel: checkoutProductLabel(),
+    productDescription: checkoutProductDescription(gameTitle),
     fulfillment: 'instant_on_site'
   }
 }

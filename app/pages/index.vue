@@ -12,7 +12,7 @@ interface LeaderboardPage {
   offset: number
   limit: number
   hasMore: boolean
-  topSponsors?: LeaderboardEntry[]
+  topDirectors?: LeaderboardEntry[]
 }
 
 interface HomePayload {
@@ -45,7 +45,9 @@ const accumulated = ref<LeaderboardEntry[]>([])
 const hasMore = ref(false)
 const loadingMore = ref(false)
 const searchQuery = ref('')
-const topSponsors = ref<LeaderboardEntry[]>([])
+const topDirectors = ref<LeaderboardEntry[]>([])
+/** Top 3 stay visible while searching ranks 4+. */
+const pinnedPodium = ref<LeaderboardEntry[]>([])
 
 const { data: homeData, pending: homePending, refresh: refreshHome } = await useFetch<HomePayload>(
   '/api/home',
@@ -66,15 +68,20 @@ const statsData = computed(() => ({
 
 const leaderboardData = computed(() => homeData.value?.leaderboard ?? defaultLeaderboard())
 
+function syncPodium(entries: LeaderboardEntry[]) {
+  pinnedPodium.value = entries.filter(entry => entry.rank <= 3)
+}
+
 watch(
   leaderboardData,
   (page) => {
     if (!page) return
     if (!searchQuery.value) {
       accumulated.value = page.entries
+      syncPodium(page.entries)
       hasMore.value = page.hasMore
     }
-    if (page.topSponsors) topSponsors.value = page.topSponsors
+    if (page.topDirectors) topDirectors.value = page.topDirectors
   },
   { immediate: true }
 )
@@ -154,7 +161,6 @@ function openGameDetail(gameId: number) {
 
 function openSupportGame(entry: LeaderboardEntry) {
   openBidModal({
-    type: 'game',
     gameId: entry.gameId,
     title: entry.title,
     slug: entry.slug,
@@ -162,25 +168,17 @@ function openSupportGame(entry: LeaderboardEntry) {
   })
 }
 
-function openClaimSponsor(entry: LeaderboardEntry) {
-  openBidModal({
-    type: 'sponsor',
-    gameId: entry.gameId,
-    title: entry.title,
-    slug: entry.slug,
-    coverUrl: entry.coverUrl,
-    amountDollars: Math.ceil(entry.sponsorClaimCents / 100)
-  })
-}
-
 async function loadMore() {
   if (!hasMore.value || loadingMore.value || leaderboardPending.value) return
   loadingMore.value = true
   try {
+    const offset = searchQuery.value
+      ? Math.max(0, accumulated.value.length - pinnedPodium.value.length)
+      : accumulated.value.length
     const page = await $fetch<LeaderboardPage>('/api/leaderboard', {
       query: {
         limit: PAGE_SIZE,
-        offset: accumulated.value.length,
+        offset,
         ...(searchQuery.value ? { q: searchQuery.value } : {})
       }
     })
@@ -205,9 +203,15 @@ async function onSearch(query: string) {
         ...(query ? { q: query } : {})
       }
     })
-    accumulated.value = page.entries
+    if (query) {
+      // API returns only rank 4+ matches; keep podium pinned.
+      accumulated.value = [...pinnedPodium.value, ...page.entries]
+    } else {
+      accumulated.value = page.entries
+      syncPodium(page.entries)
+      if (page.topDirectors) topDirectors.value = page.topDirectors
+    }
     hasMore.value = page.hasMore
-    if (!query && page.topSponsors) topSponsors.value = page.topSponsors
   } finally {
     loadingMore.value = false
   }
@@ -367,14 +371,13 @@ onUnmounted(() => {
           remote-search
           @open-game="openGameDetail"
           @support-game="openSupportGame"
-          @claim-sponsor="openClaimSponsor"
           @load-more="loadMore"
           @search="onSearch"
         />
       </section>
 
       <div class="min-w-0 space-y-6 lg:sticky lg:top-[5.75rem]">
-        <TopSponsors :entries="topSponsors" />
+        <TopDirectors :entries="topDirectors" />
         <ActivityFeed :items="statsData?.activity ?? []" />
       </div>
     </div>

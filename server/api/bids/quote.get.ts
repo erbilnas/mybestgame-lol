@@ -1,9 +1,6 @@
 import {
   getFreshLeaderboardTotals,
   getGameTotalCents,
-  getMinSponsorBidCents,
-  getWinningSponsorBid,
-  parseBidType,
   projectRank,
   validateIncrementCents
 } from '../../utils/bidding'
@@ -18,7 +15,6 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const gameId = Number(query.gameId)
   const amountDollars = Number(query.amount)
-  const bidType = parseBidType(query.type ?? 'game')
 
   if (!Number.isInteger(gameId) || gameId <= 0) {
     throw createError({ statusCode: 400, statusMessage: 'Invalid gameId' })
@@ -33,34 +29,17 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Amount too large' })
   }
 
-  if (bidType === 'game') {
-    validateIncrementCents(incrementCents)
+  validateIncrementCents(incrementCents)
 
-    const totals = await getFreshLeaderboardTotals()
-    const currentTotalCents = await getGameTotalCents(gameId)
-    const { projectedRank, projectedTotalCents } = projectRank(totals, gameId, incrementCents)
-
-    return {
-      bidType,
-      incrementCents,
-      currentTotalCents,
-      projectedTotalCents,
-      projectedRank: projectedRank || 1
-    }
-  }
-
-  const minSponsorBidCents = await getMinSponsorBidCents(gameId)
-  const winningSponsor = await getWinningSponsorBid(gameId)
-
-  if (!Number.isInteger(incrementCents) || incrementCents < 1) {
-    throw createError({ statusCode: 400, statusMessage: 'Invalid amount' })
-  }
+  const totals = await getFreshLeaderboardTotals()
+  const currentTotalCents = await getGameTotalCents(gameId)
+  const { projectedRank, projectedTotalCents } = projectRank(totals, gameId, incrementCents)
 
   return {
-    bidType,
+    bidType: 'game' as const,
     incrementCents,
-    currentSponsorCents: winningSponsor?.amount ?? 0,
-    minSponsorBidCents,
-    valid: incrementCents >= minSponsorBidCents
+    currentTotalCents,
+    projectedTotalCents,
+    projectedRank: projectedRank || 1
   }
 })

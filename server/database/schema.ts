@@ -9,7 +9,7 @@ export const games = sqliteTable('games', {
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull().$defaultFn(() => new Date())
 })
 
-export const bidTypes = ['game', 'sponsor'] as const
+export const bidTypes = ['game'] as const
 export type BidType = typeof bidTypes[number]
 
 export const bids = sqliteTable('bids', {
@@ -38,7 +38,7 @@ export const bids = sqliteTable('bids', {
   index('bids_status_created_idx').on(table.status, table.createdAt)
 ])
 
-export const boardEventTypes = ['bid_paid', 'rank_takeover', 'sponsor_takeover', 'decay'] as const
+export const boardEventTypes = ['bid_paid', 'rank_takeover', 'director_takeover', 'decay'] as const
 export type BoardEventType = typeof boardEventTypes[number]
 
 export const boardEvents = sqliteTable('board_events', {

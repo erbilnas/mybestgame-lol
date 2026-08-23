@@ -4,12 +4,11 @@ export interface SiteStatsData {
   totalPaidBids: number
   gamesOnBoard: number
   launchedAt: string | null
-  liveSponsors: number
-  allTimeSponsors: number
+  liveDirectors: number
+  allTimeDirectors: number
   livePlayers: number
   allTimePlayers: number
-  sponsorClicks: number
-  sponsorRevenueCents: number
+  directorRevenueCents: number
 }
 
 const props = defineProps<{
@@ -49,12 +48,12 @@ const items = computed(() => {
       value: loading ? '—' : formatCount(stats?.totalPaidBids ?? 0)
     },
     {
-      label: t('stats.liveSponsors'),
-      value: loading ? '—' : formatCount(stats?.liveSponsors ?? 0)
+      label: t('stats.liveDirectors'),
+      value: loading ? '—' : formatCount(stats?.liveDirectors ?? 0)
     },
     {
-      label: t('stats.allTimeSponsors'),
-      value: loading ? '—' : formatCount(stats?.allTimeSponsors ?? 0)
+      label: t('stats.allTimeDirectors'),
+      value: loading ? '—' : formatCount(stats?.allTimeDirectors ?? 0)
     },
     {
       label: t('stats.livePlayers'),
@@ -66,12 +65,8 @@ const items = computed(() => {
       value: loading ? '—' : formatCount(stats?.allTimePlayers ?? 0)
     },
     {
-      label: t('stats.sponsorClicks'),
-      value: loading ? '—' : formatCount(stats?.sponsorClicks ?? 0)
-    },
-    {
-      label: t('stats.sponsorRaised'),
-      value: loading ? '—' : formatDollars(stats?.sponsorRevenueCents ?? 0)
+      label: t('stats.directorRaised'),
+      value: loading ? '—' : formatDollars(stats?.directorRevenueCents ?? 0)
     }
   ]
 })

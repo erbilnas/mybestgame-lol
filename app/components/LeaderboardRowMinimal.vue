@@ -9,18 +9,9 @@ defineProps<{
 const emit = defineEmits<{
   'open-game': [gameId: number]
   'support-game': []
-  'claim-sponsor': []
 }>()
 
 const { t } = useI18n()
-
-function adClickUrl(bidId: string) {
-  return `/api/ads/click?bidId=${encodeURIComponent(bidId)}`
-}
-
-function sponsorThumb(ad: { image: string | null, link: string }) {
-  return adVisualUrl(ad.image, ad.link, 64)
-}
 
 function truncate(text: string | null | undefined, max = 120) {
   if (!text) return null
@@ -63,60 +54,19 @@ function timeAgo(isoDate: string) {
         </h3>
 
         <p
-          v-if="entry.ad"
-          class="mt-0.5 flex min-w-0 items-center gap-1.5 text-xs"
+          v-if="entry.director"
+          class="mt-0.5 min-w-0 text-xs"
         >
-          <a
-            :href="adClickUrl(entry.ad.bidId)"
-            rel="sponsored nofollow"
-            target="_blank"
-            class="relative block size-5 shrink-0 overflow-hidden rounded border border-[var(--play-rim)] bg-[var(--play-panel)]"
-          >
-            <img
-              v-if="entry.ad.image"
-              :src="entry.ad.image"
-              :alt="entry.ad.title"
-              loading="lazy"
-              decoding="async"
-              class="size-full object-cover"
-            >
-            <img
-              v-else-if="sponsorThumb(entry.ad)"
-              :src="sponsorThumb(entry.ad)!"
-              :alt="entry.ad.title"
-              loading="lazy"
-              decoding="async"
-              class="size-full object-contain p-0.5"
-            >
-            <img
-              v-else-if="entry.coverUrl"
-              :src="entry.coverUrl"
-              :alt="''"
-              aria-hidden="true"
-              loading="lazy"
-              decoding="async"
-              class="size-full object-cover opacity-40"
-            >
-          </a>
-          <span class="shrink-0 font-medium text-muted">{{ t('card.sponsor') }}</span>
-          <a
-            :href="adClickUrl(entry.ad.bidId)"
-            rel="sponsored nofollow"
-            target="_blank"
-            class="truncate font-semibold text-[var(--play-ink)] transition-colors hover:text-primary"
-          >
-            {{ entry.ad.title }}
-          </a>
-          <span class="hidden shrink-0 text-muted sm:inline">
-            · {{ formatDollars(entry.ad.priceCents) }}
-          </span>
+          <span class="font-medium text-muted">{{ t('card.directorMessage') }}</span>
+          <span class="text-muted"> · </span>
+          <span class="font-semibold text-[var(--play-ink)]">{{ entry.director.title }}</span>
         </p>
 
         <p
           v-else
           class="mt-0.5 text-xs text-muted"
         >
-          {{ t('card.noSponsor') }}
+          {{ t('card.noDirector') }}
         </p>
       </div>
 
@@ -134,20 +84,10 @@ function timeAgo(isoDate: string) {
       >
         <UButton
           size="xs"
-          color="neutral"
-          variant="soft"
-          class="rounded-xl border"
+          class="arcade-cta whitespace-nowrap px-2.5 sm:px-3"
           @click="emit('support-game')"
         >
           {{ t('card.support') }}
-        </UButton>
-        <UButton
-          size="xs"
-          class="arcade-cta whitespace-nowrap px-2.5 sm:px-3"
-          @click="emit('claim-sponsor')"
-        >
-          {{ entry.ad ? t('card.outbid') : t('card.claim') }}
-          <span class="tabular-nums">{{ formatDollars(entry.sponsorClaimCents) }}</span>
         </UButton>
       </div>
     </div>
@@ -207,37 +147,16 @@ function timeAgo(isoDate: string) {
             {{ formatDollars(entry.totalCents) }}
           </p>
         </div>
-        <p
-          v-if="entry.ad"
-          class="max-w-[55%] truncate text-right text-[11px] text-muted"
-        >
-          {{ t('card.clicks', { count: entry.ad.clickCount }) }}
-        </p>
       </div>
 
-      <div
-        class="grid grid-cols-2 gap-2"
+      <UButton
+        block
+        size="sm"
+        class="arcade-cta"
+        @click="emit('support-game')"
       >
-        <UButton
-          block
-          size="sm"
-          color="neutral"
-          variant="soft"
-          class="rounded-xl border"
-          @click="emit('support-game')"
-        >
-          {{ t('card.support') }}
-        </UButton>
-        <UButton
-          block
-          size="sm"
-          class="arcade-cta"
-          @click="emit('claim-sponsor')"
-        >
-          {{ entry.ad ? t('card.outbid') : t('card.claim') }}
-          <span class="tabular-nums">{{ formatDollars(entry.sponsorClaimCents) }}</span>
-        </UButton>
-      </div>
+        {{ t('card.support') }}
+      </UButton>
     </div>
   </article>
 </template>
