@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import {
+  DIRECTOR_DESC_RAW_MAX,
+  DIRECTOR_DESC_VISIBLE_MAX,
+  MARKDOWN_GUIDE_URL,
+  markdownVisibleLength
+} from '../../shared/utils/director-markdown'
 import { overlayCloseButton, overlayCloseUi, overlayHeaderUi } from '~/utils/overlay-close'
 
 export interface BidModalPreset {
-  type?: 'game' | 'sponsor'
   gameId?: number
   title?: string
   slug?: string
@@ -25,20 +30,17 @@ onMounted(() => {
   mq.addEventListener('change', sync)
   onUnmounted(() => mq.removeEventListener('change', sync))
 })
-const bidType = ref<'game' | 'sponsor'>('game')
 const selectedGame = ref<{ id: number, title: string, slug: string, coverUrl: string | null } | null>(null)
 const amount = ref(5)
 const displayName = ref('')
 const adTitle = ref('')
 const adDescription = ref('')
-const adLink = ref('')
-const adImage = ref('')
 const submitting = ref(false)
 const error = ref('')
 const turnstileToken = ref('')
 const turnstileWidgetId = ref<string | null>(null)
 const turnstileError = ref('')
-const sponsorDetailsOpen = ref(false)
+const directorDetailsOpen = ref(false)
 const useFreeSupport = ref(false)
 const freeEligible = ref(false)
 const freeEligibilityLoaded = ref(false)
@@ -61,11 +63,6 @@ const modalUi = computed(() => ({
   close: overlayCloseUi
 }))
 
-const linkFavicon = computed(() => {
-  if (adImage.value.trim()) return null
-  return faviconFromUrl(adLink.value, 64)
-})
-
 const gameQuote = ref<{
   incrementCents: number
   currentTotalCents: number
@@ -73,17 +70,10 @@ const gameQuote = ref<{
   projectedRank: number
 } | null>(null)
 
-const sponsorQuote = ref<{
-  incrementCents: number
-  currentSponsorCents: number
-  minSponsorBidCents: number
-} | null>(null)
-
 let quoteTimer: ReturnType<typeof setTimeout> | undefined
 
 function applyPreset(next: BidModalPreset) {
-  bidType.value = next.type ?? 'game'
-  amount.value = next.amountDollars ?? (bidType.value === 'sponsor' ? 1 : 5)
+  amount.value = next.amountDollars ?? 5
 
   if (next.gameId && next.title && next.slug) {
     selectedGame.value = {
@@ -102,6 +92,11 @@ watch(preset, applyPreset, { deep: true })
 
 async function refreshFreeEligibility() {
   freeEligibilityLoaded.value = false
+  if (import.meta.dev) {
+    freeEligible.value = true
+    freeEligibilityLoaded.value = true
+    return
+  }
   try {
     const result = await $fetch<{ eligible: boolean }>('/api/bids/free-eligibility')
     freeEligible.value = result.eligible
@@ -122,32 +117,25 @@ watch(useFreeSupport, (enabled) => {
   }
 })
 
-watch([selectedGame, amount, bidType], () => {
+watch([selectedGame, amount], () => {
   clearTimeout(quoteTimer)
   gameQuote.value = null
-  sponsorQuote.value = null
 
   if (!selectedGame.value || amount.value < 1) return
 
   quoteTimer = setTimeout(async () => {
     try {
-      const result = await $fetch<Record<string, number> & { bidType: string }>('/api/bids/quote', {
+      const result = await $fetch<{
+        incrementCents: number
+        currentTotalCents: number
+        projectedTotalCents: number
+        projectedRank: number
+      }>('/api/bids/quote', {
         query: {
-          type: bidType.value,
           gameId: selectedGame.value!.id,
           amount: amount.value
         }
       })
-
-      if (result.bidType === 'sponsor') {
-        sponsorQuote.value = {
-          incrementCents: result.incrementCents ?? 0,
-          currentSponsorCents: result.currentSponsorCents ?? 0,
-          minSponsorBidCents: result.minSponsorBidCents ?? 100
-        }
-        gameQuote.value = null
-        return
-      }
 
       gameQuote.value = {
         incrementCents: result.incrementCents ?? 0,
@@ -155,61 +143,16 @@ watch([selectedGame, amount, bidType], () => {
         projectedTotalCents: result.projectedTotalCents ?? 0,
         projectedRank: result.projectedRank ?? 1
       }
-      sponsorQuote.value = null
     } catch {
       gameQuote.value = null
-      sponsorQuote.value = null
     }
   }, 250)
 })
 
-watch(bidType, (type) => {
-  if (type === 'sponsor') {
-    useFreeSupport.value = false
-    sponsorDetailsOpen.value = false
-    if (sponsorQuote.value) {
-      amount.value = Math.ceil(sponsorQuote.value.minSponsorBidCents / 100)
-    }
-  }
-})
-
-watch(sponsorQuote, (quote) => {
-  if (bidType.value === 'sponsor' && quote && amount.value * 100 < quote.minSponsorBidCents) {
-    amount.value = Math.ceil(quote.minSponsorBidCents / 100)
-  }
-})
-
-const bidTypeHelp = computed(() => {
-  if (bidType.value === 'game') {
-    return t('bid.gameHelpStack')
-  }
-
-  if (sponsorQuote.value && sponsorQuote.value.currentSponsorCents > 0) {
-    const current = Math.ceil(sponsorQuote.value.currentSponsorCents / 100)
-    const min = Math.ceil(sponsorQuote.value.minSponsorBidCents / 100)
-    return t('bid.sponsorHeldAt', { current, min })
-  }
-
-  return t('bid.sponsorNoClaim')
-})
-
 const amountHint = computed(() => {
-  if (useFreeSupport.value && bidType.value === 'game') {
+  if (useFreeSupport.value) {
     return t('bid.freeHint')
   }
-
-  if (bidType.value === 'game') {
-    return t('bid.amountHintGame')
-  }
-
-  if (sponsorQuote.value) {
-    const min = Math.ceil(sponsorQuote.value.minSponsorBidCents / 100)
-    if (sponsorQuote.value.currentSponsorCents > 0) {
-      return t('bid.amountHintSponsorBeat', { min })
-    }
-    return t('bid.amountHintSponsorFirst')
-  }
-
   return t('bid.amountHintGame')
 })
 
@@ -220,6 +163,24 @@ const amountError = computed(() => {
   }
   return undefined
 })
+
+function directorFieldsFilled(): boolean {
+  return Boolean(adTitle.value.trim() || adDescription.value.trim())
+}
+
+const directorDescVisibleLen = computed(() => markdownVisibleLength(adDescription.value))
+
+const directorDescOverLimit = computed(() =>
+  directorDescVisibleLen.value > DIRECTOR_DESC_VISIBLE_MAX
+    || adDescription.value.length > DIRECTOR_DESC_RAW_MAX
+)
+
+const directorDescCounter = computed(() =>
+  t('bid.directorDescCounter', {
+    used: directorDescVisibleLen.value,
+    max: DIRECTOR_DESC_VISIBLE_MAX
+  })
+)
 
 function resetTurnstile() {
   turnstileToken.value = ''
@@ -300,8 +261,10 @@ watch(open, (isOpen) => {
   turnstileToken.value = ''
   turnstileError.value = ''
   turnstileWidgetId.value = null
-  sponsorDetailsOpen.value = false
+  directorDetailsOpen.value = false
   useFreeSupport.value = false
+  adTitle.value = ''
+  adDescription.value = ''
   preset.value = {}
 })
 
@@ -313,21 +276,22 @@ async function submit() {
     return
   }
 
-  if (bidType.value === 'sponsor' && (!adTitle.value.trim() || !adLink.value.trim())) {
-    sponsorDetailsOpen.value = true
-    error.value = t('bid.errorSponsorRequired')
-    return
-  }
-
-  if (bidType.value === 'sponsor' && !adDescription.value.trim()) {
-    sponsorDetailsOpen.value = true
-    error.value = t('bid.errorSponsorDescRequired')
-    return
-  }
-
-  if (bidType.value === 'sponsor' && sponsorQuote.value && amount.value * 100 < sponsorQuote.value.minSponsorBidCents) {
-    error.value = t('bid.errorSponsorMin', { min: Math.ceil(sponsorQuote.value.minSponsorBidCents / 100) })
-    return
+  if (directorFieldsFilled()) {
+    if (!adTitle.value.trim()) {
+      directorDetailsOpen.value = true
+      error.value = t('bid.errorDirectorRequired')
+      return
+    }
+    if (!adDescription.value.trim()) {
+      directorDetailsOpen.value = true
+      error.value = t('bid.errorDirectorDescRequired')
+      return
+    }
+    if (directorDescOverLimit.value) {
+      directorDetailsOpen.value = true
+      error.value = t('bid.errorDirectorDescMax')
+      return
+    }
   }
 
   if (!Number.isInteger(amount.value) || amount.value < 1) {
@@ -350,8 +314,15 @@ async function submit() {
 
   submitting.value = true
 
+  const directorBody = directorFieldsFilled()
+    ? {
+        adTitle: adTitle.value,
+        adDescription: adDescription.value
+      }
+    : {}
+
   try {
-    if (bidType.value === 'game' && useFreeSupport.value) {
+    if (useFreeSupport.value) {
       const result = await $fetch<{ bidId: string }>('/api/bids/claim-free', {
         method: 'POST',
         body: {
@@ -360,11 +331,12 @@ async function submit() {
           slug: selectedGame.value.slug,
           coverUrl: selectedGame.value.coverUrl,
           displayName: displayName.value,
+          ...directorBody,
           turnstileToken: turnstileToken.value
         }
       })
 
-      freeEligible.value = false
+      freeEligible.value = import.meta.dev
       useFreeSupport.value = false
       window.location.href = `${localePath('/success')}?bid_id=${encodeURIComponent(result.bidId)}`
       return
@@ -373,17 +345,13 @@ async function submit() {
     const result = await $fetch<{ checkoutUrl: string }>('/api/bids/create-checkout', {
       method: 'POST',
       body: {
-        bidType: bidType.value,
         gameId: selectedGame.value.id,
         title: selectedGame.value.title,
         slug: selectedGame.value.slug,
         coverUrl: selectedGame.value.coverUrl,
         amount: amount.value,
         displayName: displayName.value,
-        adTitle: bidType.value === 'sponsor' ? adTitle.value : undefined,
-        adDescription: bidType.value === 'sponsor' ? adDescription.value : undefined,
-        adLink: bidType.value === 'sponsor' ? adLink.value : undefined,
-        adImage: bidType.value === 'sponsor' ? adImage.value || undefined : undefined,
+        ...directorBody,
         turnstileToken: turnstileToken.value,
         locale: locale.value as 'en' | 'tr'
       }
@@ -426,40 +394,9 @@ async function submit() {
         class="space-y-5"
         @submit.prevent="submit"
       >
-        <div
-          class="grid grid-cols-2 gap-1.5 rounded-2xl border-2 border-[var(--play-rim)] bg-[var(--play-soft)] p-1.5"
-          role="tablist"
-          :aria-label="t('bid.title')"
-        >
-          <button
-            type="button"
-            role="tab"
-            :aria-selected="bidType === 'game'"
-            class="min-w-0 truncate rounded-xl px-3 py-2.5 text-sm font-bold transition-colors"
-            :class="bidType === 'game'
-              ? 'bg-[var(--play-panel)] text-[var(--play-ink)] border-2 border-[var(--play-rim)]'
-              : 'border-2 border-transparent text-muted hover:text-[var(--play-ink)]'"
-            @click="bidType = 'game'"
-          >
-            {{ t('bid.supportGame') }}
-          </button>
-          <button
-            type="button"
-            role="tab"
-            :aria-selected="bidType === 'sponsor'"
-            class="min-w-0 truncate rounded-xl px-3 py-2.5 text-sm font-bold transition-colors"
-            :class="bidType === 'sponsor'
-              ? 'bg-[var(--play-panel)] text-[var(--play-ink)] border-2 border-[var(--play-rim)]'
-              : 'border-2 border-transparent text-muted hover:text-[var(--play-ink)]'"
-            @click="bidType = 'sponsor'"
-          >
-            {{ t('bid.claimSponsor') }}
-          </button>
-        </div>
-
         <div class="rounded-2xl border-2 border-[var(--play-rim)] bg-[var(--play-soft)]/70 px-3.5 py-3">
           <p class="text-sm text-muted text-pretty">
-            {{ bidTypeHelp }}
+            {{ t('bid.gameHelpStack') }}
           </p>
         </div>
 
@@ -471,14 +408,14 @@ async function submit() {
         </UFormField>
 
         <UFormField
-          :label="bidType === 'game' ? t('bid.supportAmount') : t('bid.sponsorBid')"
+          :label="t('bid.supportAmount')"
           :description="amountHint"
           :error="amountError"
         >
           <UInput
             v-model.number="amount"
             type="number"
-            :min="bidType === 'sponsor' && sponsorQuote ? Math.ceil(sponsorQuote.minSponsorBidCents / 100) : 1"
+            :min="1"
             :max="MAX_BID_DOLLARS"
             step="1"
             :disabled="useFreeSupport"
@@ -487,7 +424,7 @@ async function submit() {
         </UFormField>
 
         <div
-          v-if="bidType === 'game' && freeEligibilityLoaded && freeEligible"
+          v-if="freeEligibilityLoaded && freeEligible"
           class="rounded-2xl border-2 border-[var(--play-rim)] bg-[var(--play-soft)]/70 px-3.5 py-3"
         >
           <label class="flex cursor-pointer items-start gap-3">
@@ -508,31 +445,19 @@ async function submit() {
         </div>
 
         <p
-          v-else-if="bidType === 'game' && freeEligibilityLoaded && !freeEligible"
+          v-else-if="freeEligibilityLoaded && !freeEligible"
           class="text-xs text-muted text-pretty"
         >
           {{ t('bid.freeUsed') }}
         </p>
 
         <div
-          v-if="bidType === 'game' && gameQuote"
+          v-if="gameQuote"
           class="rounded-2xl border-2 border-[var(--color-play-sun)]/50 bg-[color-mix(in_oklab,var(--color-play-sun)_12%,white)] px-3.5 py-3 text-sm text-[var(--play-ink)] text-pretty"
         >
           {{ useFreeSupport
             ? t('bid.quoteGameFree', { total: (gameQuote.projectedTotalCents / 100).toFixed(0), rank: gameQuote.projectedRank })
             : t('bid.quoteGame', { amount, total: (gameQuote.projectedTotalCents / 100).toFixed(0), rank: gameQuote.projectedRank }) }}
-        </div>
-
-        <div
-          v-else-if="bidType === 'sponsor' && sponsorQuote"
-          class="rounded-2xl border-2 border-[var(--color-play-sky)]/45 bg-[color-mix(in_oklab,var(--color-play-sky)_10%,white)] px-3.5 py-3 text-sm text-[var(--play-ink)] text-pretty"
-        >
-          <template v-if="sponsorQuote.currentSponsorCents > 0">
-            {{ t('bid.quoteSponsorHeld', { current: Math.ceil(sponsorQuote.currentSponsorCents / 100), amount, min: Math.ceil(sponsorQuote.minSponsorBidCents / 100) }) }}
-          </template>
-          <template v-else>
-            {{ t('bid.quoteSponsorFirst', { amount }) }}
-          </template>
         </div>
 
         <UFormField
@@ -548,97 +473,73 @@ async function submit() {
           />
         </UFormField>
 
-        <template v-if="bidType === 'sponsor'">
-          <div class="rounded-2xl border-2 border-[var(--play-rim)] bg-[var(--play-soft)]/40">
-            <button
-              type="button"
-              class="flex w-full items-start justify-between gap-3 p-3.5 text-left sm:p-4"
-              :aria-expanded="sponsorDetailsOpen"
-              @click="sponsorDetailsOpen = !sponsorDetailsOpen"
-            >
-              <div class="space-y-1">
-                <p class="font-display text-sm font-bold text-[var(--play-ink)]">
-                  {{ t('bid.sponsorDetails') }}
-                </p>
-                <p class="text-xs text-muted text-pretty">
-                  {{ t('bid.sponsorDetailsDesc') }}
-                </p>
-              </div>
-              <UIcon
-                :name="sponsorDetailsOpen ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
-                class="mt-0.5 size-4 shrink-0 text-muted"
-              />
-            </button>
-
-            <div
-              v-show="sponsorDetailsOpen"
-              class="space-y-4 border-t-2 border-[var(--play-rim)] px-3.5 pt-4 pb-3.5 sm:px-4 sm:pb-4"
-            >
-              <UFormField
-                :label="t('bid.adTitleLabel')"
-                :description="t('bid.adTitleDesc')"
-              >
-                <UInput
-                  v-model="adTitle"
-                  :placeholder="t('bid.adTitlePlaceholder')"
-                  required
-                  class="w-full"
-                />
-              </UFormField>
-
-              <UFormField
-                :label="t('bid.adDescLabel')"
-                :description="t('bid.adDescDesc')"
-              >
-                <UTextarea
-                  v-model="adDescription"
-                  :rows="3"
-                  maxlength="280"
-                  :placeholder="t('bid.adDescPlaceholder')"
-                  required
-                  class="w-full"
-                />
-              </UFormField>
-
-              <UFormField
-                :label="t('bid.adLinkLabel')"
-                :description="t('bid.adLinkDesc')"
-              >
-                <div class="flex items-center gap-2.5">
-                  <div
-                    v-if="linkFavicon"
-                    class="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border-2 border-[var(--play-rim)] bg-[var(--play-panel)]"
-                  >
-                    <img
-                      :src="linkFavicon"
-                      alt=""
-                      class="size-6 object-contain"
-                    >
-                  </div>
-                  <UInput
-                    v-model="adLink"
-                    type="url"
-                    :placeholder="t('bid.adLinkPlaceholder')"
-                    required
-                    class="w-full min-w-0 flex-1"
-                  />
-                </div>
-              </UFormField>
-
-              <UFormField
-                :label="t('bid.adImageLabel')"
-                :description="linkFavicon ? t('bid.adImageDescFavicon') : t('bid.adImageDescUrl')"
-              >
-                <UInput
-                  v-model="adImage"
-                  type="url"
-                  :placeholder="t('bid.adImagePlaceholder')"
-                  class="w-full"
-                />
-              </UFormField>
+        <div class="rounded-2xl border-2 border-[var(--play-rim)] bg-[var(--play-soft)]/40">
+          <button
+            type="button"
+            class="flex w-full items-start justify-between gap-3 p-3.5 text-left sm:p-4"
+            :aria-expanded="directorDetailsOpen"
+            @click="directorDetailsOpen = !directorDetailsOpen"
+          >
+            <div class="space-y-1">
+              <p class="font-display text-sm font-bold text-[var(--play-ink)]">
+                {{ t('bid.directorDetails') }}
+              </p>
+              <p class="text-xs text-muted text-pretty">
+                {{ t('bid.directorDetailsDesc') }}
+              </p>
             </div>
+            <UIcon
+              :name="directorDetailsOpen ? 'i-lucide-chevron-up' : 'i-lucide-chevron-down'"
+              class="mt-0.5 size-4 shrink-0 text-muted"
+            />
+          </button>
+
+          <div
+            v-show="directorDetailsOpen"
+            class="space-y-4 border-t-2 border-[var(--play-rim)] px-3.5 pt-4 pb-3.5 sm:px-4 sm:pb-4"
+          >
+            <UFormField
+              :label="t('bid.directorTitleLabel')"
+              :description="t('bid.directorTitleDesc')"
+            >
+              <UInput
+                v-model="adTitle"
+                :placeholder="t('bid.directorTitlePlaceholder')"
+                class="w-full"
+              />
+            </UFormField>
+
+            <UFormField
+              :label="t('bid.directorDescLabel')"
+              :description="t('bid.directorDescDesc')"
+              :error="directorDescOverLimit ? t('bid.errorDirectorDescMax') : undefined"
+            >
+              <UTextarea
+                v-model="adDescription"
+                :rows="3"
+                :maxlength="DIRECTOR_DESC_RAW_MAX"
+                :placeholder="t('bid.directorDescPlaceholder')"
+                class="w-full"
+              />
+              <p
+                class="mt-1.5 text-xs tabular-nums"
+                :class="directorDescOverLimit ? 'text-error' : 'text-muted'"
+              >
+                {{ directorDescCounter }}
+              </p>
+              <p class="mt-1 text-xs text-muted text-pretty">
+                <a
+                  :href="MARKDOWN_GUIDE_URL"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="font-medium text-[var(--play-ink)] underline decoration-[var(--play-rim)] underline-offset-2 hover:decoration-[var(--play-ink)]"
+                >
+                  {{ t('bid.directorMarkdownGuide') }}
+                </a>
+              </p>
+            </UFormField>
           </div>
-        </template>
+        </div>
 
         <div
           v-if="config.public.turnstileSiteKey"
@@ -672,11 +573,7 @@ async function submit() {
           :loading="submitting"
           :disabled="submitting || !!amountError || (!!config.public.turnstileSiteKey && !turnstileToken)"
         >
-          {{ bidType === 'sponsor'
-            ? t('bid.submitSponsor')
-            : useFreeSupport
-              ? t('bid.submitFree')
-              : t('bid.submitSupport') }}
+          {{ useFreeSupport ? t('bid.submitFree') : t('bid.submitSupport') }}
         </UButton>
       </form>
     </template>

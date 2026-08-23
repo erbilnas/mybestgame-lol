@@ -12,8 +12,8 @@ export interface BoardEventPayload {
   fromRank?: number | null
   toRank?: number | null
   previousTitle?: string | null
-  previousSponsorTitle?: string | null
-  sponsorTitle?: string | null
+  previousDirectorTitle?: string | null
+  directorTitle?: string | null
   leftBoard?: boolean
 }
 
@@ -58,6 +58,14 @@ export async function getRecentBoardEvents(limit = 8): Promise<ActivityItem[]> {
       // ponytail: bad payload rows stay readable with game title only
     }
 
+    // Legacy event rows may still carry old payload keys until re-emitted.
+    const previousDirectorTitle = payload.previousDirectorTitle
+      ?? (payload as { previousSponsorTitle?: string | null }).previousSponsorTitle
+      ?? null
+    const directorTitle = payload.directorTitle
+      ?? (payload as { sponsorTitle?: string | null }).sponsorTitle
+      ?? null
+
     return {
       type: row.type as ActivityItem['type'],
       gameId: row.gameId,
@@ -70,8 +78,8 @@ export async function getRecentBoardEvents(limit = 8): Promise<ActivityItem[]> {
         fromRank: payload.fromRank ?? null,
         toRank: payload.toRank ?? null,
         previousTitle: payload.previousTitle ?? null,
-        previousSponsorTitle: payload.previousSponsorTitle ?? null,
-        sponsorTitle: payload.sponsorTitle ?? null,
+        previousDirectorTitle,
+        directorTitle,
         leftBoard: payload.leftBoard ?? false
       }
     }

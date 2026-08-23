@@ -1,6 +1,6 @@
 # mybestgame.lol
 
-Pay-to-rank leaderboard for video games. Users search IGDB games, place stacking bids via Polar.sh, and optionally add premium card customization to their featured supporter slot.
+Pay-to-rank leaderboard for video games. Users search IGDB games, place stacking support bids via Polar.sh, and optionally attach a Game Director Message (shown on the card when they are the top contributor).
 
 ## Stack
 
@@ -44,16 +44,17 @@ Checkouts use ad-hoc fixed prices per bid increment.
 
 ### Product description (for Polar onboarding)
 
-Use this wording in your Polar organization and product settings — not "advertising" or "sponsorship placements":
+Paste this into your Polar **organization** and **product** descriptions. Avoid the words advertising, sponsorship, rank boost, and paid placement:
 
-> mybestgame.lol is consumer entertainment software: a pay-to-rank video game leaderboard. Customers purchase one-time digital products on our site:
+> mybestgame.lol is consumer entertainment software: a live video-game board where fans buy one-time digital participation credits.
 >
-> - **Leaderboard rank boost** — increases a game's score and rank on our board (instant fulfillment).
-> - **Premium card customization** — optional featured supporter slot on a game card (title, link, image shown only on our platform). Not third-party advertising, lead gen, or marketing services.
+> Each purchase is fulfilled instantly on our site (API webhook): the credit is added to that game’s public board listing. Credits stack. The board is an interactive entertainment product, not a third-party ad network.
 >
-> Fulfillment is automatic after payment via webhook. All sales are final digital goods.
+> Buyers may optionally attach a short on-site text note (title + message only). Notes have no outbound links, images, or click tracking. A note only appears on the card when that buyer is the top contributor for the game.
+>
+> This is not advertising, lead generation, sponsorship inventory, or marketing services. All sales are final digital goods.
 
-Checkout metadata includes `productLabel`, `productDescription`, and `productCategory` for each bid.
+Checkout metadata uses `productLabel: Board participation credit`, matching the above.
 
 ### Checkout localization
 

@@ -1,3 +1,9 @@
+import {
+  DIRECTOR_DESC_RAW_MAX,
+  DIRECTOR_DESC_VISIBLE_MAX,
+  markdownVisibleLength
+} from '../../shared/utils/director-markdown'
+
 const HTML_TAG_RE = /<[^>]*>/g
 
 export function sanitizeAdTitle(title: string): string {
@@ -6,7 +12,20 @@ export function sanitizeAdTitle(title: string): string {
 
 export function sanitizeAdDescription(description: string | undefined): string | null {
   if (!description?.trim()) return null
-  return description.replace(HTML_TAG_RE, '').trim().slice(0, 280)
+  const cleaned = description.replace(HTML_TAG_RE, '').trim()
+  if (cleaned.length > DIRECTOR_DESC_RAW_MAX) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `Game Director Message is too long (max ${DIRECTOR_DESC_RAW_MAX} characters including markdown).`
+    })
+  }
+  if (markdownVisibleLength(cleaned) > DIRECTOR_DESC_VISIBLE_MAX) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: `Game Director Message text exceeds ${DIRECTOR_DESC_VISIBLE_MAX} characters (markdown markers do not count).`
+    })
+  }
+  return cleaned
 }
 
 export function sanitizeDisplayName(name: string | undefined): string {

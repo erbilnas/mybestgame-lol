@@ -1,15 +1,15 @@
 {
   "nav": {
-    "placeBid": "Place a bid",
+    "placeBid": "Contribute",
     "rules": "Rules",
     "howToPlay": "How to play?",
     "language": "Language"
   },
   "home": {
-    "tagline": "Bids stack up, your game rises.",
-    "startBidding": "Start bidding",
+    "tagline": "Contributions stack up, your game rises.",
+    "startBidding": "Start contributing",
     "leaderboard": "Leaderboard",
-    "leaderboardDesc": "Rank totals and sponsor holders update as payments clear.",
+    "leaderboardDesc": "Rank totals update as payments clear.",
     "refresh": "Refresh",
     "tookFirst": "{game} just took #1",
     "dismiss": "Dismiss"
@@ -20,59 +20,45 @@
     "emptyHint": "Be the first to claim rank #1.",
     "supportFirst": "Support the first game",
     "ranksBelow": "Ranks 4 and below",
-    "searchPlaceholder": "Search games...",
+    "searchPlaceholder": "Search ranks 4 and below...",
     "scrollMore": "Scroll for more games…",
     "loadingMore": "Loading more games…",
     "noResults": "No games match your search."
   },
   "bid": {
-    "title": "Place a bid",
-    "subtitle": "Support a game to climb the board, or claim the sponsor spot on a card.",
+    "title": "Contribute",
+    "subtitle": "Support a game to climb the board. Any support can include an optional Game Director Message.",
     "supportGame": "Support game",
-    "claimSponsor": "Claim sponsor",
-    "gameHelpStack": "Add any amount from $1 up. Your bid stacks with past supporters and moves this game up the board.",
-    "sponsorHeldAt": "The sponsor spot is held at ${current}. Bid at least ${min} to take it.",
-    "sponsorNoClaim": "No sponsor on this card yet. Claim the spot from $1.",
+    "gameHelpStack": "Add any amount from $1 up. Your contribution stacks with past supporters and moves this game up the board.",
     "gameLabel": "Game",
-    "gameDesc": "Search and pick the game you want to support or sponsor.",
+    "gameDesc": "Search and pick the game you want to support.",
     "supportAmount": "Support amount (USD)",
-    "sponsorBid": "Sponsor bid (USD)",
     "amountHintGame": "Whole dollars only. Minimum $1, maximum $999,999.",
-    "amountHintSponsorBeat": "Must beat the current sponsor. Minimum bid: ${min}. Max $999,999.",
-    "amountHintSponsorFirst": "First sponsor on this card. Minimum $1, maximum $999,999.",
     "quoteGame": "If this payment clears, you pay ${amount}, the board total becomes ${total}, and this game lands at #{rank}.",
     "quoteGameFree": "Free $1 support: board total becomes ${total}, and this game lands at #{rank}. No checkout.",
-    "quoteSponsorHeld": "Current sponsor: ${current}. Your bid: ${amount}. You need at least ${min} to win the spot.",
-    "quoteSponsorFirst": "No sponsor yet. Your ${amount} bid claims the spot if payment clears.",
     "nameLabel": "Your name on the board",
     "nameDesc": "Optional. Leave blank to show as Anonymous on the leaderboard and activity feed.",
     "namePlaceholder": "Anonymous hero",
-    "sponsorDetails": "Sponsor details",
-    "sponsorDetailsDesc": "This is what players see on the game card while you hold the sponsor spot.",
-    "adTitleLabel": "Title",
-    "adTitleDesc": "Short headline for your sponsor spot. Max 120 characters.",
-    "adTitlePlaceholder": "Official strategy guides",
-    "adDescLabel": "Description",
-    "adDescDesc": "One or two lines under the title. Max 280 characters.",
-    "adDescPlaceholder": "Patch notes, merch drop, tournament signup. Say what players should know.",
-    "adLinkLabel": "Link",
-    "adLinkDesc": "Where players go when they tap your sponsor spot. Use https://.",
-    "adLinkPlaceholder": "https://yoursite.com",
-    "adImageLabel": "Image URL",
-    "adImageDescFavicon": "Optional. Leave empty to use the link favicon shown above.",
-    "adImageDescUrl": "Optional banner or logo. Public https:// image link only.",
-    "adImagePlaceholder": "https://...",
+    "directorDetails": "Game Director Message",
+    "directorDetailsDesc": "Optional on-site shoutout (title + markdown text). Only the top contributor's message shows on the card. Images are not allowed.",
+    "directorTitleLabel": "Title",
+    "directorTitleDesc": "Short headline for your Game Director Message. Max 120 characters.",
+    "directorTitlePlaceholder": "Still the best co-op ever",
+    "directorDescLabel": "Message",
+    "directorDescDesc": "One or two lines under the title. Max 280 visible characters — markdown markers do not count.",
+    "directorDescPlaceholder": "Thanks for stacking with me. This game deserves #1.",
+    "directorDescCounter": "{used} / {max} visible characters",
+    "directorMarkdownGuide": "Markdown guide",
     "submitSupport": "Support game",
-    "submitSponsor": "Claim sponsor spot",
     "submitFree": "Support free ($1)",
     "freeToggle": "Use my free $1 support",
     "freeHint": "One free $1 game support per device and network, forever. No card, no checkout.",
     "freeUsed": "You've already used your free support.",
     "errorPickGame": "Pick a game first.",
-    "errorSponsorRequired": "Sponsor title and link are required.",
-    "errorSponsorDescRequired": "Sponsor description is required.",
-    "errorSponsorMin": "Minimum sponsor bid is ${min}.",
-    "errorAmountMax": "Maximum bid is $999,999.",
+    "errorDirectorRequired": "Title is required for the Game Director Message.",
+    "errorDirectorDescRequired": "Message text is required for the Game Director Message.",
+    "errorDirectorDescMax": "Message text exceeds 280 visible characters (markdown markers do not count).",
+    "errorAmountMax": "Maximum contribution is $999,999.",
     "errorTurnstile": "Complete the security check first.",
     "errorTurnstileExpired": "That check expired. Tick the box again.",
     "errorTurnstileFailed": "Security check failed. Refresh the page or try again in a moment.",
@@ -81,63 +67,58 @@
     "errorFreeFallback": "Free support failed"
   },
   "card": {
-    "stackedBids": "{count} stacked bid | {count} stacked bids",
-    "sponsor": "sponsor",
+    "stackedBids": "{count} stacked contribution | {count} stacked contributions",
+    "directorMessage": "Game Director Message",
     "decayingIn": "decaying in {days}d",
     "rankTotal": "Rank total",
     "support": "Support",
-    "outbid": "Outbid",
-    "claim": "Claim",
-    "noSponsor": "No sponsor yet",
-    "claimFrom": "Claim the sponsor spot from {price}.",
+    "noDirector": "No Game Director Message yet",
+    "supportToDirect": "Support to leave your message.",
     "moreAbout": "More about this game",
     "top": "Top supporter",
     "latest": "Latest supporter",
-    "visit": "Visit",
-    "clicks": "{count} click | {count} clicks",
     "total": "Total",
-    "openSummary": "Open game details for the full IGDB summary."
+    "openSummary": "Open game details for the full summary."
   },
   "activity": {
     "title": "Latest activity",
     "tookFirst": "{game} took #1",
     "climbedTo": "{game} climbed to #{rank}",
     "hitRank": "{game} hit #{rank}",
-    "sponsorFlipped": "Sponsor flipped on {game}",
+    "directorFlipped": "Game Director Message updated on {game}",
     "leftBoard": "{game} left the board",
-    "sponsorDecayed": "Sponsor decayed on {game}",
+    "directorDecayed": "Game Director Message expired on {game}",
     "slippedTo": "{game} slipped to #{rank}",
     "isDecaying": "{game} is decaying",
     "atRank": "{game} at #{rank}",
-    "bidsExpired": "Bids expired",
+    "bidsExpired": "Contributions expired",
     "was": "Was: {title}"
   },
   "stats": {
     "raised": "Raised",
     "games": "Games",
-    "paidBids": "Paid bids",
-    "liveSponsors": "Live sponsors",
-    "allTimeSponsors": "All-time sponsors",
+    "paidBids": "Paid contributions",
+    "liveDirectors": "Live directors",
+    "allTimeDirectors": "All-time directors",
     "livePlayers": "Live players",
     "livePlayersNote": "24h",
     "allTimePlayers": "All-time players",
-    "sponsorClicks": "Sponsor clicks",
-    "sponsorRaised": "Sponsor raised"
+    "directorRaised": "Director raised"
   },
-  "sponsors": {
-    "title": "Top sponsors",
+  "directors": {
+    "title": "Game Directors",
     "on": "on {game}"
   },
   "success": {
-    "missingRef": "Missing bid reference",
+    "missingRef": "Missing contribution reference",
     "backToBoard": "Back to leaderboard",
     "confirmed": "Payment confirmed",
-    "bidLive": "Your bid of {amount} is live on the board.",
+    "bidLive": "Your contribution of {amount} is live on the board.",
     "stack": "Stack {amount}",
     "viewPlaque": "View plaque",
     "leaderboard": "Leaderboard",
     "notCompleted": "Payment not completed",
-    "notCompletedDesc": "This checkout was cancelled or expired. No charge was made and your bid is not on the board.",
+    "notCompletedDesc": "This checkout was cancelled or expired. No charge was made and your contribution is not on the board.",
     "confirming": "Confirming payment...",
     "confirmingDesc": "Waiting for payment confirmation. This usually takes a few seconds.",
     "checkingStatus": "Checking status"
@@ -145,15 +126,15 @@
   "plaque": {
     "loading": "Loading plaque...",
     "notFound": "Plaque not found",
-    "notFoundDesc": "Only verified paid bids get a public plaque.",
+    "notFoundDesc": "Only verified paid contributions get a public plaque.",
     "backToBoard": "Back to leaderboard",
-    "bidPlaque": "Bid plaque",
+    "bidPlaque": "Contribution plaque",
     "unranked": "Unranked",
-    "gameBid": "game bid",
-    "sponsorBid": "sponsor bid",
-    "thisBid": "This bid",
+    "gameBid": "game contribution",
+    "withDirectorMessage": "with Game Director Message",
+    "thisBid": "This contribution",
     "stackTotal": "Stack total",
-    "bidDate": "Bid date",
+    "bidDate": "Contribution date",
     "copied": "Copied",
     "sharePlaque": "Share plaque",
     "copyLink": "Copy link",
@@ -163,13 +144,13 @@
   },
   "gameDetail": {
     "title": "Game details",
-    "subtitle": "Board standing, game info, and ways to bid.",
+    "subtitle": "Board standing, game info, and ways to contribute.",
     "loading": "Loading game details...",
     "boardRank": "Board rank",
     "rankTotal": "Rank total",
-    "igdbScore": "IGDB score",
-    "sponsorLabel": "Sponsor:",
-    "noSponsorYet": "No sponsor on this card yet.",
+    "igdbScore": "Score",
+    "directorLabel": "Game Director Message:",
+    "noDirectorYet": "No Game Director Message on this card yet.",
     "viewOnIgdb": "View more",
     "noSummary": "No summary available for this game yet.",
     "screenshots": "Screenshots",
@@ -177,7 +158,6 @@
     "copied": "Copied",
     "copyEmbed": "Copy embed",
     "supportGame": "Support game",
-    "claimSponsor": "Claim sponsor",
     "released": "Released",
     "developers": "Developers",
     "publishers": "Publishers",
@@ -190,14 +170,14 @@
     "searchPlaceholder": "Search contributors",
     "noMatch": "No contributors match that search.",
     "none": "No contributors yet.",
-    "bids": "{count} bids"
+    "bids": "{count} contributions"
   },
   "search": {
     "placeholder": "Type a game title..."
   },
   "footer": {
     "tagline": "Get your game on the board.",
-    "desc": "Bid to climb. Sponsor to own the card.",
+    "desc": "Contribute to climb. Leave your mark as Game Director.",
     "copyrightBefore": "{year} © mybestgame.lol — built by ",
     "copyrightAfter": " with love",
     "legalNav": "Legal",
@@ -213,6 +193,7 @@
   },
   "common": {
     "close": "Close",
+    "clear": "Clear search",
     "mAgo": "{n}m ago",
     "hAgo": "{n}h ago",
     "dAgo": "{n}d ago",
@@ -220,22 +201,21 @@
   },
   "seo": {
     "title": "mybestgame.lol — Pay-to-Rank Video Game Leaderboard",
-    "description": "Bid on your favorite video games and climb the live leaderboard. Stack game bids, claim sponsor spots, and watch ranks change in real time.",
-    "keywords": "video game leaderboard, pay to rank games, game bidding, sponsor spot, IGDB games, mybestgame",
-    "legalDescription": "Legal information for mybestgame.lol, the pay-to-rank video game leaderboard."
+    "description": "Contribute to your favorite video games and climb the live leaderboard. Stack contributions and leave a Game Director Message on any support.",
+    "keywords": "video game leaderboard, pay to rank games, game contributions, game director message, IGDB games, mybestgame",
+    "legalDescription": "Legal information for mybestgame.lol, a live video-game entertainment board."
   },
   "rules": {
     "title": "Rules",
     "items": [
-      "Game bids start at $1. Whole dollars only.",
-      "Every paid bid on the same game adds to its total. The more it stacks, the higher it climbs.",
-      "Sponsor bids are separate. They unlock premium card customization (the featured supporter slot) on a game card — the highest paid bid holds it.",
-      "To take a spot that's already claimed, bid at least $1 above the current holder.",
-      "Bids last 30 days. When one expires, that amount comes off the game's total.",
+      "Game contributions start at $1. Whole dollars only.",
+      "Every paid contribution on the same game adds to its total. The more it stacks, the higher it climbs.",
+      "Any support — including the free $1 — can include an optional Game Director Message. Only the top contributor's message shows on the card.",
+      "Contributions last 30 days. When one expires, that amount comes off the game's total.",
       "Only confirmed payments count. Abandoned checkouts never appear on the board.",
-      "All sales are final. Bids can't be refunded after payment is confirmed.",
+      "All sales are final. Contributions can't be refunded after payment is confirmed.",
       "Your display name is optional. Add one and it'll show publicly on the board.",
-      "Rankings refresh in real time as bids are paid or expire."
+      "Rankings refresh in real time as contributions are paid or expire."
     ]
   },
   "howToPlay": {
@@ -246,20 +226,20 @@
         "desc": "Search for the game you want to push up the board."
       },
       {
-        "title": "Choose your move",
-        "desc": "Support the game to grow its total, or claim the sponsor spot on its card."
+        "title": "Support and direct",
+        "desc": "Support the game to grow its total. Optionally add a Game Director Message — only the top contributor's message shows on the card."
       },
       {
         "title": "Set your amount",
-        "desc": "Game bids start at $1. To take a sponsor spot, bid at least $1 more than the current holder."
+        "desc": "Contributions start at $1. Stack more to move your game higher and secure the Game Director spot."
       },
       {
         "title": "Pay securely",
-        "desc": "Checkout is encrypted. Your bid goes live as soon as payment clears."
+        "desc": "Checkout is encrypted. Your contribution goes live as soon as payment clears."
       },
       {
         "title": "Watch the board",
-        "desc": "Rankings update live. Bids last 30 days — keep stacking to stay on top."
+        "desc": "Rankings update live. Contributions last 30 days — keep stacking to stay on top."
       }
     ]
   },
@@ -270,11 +250,11 @@
       "sections": [
         {
           "heading": "What we collect",
-          "body": "mybestgame.lol collects the minimum data needed to operate the leaderboard. When you place a bid, you may optionally provide a display name (handle). We do not require or store your email address. If you voluntarily enter text that looks like an email, it will be stored as your display name. Your IP address is processed transiently for rate limiting and Cloudflare Turnstile verification but is not persisted in our database."
+          "body": "mybestgame.lol collects the minimum data needed to operate the leaderboard. When you contribute, you may optionally provide a display name (handle). We do not require or store your email address. If you voluntarily enter text that looks like an email, it will be stored as your display name. Your IP address is processed transiently for rate limiting and Cloudflare Turnstile verification but is not persisted in our database."
         },
         {
           "heading": "Payment data",
-          "body": "All payments are processed by Polar.sh. We do not see, store, or have access to your credit card number, billing address, or other payment PII. Polar handles PCI compliance and payment security. We receive only a payment confirmation, order ID, and the metadata we attached (bid ID, game ID, amount)."
+          "body": "All payments are processed by Polar.sh. We do not see, store, or have access to your credit card number, billing address, or other payment PII. Polar handles PCI compliance and payment security. We receive only a payment confirmation, order ID, and the metadata we attached (contribution ID, game ID, amount)."
         },
         {
           "heading": "Third-party services",
@@ -286,15 +266,15 @@
         },
         {
           "heading": "Data displayed publicly",
-          "body": "If you provide a display name, it will be shown publicly on the leaderboard, activity feed, plaques, and contributor lists. If the name looks like an email address, we partially mask it (e.g., ab•••{'@'}domain.com). You can bid as Anonymous by leaving the name field empty."
+          "body": "If you provide a display name, it will be shown publicly on the leaderboard, activity feed, plaques, and contributor lists. If the name looks like an email address, we partially mask it (e.g., ab•••{'@'}domain.com). You can contribute as Anonymous by leaving the name field empty."
         },
         {
           "heading": "Data retention",
-          "body": "Bid records (display name, bid amount, game, timestamps) are retained for the lifetime of the service for leaderboard integrity and audit purposes. Expired bids (30-day expiry) remain in our database with 'expired' status."
+          "body": "Contribution records (display name, contribution amount, game, timestamps) are retained for the lifetime of the service for leaderboard integrity and audit purposes. Expired contributions (30-day expiry) remain in our database with 'expired' status."
         },
         {
           "heading": "Your rights (GDPR / KVKK)",
-          "body": "You may request access to, correction of, or deletion of your data by emailing privacy{'@'}mybestgame.lol. We will respond within 30 days. Note: deleting bid data may affect leaderboard history."
+          "body": "You may request access to, correction of, or deletion of your data by emailing privacy{'@'}mybestgame.lol. We will respond within 30 days. Note: deleting contribution data may affect leaderboard history."
         },
         {
           "heading": "Data location",
@@ -316,23 +296,23 @@
         },
         {
           "heading": "Service description",
-          "body": "mybestgame.lol is a pay-to-rank video game leaderboard (consumer entertainment software). Users purchase digital leaderboard rank boosts for games. Sponsor bids unlock premium card customization — a featured supporter slot displayed only on that game's card within our platform. This is not third-party advertising, lead generation, or marketing services. The service is provided as-is for entertainment purposes."
+          "body": "mybestgame.lol is consumer entertainment software: a live video-game board. Users purchase one-time digital board participation credits that are fulfilled instantly on our site and added to a game's public listing. Credits stack. Supports may include an optional Game Director Message — an on-site title and text note (no outbound links) shown only when that buyer is the top contributor for the game. This is not advertising, lead generation, sponsorship inventory, or marketing services. The service is provided as-is for entertainment purposes."
         },
         {
-          "heading": "Bids and payments",
-          "body": "All bids are processed through Polar.sh. Only verified paid bids appear on the leaderboard. Bids expire 30 days after payment confirmation. All sales are final and non-refundable. We do not guarantee any specific rank outcome — your rank depends on other users' bids."
+          "heading": "Contributions and payments",
+          "body": "All contributions are processed through Polar.sh. Only verified paid contributions appear on the leaderboard. Contributions expire 30 days after payment confirmation. All sales are final and non-refundable. We do not guarantee any specific rank outcome — your rank depends on other users' contributions."
         },
         {
           "heading": "No accounts",
-          "body": "mybestgame.lol does not have user accounts. Bids are identified by an optional display name. There is no login, password, or profile system."
+          "body": "mybestgame.lol does not have user accounts. Contributions are identified by an optional display name. There is no login, password, or profile system."
         },
         {
-          "heading": "Premium card content",
-          "body": "Sponsor bids include user-provided premium card customization (title, description, link, optional image URL) shown on the game card while the bid is active. We reserve the right to remove content that is illegal, offensive, misleading, or violates third-party rights without refund."
+          "heading": "Game Director Message content",
+          "body": "Supports may include user-provided Game Director Message content (title and text only) shown on the game card for the top contributor while active. Messages have no outbound links or images. We reserve the right to remove content that is illegal, offensive, misleading, or violates third-party rights without refund."
         },
         {
           "heading": "No guarantees",
-          "body": "We do not guarantee uptime, availability, rank position, or that your bid will remain on the board for any specific duration beyond the 30-day expiry window. Bids may be affected by other users' bids, expiry, or service changes."
+          "body": "We do not guarantee uptime, availability, rank position, or that your contribution will remain on the board for any specific duration beyond the 30-day expiry window. Contributions may be affected by other users' contributions, expiry, or service changes."
         },
         {
           "heading": "Limitation of liability",
@@ -366,7 +346,7 @@
         },
         {
           "heading": "Data processed",
-          "body": "Display name (optional, user-provided), bid amount, game selection, timestamps, and transient IP for rate limiting. We do not process sensitive/special category data."
+          "body": "Display name (optional, user-provided), contribution amount, game selection, timestamps, and transient IP for rate limiting. We do not process sensitive/special category data."
         },
         {
           "heading": "Recipients",
@@ -378,7 +358,7 @@
         },
         {
           "heading": "Retention",
-          "body": "Bid data is retained for the operational life of the service. You may request deletion at any time."
+          "body": "Contribution data is retained for the operational life of the service. You may request deletion at any time."
         },
         {
           "heading": "International transfers",
@@ -422,19 +402,19 @@
       "sections": [
         {
           "heading": "No refunds",
-          "body": "All bids on mybestgame.lol are final and non-refundable once payment is confirmed by Polar.sh. By placing a bid, you acknowledge that you are paying for immediate inclusion on the leaderboard."
+          "body": "All contributions on mybestgame.lol are final and non-refundable once payment is confirmed by Polar.sh. By making a contribution, you acknowledge that you are paying for immediate inclusion on the leaderboard."
         },
         {
           "heading": "Why no refunds",
-          "body": "Bids directly affect the public leaderboard the moment they are confirmed. Refunding a bid would retroactively alter rankings and affect other users' positions. This policy ensures fairness for all participants."
+          "body": "Contributions directly affect the public leaderboard the moment they are confirmed. Refunding a contribution would retroactively alter rankings and affect other users' positions. This policy ensures fairness for all participants."
         },
         {
           "heading": "Cancelled checkouts",
-          "body": "If you cancel or abandon the checkout before payment completes, no charge is made and no bid appears on the board. This is not a refund — no money was collected."
+          "body": "If you cancel or abandon the checkout before payment completes, no charge is made and no contribution appears on the board. This is not a refund — no money was collected."
         },
         {
-          "heading": "Bid expiry",
-          "body": "Bids automatically expire after 30 days. Expiry is not a refund — you received 30 days of leaderboard presence for your bid."
+          "heading": "Contribution expiry",
+          "body": "Contributions automatically expire after 30 days. Expiry is not a refund — you received 30 days of leaderboard presence for your contribution."
         },
         {
           "heading": "Disputes",

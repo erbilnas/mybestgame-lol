@@ -1,6 +1,48 @@
 {
   "version": 1,
   "transcripts": {
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/0315089a-bb05-430d-836b-58a0610d9c45/0315089a-bb05-430d-836b-58a0610d9c45.jsonl": {
+      "mtime": 1787510044
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/0315089a-bb05-430d-836b-58a0610d9c45/subagents/1af78f40-d66d-4e85-850f-8b1814b021f3.jsonl": {
+      "mtime": 1787509983
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/0dcf1782-a607-4279-b6ca-6c8ae9c2c80f/0dcf1782-a607-4279-b6ca-6c8ae9c2c80f.jsonl": {
+      "mtime": 1787503108
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/10e059f2-c1df-426b-89f8-5b4e00928b40/10e059f2-c1df-426b-89f8-5b4e00928b40.jsonl": {
+      "mtime": 1787502347
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/10e059f2-c1df-426b-89f8-5b4e00928b40/subagents/0345b4e0-979e-424e-9fd6-5ee340e24bb2.jsonl": {
+      "mtime": 1787502284
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/646c98d5-a5d6-4732-bb8a-9583d5cd6d86/646c98d5-a5d6-4732-bb8a-9583d5cd6d86.jsonl": {
+      "mtime": 1787505198
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/c6ce4be7-9492-429f-9d5e-2c316ac851fe/c6ce4be7-9492-429f-9d5e-2c316ac851fe.jsonl": {
+      "mtime": 1787502557
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/d6718eb0-f580-489b-af39-ce96c543f14b/d6718eb0-f580-489b-af39-ce96c543f14b.jsonl": {
+      "mtime": 1787511297
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/d6718eb0-f580-489b-af39-ce96c543f14b/subagents/545a4fe7-582d-407e-b43f-fde99c30fa40.jsonl": {
+      "mtime": 1787510785
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/d6718eb0-f580-489b-af39-ce96c543f14b/subagents/973118cc-026a-4dc8-9357-274bf116a732.jsonl": {
+      "mtime": 1787510752
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/e227494f-a96a-4d27-89f6-94bed39f3487/e227494f-a96a-4d27-89f6-94bed39f3487.jsonl": {
+      "mtime": 1787502453
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/e9056c9b-7d08-4a7c-afc5-ef008db948f2/e9056c9b-7d08-4a7c-afc5-ef008db948f2.jsonl": {
+      "mtime": 1787506969
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/f3ed79b5-90bb-4343-a0df-251d843af541/f3ed79b5-90bb-4343-a0df-251d843af541.jsonl": {
+      "mtime": 1787511286
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-mybestgame-lol/agent-transcripts/f3ed79b5-90bb-4343-a0df-251d843af541/subagents/a529fb0d-106a-4f84-b3a5-52d7ef235069.jsonl": {
+      "mtime": 1787510288
+    },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/2100ee5c-7ae0-484b-b952-9fc2165eb6c5/2100ee5c-7ae0-484b-b952-9fc2165eb6c5.jsonl": {
       "mtime": 1787492386
     },
@@ -12,6 +54,9 @@
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/39350058-2b37-4ffb-9a59-62116089fd10/39350058-2b37-4ffb-9a59-62116089fd10.jsonl": {
       "mtime": 1787461671
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/44a61224-d0f2-4e1c-b6b6-10ad1cbc0f9d/44a61224-d0f2-4e1c-b6b6-10ad1cbc0f9d.jsonl": {
+      "mtime": 1787500078
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/46320172-03e8-40f7-a29c-91a821a47f22/46320172-03e8-40f7-a29c-91a821a47f22.jsonl": {
       "mtime": 1787484967
@@ -36,6 +81,9 @@
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/582328a1-c45e-48c2-9767-1b7db6169859/582328a1-c45e-48c2-9767-1b7db6169859.jsonl": {
       "mtime": 1787489704
+    },
+    "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/5c567fe9-04dc-42f0-9b60-a417b1519f4c/5c567fe9-04dc-42f0-9b60-a417b1519f4c.jsonl": {
+      "mtime": 1787495714
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/5fc23202-c9b6-4c0c-9117-7f822ce00df2/5fc23202-c9b6-4c0c-9117-7f822ce00df2.jsonl": {
       "mtime": 1787494564
@@ -86,13 +134,13 @@
       "mtime": 1787494082
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/c849ca28-5e5e-41aa-90cb-6c03c5d35cd3/c849ca28-5e5e-41aa-90cb-6c03c5d35cd3.jsonl": {
-      "mtime": 1787494848
+      "mtime": 1787500118
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/c849ca28-5e5e-41aa-90cb-6c03c5d35cd3/subagents/d313d413-2614-4f89-ac94-3cb404d18bfc.jsonl": {
-      "mtime": 1787494908
+      "mtime": 1787495144
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/cb37051c-e302-45d9-a317-ae96eafbd488/cb37051c-e302-45d9-a317-ae96eafbd488.jsonl": {
-      "mtime": 1787495135
+      "mtime": 1787495486
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/cc46d0f5-db66-4317-9b56-4426019a7273/cc46d0f5-db66-4317-9b56-4426019a7273.jsonl": {
       "mtime": 1787490237
@@ -107,7 +155,7 @@
       "mtime": 1787440602
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/e2bb499b-b495-4716-9e78-43701cc16ea8/subagents/f5622e93-508f-46b4-8e6e-0a5116010649.jsonl": {
-      "mtime": 1787443899
+      "mtime": 1787503847
     },
     "/Users/erbilnas/.cursor/projects/Users-erbilnas-Documents-Projects-my-best-game/agent-transcripts/efcdcf4b-93b1-4b19-8407-a209b6a6ac16/efcdcf4b-93b1-4b19-8407-a209b6a6ac16.jsonl": {
       "mtime": 1787490319

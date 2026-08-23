@@ -71,7 +71,6 @@ export async function fulfillBid(
       gameId: bids.gameId,
       amount: bids.amount,
       displayName: bids.displayName,
-      bidType: bids.bidType,
       polarOrderId: bids.polarOrderId,
       polarCheckoutId: bids.polarCheckoutId
     })
@@ -179,23 +178,20 @@ export async function fulfillBid(
     })
   }
 
-  if (existing.bidType === 'sponsor') {
-    const beforeSponsorId = before.sponsorBidId
-    if (after.sponsorBidId === bidId && beforeSponsorId !== bidId) {
-      await insertBoardEvent({
-        type: 'sponsor_takeover',
-        gameId: existing.gameId,
-        bidId,
-        payload: {
-          gameTitle: after.title,
-          contributor,
-          amountCents: existing.amount,
-          rank: afterRank,
-          previousSponsorTitle: before.sponsorTitle,
-          sponsorTitle: after.sponsorTitle
-        }
-      })
-    }
+  if (after.directorBidId === bidId && before.directorBidId !== bidId) {
+    await insertBoardEvent({
+      type: 'director_takeover',
+      gameId: existing.gameId,
+      bidId,
+      payload: {
+        gameTitle: after.title,
+        contributor,
+        amountCents: existing.amount,
+        rank: afterRank,
+        previousDirectorTitle: before.directorTitle,
+        directorTitle: after.directorTitle
+      }
+    })
   }
 
   invalidateBoardCache()

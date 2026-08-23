@@ -7,10 +7,16 @@ import {
   getFreshLeaderboardTotals,
   projectRank
 } from '../../utils/bidding'
-import { ensureDeviceId, getClientIp, hasClaimedFreeSupport } from '../../utils/device'
+import {
+  ensureDeviceId,
+  getClientIp,
+  hasClaimedFreeSupport,
+  isUnlimitedFreeSupport
+} from '../../utils/device'
 import { fulfillBid } from '../../utils/fulfill-bid'
 import { fetchGameDetails } from '../../utils/igdb'
 import { rateLimitByIp } from '../../utils/rate-limit'
+import { parseOptionalDirectorFields } from '../../utils/director-fields'
 import { sanitizeDisplayName } from '../../utils/sanitize'
 import { verifyTurnstile } from '../../utils/turnstile'
 
@@ -20,6 +26,10 @@ interface ClaimFreeBody {
   slug: string
   coverUrl?: string | null
   displayName?: string
+  adTitle?: string
+  adLink?: string
+  adImage?: string
+  adDescription?: string
   turnstileToken: string
 }
 
@@ -29,7 +39,8 @@ export default defineEventHandler(async (event) => {
   rateLimitByIp(event, { limit: 5, windowMs: 60_000 })
 
   const body = await readBody<ClaimFreeBody>(event)
-  const ip = getClientIp(event)
+  const unlimitedFree = isUnlimitedFreeSupport()
+  const ip = getClientIp(event) ?? (unlimitedFree ? 'dev' : null)
 
   if (!ip) {
     throw createError({
@@ -42,7 +53,7 @@ export default defineEventHandler(async (event) => {
 
   const deviceId = ensureDeviceId(event)
 
-  if (await hasClaimedFreeSupport(deviceId, ip)) {
+  if (!unlimitedFree && await hasClaimedFreeSupport(deviceId, ip)) {
     throw createError({
       statusCode: 403,
       statusMessage: ALREADY_CLAIMED
@@ -61,6 +72,7 @@ export default defineEventHandler(async (event) => {
   }
 
   const displayName = sanitizeDisplayName(body.displayName)
+  const director = parseOptionalDirectorFields(body)
   const bidId = randomUUID()
   const incrementCents = FREE_SUPPORT_CENTS
 
@@ -78,18 +90,21 @@ export default defineEventHandler(async (event) => {
   const db = useDb()
 
   // Reserve device + IP slots (unique on both). Concurrent claims lose here.
-  try {
-    await db.insert(deviceFreeClaims).values({
-      deviceId,
-      ip,
-      bidId,
-      claimedAt: new Date()
-    })
-  } catch {
-    throw createError({
-      statusCode: 403,
-      statusMessage: ALREADY_CLAIMED
-    })
+  // Dev skips reservation so the promo can be reused while testing.
+  if (!unlimitedFree) {
+    try {
+      await db.insert(deviceFreeClaims).values({
+        deviceId,
+        ip,
+        bidId,
+        claimedAt: new Date()
+      })
+    } catch {
+      throw createError({
+        statusCode: 403,
+        statusMessage: ALREADY_CLAIMED
+      })
+    }
   }
 
   try {
@@ -117,10 +132,10 @@ export default defineEventHandler(async (event) => {
       gameId,
       displayName,
       amount: incrementCents,
-      adTitle: '',
-      adLink: '',
-      adImage: null,
-      adDescription: null,
+      adTitle: director.adTitle,
+      adLink: director.adLink,
+      adImage: director.adImage,
+      adDescription: director.adDescription,
       status: 'pending',
       polarOrderId: freeOrderId
     })
@@ -133,7 +148,9 @@ export default defineEventHandler(async (event) => {
       throw new Error(result.reason)
     }
   } catch {
-    await db.delete(deviceFreeClaims).where(eq(deviceFreeClaims.deviceId, deviceId))
+    if (!unlimitedFree) {
+      await db.delete(deviceFreeClaims).where(eq(deviceFreeClaims.deviceId, deviceId))
+    }
     await db.update(bids).set({ status: 'failed' }).where(eq(bids.id, bidId))
     throw createError({
       statusCode: 500,

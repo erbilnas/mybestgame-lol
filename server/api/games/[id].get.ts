@@ -3,7 +3,7 @@ import { useDb } from '../../database/index'
 import { games } from '../../database/schema'
 import { fetchGameDetails } from '../../utils/igdb'
 import { getGameBoardPosition } from '../../utils/board-cache'
-import { getWinningSponsorBid } from '../../utils/bidding'
+import { getGameDirectorMessage } from '../../utils/bidding'
 
 export default defineEventHandler(async (event) => {
   const gameId = Number(getRouterParam(event, 'id'))
@@ -23,10 +23,10 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 404, statusMessage: 'Game not found' })
   }
 
-  const [igdbGame, board, winningSponsor] = await Promise.all([
+  const [igdbGame, board, director] = await Promise.all([
     fetchGameDetails(gameId, game.slug).catch(() => null),
     getGameBoardPosition(gameId),
-    getWinningSponsorBid(gameId)
+    getGameDirectorMessage(gameId)
   ])
 
   if (igdbGame?.summary && igdbGame.summary !== game.summary) {
@@ -64,8 +64,8 @@ export default defineEventHandler(async (event) => {
     board: {
       rank: board.rank,
       totalCents: board.totalCents,
-      sponsorCents: winningSponsor?.amount ?? 0,
-      sponsorTitle: winningSponsor?.adTitle ?? null
+      directorCents: director?.amount ?? 0,
+      directorTitle: director?.adTitle ?? null
     }
   }
 })

@@ -1,7 +1,8 @@
-import { and, desc, eq, inArray, isNotNull, lte, sql } from 'drizzle-orm'
+import { and, desc, eq, inArray, isNotNull, lte, ne, sql } from 'drizzle-orm'
 import { bids, games, type BidType } from '../database/schema'
 import { useDb } from '../database/index'
 import { aggregateContributors, maskContributor, type AggregatedContributor } from './contributor'
+import { hasDirectorMessage } from './director-fields'
 import { getRecentBoardEvents, insertBoardEvent } from './board-events'
 
 const EXPIRE_THROTTLE_MS = 60_000
@@ -37,13 +38,10 @@ export interface ContributorInfo {
   at: string
 }
 
-export interface LeaderboardAd {
+export interface LeaderboardDirector {
   bidId: string
   title: string
   description: string | null
-  link: string
-  image: string | null
-  clickCount: number
   priceCents: number
 }
 
@@ -56,9 +54,7 @@ export interface LeaderboardEntryPayload {
   summary: string | null
   totalCents: number
   bidCount: number
-  sponsorCents: number
-  sponsorClaimCents: number
-  ad: LeaderboardAd | null
+  director: LeaderboardDirector | null
   topContributor: ContributorInfo | null
   lastContributor: ContributorInfo | null
   contributors: AggregatedContributor[]
@@ -70,15 +66,14 @@ export interface SiteStats {
   totalPaidBids: number
   gamesOnBoard: number
   launchedAt: string | null
-  liveSponsors: number
-  allTimeSponsors: number
+  liveDirectors: number
+  allTimeDirectors: number
   livePlayers: number
   allTimePlayers: number
-  sponsorClicks: number
-  sponsorRevenueCents: number
+  directorRevenueCents: number
 }
 
-export type ActivityType = 'bid_paid' | 'rank_takeover' | 'sponsor_takeover' | 'decay'
+export type ActivityType = 'bid_paid' | 'rank_takeover' | 'director_takeover' | 'decay'
 
 export interface ActivityItem {
   type: ActivityType
@@ -92,8 +87,8 @@ export interface ActivityItem {
     fromRank?: number | null
     toRank?: number | null
     previousTitle?: string | null
-    previousSponsorTitle?: string | null
-    sponsorTitle?: string | null
+    previousDirectorTitle?: string | null
+    directorTitle?: string | null
     leftBoard?: boolean
   }
 }
@@ -103,8 +98,8 @@ export interface GameBoardSnapshot {
   rank: number
   totalCents: number
   title: string
-  sponsorBidId: string | null
-  sponsorTitle: string | null
+  directorBidId: string | null
+  directorTitle: string | null
 }
 
 export interface ExpiredBidRow {
@@ -112,6 +107,64 @@ export interface ExpiredBidRow {
   gameId: number
   bidType: BidType
   amount: number
+}
+
+interface DirectorBidRow {
+  id: string
+  displayName: string
+  amount: number
+  adTitle: string
+  adDescription: string | null
+  createdAt: Date
+}
+
+/**
+ * Game Director Message for the top contributor (by stacked displayName).
+ * Uses that person's newest paid bid with a non-empty title.
+ */
+export function pickGameDirectorMessage<T extends {
+  displayName: string
+  amount: number
+  createdAt: Date
+  adTitle: string
+}>(gameBids: T[]): T | null {
+  if (gameBids.length === 0) return null
+
+  const byName = new Map<string, { amountCents: number, at: Date }>()
+  for (const bid of gameBids) {
+    const key = bid.displayName.trim().toLowerCase()
+    const existing = byName.get(key)
+    if (!existing) {
+      byName.set(key, { amountCents: bid.amount, at: bid.createdAt })
+      continue
+    }
+    existing.amountCents += bid.amount
+    if (bid.createdAt > existing.at) existing.at = bid.createdAt
+  }
+
+  const topKey = [...byName.entries()]
+    .sort((a, b) => {
+      if (b[1].amountCents !== a[1].amountCents) return b[1].amountCents - a[1].amountCents
+      return b[1].at.getTime() - a[1].at.getTime()
+    })[0]?.[0]
+
+  if (!topKey) return null
+
+  const topBids = gameBids
+    .filter(bid => bid.displayName.trim().toLowerCase() === topKey)
+    .filter(bid => hasDirectorMessage(bid.adTitle))
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+
+  return topBids[0] ?? null
+}
+
+function toDirectorPayload(bid: DirectorBidRow): LeaderboardDirector {
+  return {
+    bidId: bid.id,
+    title: bid.adTitle,
+    description: bid.adDescription,
+    priceCents: bid.amount
+  }
 }
 
 /** Snapshot without running expiry (caller controls expire timing). */
@@ -127,15 +180,15 @@ export async function snapshotGameBoard(gameId: number): Promise<GameBoardSnapsh
     .where(eq(games.id, gameId))
     .limit(1)
 
-  const sponsor = await getWinningSponsorBidWithoutExpire(gameId)
+  const director = await getGameDirectorMessageWithoutExpire(gameId)
 
   return {
     gameId,
     rank: rankByGame.get(gameId) ?? 0,
     totalCents: totalByGame.get(gameId) ?? 0,
     title: game?.title ?? `Game ${gameId}`,
-    sponsorBidId: sponsor?.id ?? null,
-    sponsorTitle: sponsor?.adTitle ?? null
+    directorBidId: director?.id ?? null,
+    directorTitle: director?.adTitle ?? null
   }
 }
 
@@ -163,28 +216,25 @@ export async function getLeaderboardTotalsWithoutExpire(): Promise<LeaderboardTo
   }))
 }
 
-async function getWinningSponsorBidWithoutExpire(gameId: number): Promise<SponsorBidRow | null> {
+async function getGameDirectorMessageWithoutExpire(gameId: number): Promise<DirectorBidRow | null> {
   const db = useDb()
 
-  const sponsorBids = await db
+  const gameBids = await db
     .select({
       id: bids.id,
+      displayName: bids.displayName,
       amount: bids.amount,
       adTitle: bids.adTitle,
       adDescription: bids.adDescription,
-      adLink: bids.adLink,
-      adImage: bids.adImage,
-      clickCount: bids.clickCount,
       createdAt: bids.createdAt
     })
     .from(bids)
     .where(and(
       eq(bids.gameId, gameId),
-      eq(bids.status, 'paid'),
-      eq(bids.bidType, 'sponsor')
+      eq(bids.status, 'paid')
     ))
 
-  return pickWinningSponsorBid(sponsorBids)
+  return pickGameDirectorMessage(gameBids)
 }
 
 export async function expireStaleBids(): Promise<ExpiredBidRow[]> {
@@ -230,9 +280,9 @@ export async function expireStaleBids(): Promise<ExpiredBidRow[]> {
     const after = await snapshotGameBoard(gameId)
     const leftBoard = after.rank === 0
     const rankDropped = after.rank > 0 && before.rank > 0 && after.rank > before.rank
-    const sponsorLost = Boolean(before.sponsorBidId && before.sponsorBidId !== after.sponsorBidId)
+    const directorLost = Boolean(before.directorBidId && before.directorBidId !== after.directorBidId)
 
-    if (!leftBoard && !rankDropped && !sponsorLost) continue
+    if (!leftBoard && !rankDropped && !directorLost) continue
 
     await insertBoardEvent({
       type: 'decay',
@@ -242,7 +292,7 @@ export async function expireStaleBids(): Promise<ExpiredBidRow[]> {
         fromRank: before.rank || null,
         toRank: leftBoard ? null : after.rank,
         rank: after.rank,
-        previousSponsorTitle: sponsorLost ? before.sponsorTitle : null,
+        previousDirectorTitle: directorLost ? before.directorTitle : null,
         leftBoard
       }
     })
@@ -279,69 +329,20 @@ export function validateIncrementCents(incrementCents: number) {
   if (!Number.isInteger(incrementCents) || incrementCents < MIN_BID_CENTS) {
     throw createError({
       statusCode: 400,
-      statusMessage: `Minimum game bid is $${MIN_BID_CENTS / 100}`
+      statusMessage: `Minimum game contribution is $${MIN_BID_CENTS / 100}`
     })
   }
   if (incrementCents > MAX_BID_CENTS) {
     throw createError({
       statusCode: 400,
-      statusMessage: `Maximum bid is $${(MAX_BID_CENTS / 100).toLocaleString('en-US')}`
+      statusMessage: `Maximum contribution is $${(MAX_BID_CENTS / 100).toLocaleString('en-US')}`
     })
   }
 }
 
-export function parseBidType(value: unknown): BidType {
-  if (value === 'game' || value === 'sponsor') {
-    return value
-  }
-
-  throw createError({ statusCode: 400, statusMessage: 'Invalid bid type' })
-}
-
-interface SponsorBidRow {
-  id: string
-  amount: number
-  adTitle: string
-  adDescription: string | null
-  adLink: string
-  adImage: string | null
-  clickCount: number
-  createdAt: Date
-}
-
-export function pickWinningSponsorBid<T extends { amount: number, createdAt: Date }>(sponsorBids: T[]): T | null {
-  return sponsorBids.reduce<T | null>((best, bid) => {
-    if (!best) return bid
-    if (bid.amount > best.amount) return bid
-    if (bid.amount === best.amount && bid.createdAt > best.createdAt) return bid
-    return best
-  }, null)
-}
-
-export async function getWinningSponsorBid(gameId: number): Promise<SponsorBidRow | null> {
+export async function getGameDirectorMessage(gameId: number): Promise<DirectorBidRow | null> {
   await maybeExpireStaleBids()
-  return getWinningSponsorBidWithoutExpire(gameId)
-}
-
-export async function getMinSponsorBidCents(gameId: number): Promise<number> {
-  const winningSponsor = await getWinningSponsorBid(gameId)
-  if (!winningSponsor) return MIN_BID_CENTS
-  return winningSponsor.amount + MIN_BID_CENTS
-}
-
-export function validateSponsorBidCents(amountCents: number, minSponsorBidCents: number) {
-  if (!Number.isInteger(amountCents) || amountCents < minSponsorBidCents) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: `Minimum sponsor bid is $${minSponsorBidCents / 100}`
-    })
-  }
-  if (amountCents > MAX_BID_CENTS) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: `Maximum bid is $${(MAX_BID_CENTS / 100).toLocaleString('en-US')}`
-    })
-  }
+  return getGameDirectorMessageWithoutExpire(gameId)
 }
 
 export function projectRank(
@@ -389,15 +390,17 @@ export async function getSiteStats(): Promise<SiteStats> {
     .from(bids)
     .where(eq(bids.status, 'paid'))
 
-  const [sponsorPaidStats] = await db
+  const [directorPaidStats] = await db
     .select({
-      liveSponsors: sql<number>`count(distinct ${bids.gameId})`.mapWith(Number),
-      allTimeSponsors: sql<number>`count(distinct ${bids.displayName})`.mapWith(Number),
-      sponsorClicks: sql<number>`coalesce(sum(${bids.clickCount}), 0)`.mapWith(Number),
-      sponsorRevenueCents: sql<number>`coalesce(sum(${bids.amount}), 0)`.mapWith(Number)
+      liveDirectors: sql<number>`count(distinct ${bids.gameId})`.mapWith(Number),
+      allTimeDirectors: sql<number>`count(distinct ${bids.displayName})`.mapWith(Number),
+      directorRevenueCents: sql<number>`coalesce(sum(${bids.amount}), 0)`.mapWith(Number)
     })
     .from(bids)
-    .where(and(eq(bids.status, 'paid'), eq(bids.bidType, 'sponsor')))
+    .where(and(
+      eq(bids.status, 'paid'),
+      ne(bids.adTitle, '')
+    ))
 
   const [livePlayerStats] = await db
     .select({
@@ -413,12 +416,11 @@ export async function getSiteStats(): Promise<SiteStats> {
     totalPaidBids: paidStats?.totalPaidBids ?? 0,
     gamesOnBoard: totals.length,
     launchedAt: paidStats?.launchedAt ? new Date(paidStats.launchedAt).toISOString() : null,
-    liveSponsors: sponsorPaidStats?.liveSponsors ?? 0,
-    allTimeSponsors: sponsorPaidStats?.allTimeSponsors ?? 0,
+    liveDirectors: directorPaidStats?.liveDirectors ?? 0,
+    allTimeDirectors: directorPaidStats?.allTimeDirectors ?? 0,
     livePlayers: livePlayerStats?.livePlayers ?? 0,
     allTimePlayers: paidStats?.allTimePlayers ?? 0,
-    sponsorClicks: sponsorPaidStats?.sponsorClicks ?? 0,
-    sponsorRevenueCents: sponsorPaidStats?.sponsorRevenueCents ?? 0
+    directorRevenueCents: directorPaidStats?.directorRevenueCents ?? 0
   }
 }
 
@@ -485,9 +487,6 @@ export async function buildLeaderboardEntries(
       amount: bids.amount,
       adTitle: bids.adTitle,
       adDescription: bids.adDescription,
-      adLink: bids.adLink,
-      adImage: bids.adImage,
-      clickCount: bids.clickCount,
       createdAt: bids.createdAt,
       expiresAt: bids.expiresAt
     })
@@ -510,8 +509,7 @@ export async function buildLeaderboardEntries(
 
     const gameBids = bidsByGame.get(total.gameId) ?? []
     const latestBid = gameBids[0]
-    const sponsorBids = gameBids.filter(bid => bid.bidType === 'sponsor')
-    const winningSponsor = pickWinningSponsorBid(sponsorBids)
+    const directorBid = pickGameDirectorMessage(gameBids)
     const topBid = gameBids.reduce<(typeof gameBids)[number] | null>((best, bid) => {
       if (!best) return bid
       if (bid.amount > best.amount) return bid
@@ -528,11 +526,6 @@ export async function buildLeaderboardEntries(
       }
     }
 
-    const sponsorCents = winningSponsor?.amount ?? 0
-    const sponsorClaimCents = sponsorCents > 0
-      ? sponsorCents + MIN_BID_CENTS
-      : MIN_BID_CENTS
-
     const nextExpiry = gameBids
       .map(bid => bid.expiresAt)
       .filter((value): value is Date => value instanceof Date)
@@ -547,51 +540,13 @@ export async function buildLeaderboardEntries(
       summary: game.summary,
       totalCents: total.totalCents,
       bidCount: gameBids.length,
-      sponsorCents,
-      sponsorClaimCents,
-      ad: winningSponsor
-        ? {
-            bidId: winningSponsor.id,
-            title: winningSponsor.adTitle,
-            description: winningSponsor.adDescription,
-            link: winningSponsor.adLink,
-            image: winningSponsor.adImage,
-            clickCount: winningSponsor.clickCount,
-            priceCents: winningSponsor.amount
-          }
-        : null,
+      director: directorBid ? toDirectorPayload(directorBid) : null,
       topContributor: toContributor(topBid ?? undefined),
       lastContributor: toContributor(latestBid),
       contributors: aggregateContributors(gameBids),
       nextExpiresAt: nextExpiry ? nextExpiry.toISOString() : null
     }
   }).filter((entry): entry is LeaderboardEntryPayload => entry !== null)
-}
-
-export async function incrementAdClick(bidId: string): Promise<string | null> {
-  const db = useDb()
-
-  const [bid] = await db
-    .select({
-      id: bids.id,
-      adLink: bids.adLink,
-      bidType: bids.bidType,
-      status: bids.status
-    })
-    .from(bids)
-    .where(eq(bids.id, bidId))
-    .limit(1)
-
-  if (!bid || bid.status !== 'paid' || bid.bidType !== 'sponsor' || !bid.adLink) {
-    return null
-  }
-
-  await db
-    .update(bids)
-    .set({ clickCount: sql`${bids.clickCount} + 1` })
-    .where(eq(bids.id, bidId))
-
-  return bid.adLink
 }
 
 export async function getPaidBidPlaque(bidId: string) {
@@ -638,6 +593,7 @@ export async function getPaidBidPlaque(bidId: string) {
     expiresAt: row.expiresAt ? row.expiresAt.toISOString() : null,
     createdAt: row.createdAt.toISOString(),
     contributor: maskContributor(row.displayName),
-    sponsorAdTitle: row.bidType === 'sponsor' ? row.adTitle : null
+    hasDirectorMessage: hasDirectorMessage(row.adTitle),
+    directorTitle: hasDirectorMessage(row.adTitle) ? row.adTitle : null
   }
 }

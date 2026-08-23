@@ -1,5 +1,5 @@
 <script setup lang="ts">
-export type ActivityType = 'bid_paid' | 'rank_takeover' | 'sponsor_takeover' | 'decay'
+export type ActivityType = 'bid_paid' | 'rank_takeover' | 'director_takeover' | 'decay'
 
 export interface ActivityItem {
   type?: ActivityType
@@ -13,8 +13,8 @@ export interface ActivityItem {
     fromRank?: number | null
     toRank?: number | null
     previousTitle?: string | null
-    previousSponsorTitle?: string | null
-    sponsorTitle?: string | null
+    previousDirectorTitle?: string | null
+    directorTitle?: string | null
     leftBoard?: boolean
   }
 }
@@ -51,11 +51,11 @@ function headline(item: ActivityItem) {
       if (item.detail?.fromRank) return t('activity.climbedTo', { game: item.gameTitle, rank: to })
       return t('activity.hitRank', { game: item.gameTitle, rank: to })
     }
-    case 'sponsor_takeover':
-      return t('activity.sponsorFlipped', { game: item.gameTitle })
+    case 'director_takeover':
+      return t('activity.directorFlipped', { game: item.gameTitle })
     case 'decay': {
       if (item.detail?.leftBoard) return t('activity.leftBoard', { game: item.gameTitle })
-      if (item.detail?.previousSponsorTitle) return t('activity.sponsorDecayed', { game: item.gameTitle })
+      if (item.detail?.previousDirectorTitle) return t('activity.directorDecayed', { game: item.gameTitle })
       if (item.detail?.fromRank && item.detail?.toRank) {
         return t('activity.slippedTo', { game: item.gameTitle, rank: item.detail.toRank })
       }
@@ -73,18 +73,18 @@ function headline(item: ActivityItem) {
 function subline(item: ActivityItem) {
   const type = item.type ?? 'bid_paid'
   switch (type) {
-    case 'sponsor_takeover':
+    case 'director_takeover':
       return [
         item.contributor,
-        item.detail?.sponsorTitle,
+        item.detail?.directorTitle,
         item.amountCents ? formatDollars(item.amountCents) : null
       ].filter(Boolean).join(' · ')
     case 'decay':
       if (item.detail?.fromRank && item.detail.toRank) {
         return `#${item.detail.fromRank} → #${item.detail.toRank}`
       }
-      if (item.detail?.previousSponsorTitle) {
-        return t('activity.was', { title: item.detail.previousSponsorTitle })
+      if (item.detail?.previousDirectorTitle) {
+        return t('activity.was', { title: item.detail.previousDirectorTitle })
       }
       return t('activity.bidsExpired')
     case 'rank_takeover':

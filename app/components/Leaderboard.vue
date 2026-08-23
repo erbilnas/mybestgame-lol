@@ -8,13 +8,10 @@ export interface LeaderboardContributor {
   bidCount?: number
 }
 
-export interface LeaderboardAd {
+export interface LeaderboardDirector {
   bidId: string
   title: string
   description: string | null
-  link: string
-  image: string | null
-  clickCount: number
   priceCents: number
 }
 
@@ -27,9 +24,7 @@ export interface LeaderboardEntry {
   summary: string | null
   totalCents: number
   bidCount: number
-  sponsorCents: number
-  sponsorClaimCents: number
-  ad: LeaderboardAd | null
+  director: LeaderboardDirector | null
   topContributor: LeaderboardContributor | null
   lastContributor: LeaderboardContributor | null
   contributors: LeaderboardContributor[]
@@ -48,7 +43,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   'open-game': [gameId: number]
   'support-game': [entry: LeaderboardEntry]
-  'claim-sponsor': [entry: LeaderboardEntry]
   'load-more': []
   search: [query: string]
 }>()
@@ -188,7 +182,7 @@ onUnmounted(() => {
       </p>
       <UButton
         class="arcade-cta mt-4"
-        @click="openBidModal({ type: 'game' })"
+        @click="openBidModal({})"
       >
         {{ t('leaderboard.supportFirst') }}
       </UButton>
@@ -205,7 +199,6 @@ onUnmounted(() => {
         :format-dollars="formatDollars"
         @open-game="emit('open-game', $event)"
         @support-game="emit('support-game', entry)"
-        @claim-sponsor="emit('claim-sponsor', entry)"
       />
 
       <div
@@ -216,14 +209,36 @@ onUnmounted(() => {
           {{ t('leaderboard.ranksBelow') }}
         </p>
 
-        <UInput
-          v-model="searchQuery"
-          :placeholder="t('leaderboard.searchPlaceholder')"
-          icon="i-lucide-search"
-          class="w-full"
-          autocomplete="off"
-          :aria-label="t('leaderboard.searchPlaceholder')"
-        />
+        <label class="arcade-search group">
+          <span class="arcade-search__icon" aria-hidden="true">
+            <UIcon
+              name="i-lucide-search"
+              class="size-5"
+            />
+          </span>
+          <input
+            v-model="searchQuery"
+            type="search"
+            enterkeyhint="search"
+            autocomplete="off"
+            spellcheck="false"
+            class="arcade-search__input"
+            :placeholder="t('leaderboard.searchPlaceholder')"
+            :aria-label="t('leaderboard.searchPlaceholder')"
+          >
+          <button
+            v-if="searchQuery.trim()"
+            type="button"
+            class="arcade-search__clear"
+            :aria-label="t('common.clear')"
+            @click="searchQuery = ''"
+          >
+            <UIcon
+              name="i-lucide-x"
+              class="size-3.5"
+            />
+          </button>
+        </label>
 
         <div
           v-if="filteredBelow.length === 0 && searchQuery.trim()"
@@ -243,7 +258,6 @@ onUnmounted(() => {
             :format-dollars="formatDollars"
             @open-game="emit('open-game', $event)"
             @support-game="emit('support-game', entry)"
-            @claim-sponsor="emit('claim-sponsor', entry)"
           />
         </div>
 

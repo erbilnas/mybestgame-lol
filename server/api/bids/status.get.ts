@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
 
   const plaque = await getPaidBidPlaque(bidId)
   if (!plaque) {
-    throw createError({ statusCode: 404, statusMessage: 'Bid not found' })
+    throw createError({ statusCode: 404, statusMessage: 'Contribution not found' })
   }
 
   return {
@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
     expiresAt: plaque.expiresAt,
     createdAt: plaque.createdAt,
     contributor: plaque.contributor,
-    sponsorAdTitle: plaque.sponsorAdTitle
+    hasDirectorMessage: plaque.hasDirectorMessage,
+    directorTitle: plaque.directorTitle
   }
 })
