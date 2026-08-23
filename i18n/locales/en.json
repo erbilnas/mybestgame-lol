@@ -1,0 +1,450 @@
+{
+  "nav": {
+    "placeBid": "Place a bid",
+    "rules": "Rules",
+    "howToPlay": "How to play?",
+    "language": "Language"
+  },
+  "home": {
+    "tagline": "Bids stack up, your game rises.",
+    "startBidding": "Start bidding",
+    "leaderboard": "Leaderboard",
+    "leaderboardDesc": "Rank totals and sponsor holders update as payments clear.",
+    "refresh": "Refresh",
+    "tookFirst": "{game} just took #1",
+    "dismiss": "Dismiss"
+  },
+  "leaderboard": {
+    "loading": "Loading leaderboard...",
+    "empty": "No games on the board yet",
+    "emptyHint": "Be the first to claim rank #1.",
+    "supportFirst": "Support the first game",
+    "ranksBelow": "Ranks 4 and below",
+    "searchPlaceholder": "Search games...",
+    "scrollMore": "Scroll for more games…",
+    "loadingMore": "Loading more games…",
+    "noResults": "No games match your search."
+  },
+  "bid": {
+    "title": "Place a bid",
+    "subtitle": "Support a game to climb the board, or claim the sponsor spot on a card.",
+    "supportGame": "Support game",
+    "claimSponsor": "Claim sponsor",
+    "gameHelpStack": "Add any amount from $1 up. Your bid stacks with past supporters and moves this game up the board.",
+    "sponsorHeldAt": "The sponsor spot is held at ${current}. Bid at least ${min} to take it.",
+    "sponsorNoClaim": "No sponsor on this card yet. Claim the spot from $1.",
+    "gameLabel": "Game",
+    "gameDesc": "Search and pick the game you want to support or sponsor.",
+    "supportAmount": "Support amount (USD)",
+    "sponsorBid": "Sponsor bid (USD)",
+    "amountHintGame": "Whole dollars only. Minimum $1, maximum $999,999.",
+    "amountHintSponsorBeat": "Must beat the current sponsor. Minimum bid: ${min}. Max $999,999.",
+    "amountHintSponsorFirst": "First sponsor on this card. Minimum $1, maximum $999,999.",
+    "quoteGame": "If this payment clears, you pay ${amount}, the board total becomes ${total}, and this game lands at #{rank}.",
+    "quoteGameFree": "Free $1 support: board total becomes ${total}, and this game lands at #{rank}. No checkout.",
+    "quoteSponsorHeld": "Current sponsor: ${current}. Your bid: ${amount}. You need at least ${min} to win the spot.",
+    "quoteSponsorFirst": "No sponsor yet. Your ${amount} bid claims the spot if payment clears.",
+    "nameLabel": "Your name on the board",
+    "nameDesc": "Optional. Leave blank to show as Anonymous on the leaderboard and activity feed.",
+    "namePlaceholder": "Anonymous hero",
+    "sponsorDetails": "Sponsor details",
+    "sponsorDetailsDesc": "This is what players see on the game card while you hold the sponsor spot.",
+    "adTitleLabel": "Title",
+    "adTitleDesc": "Short headline for your sponsor spot. Max 120 characters.",
+    "adTitlePlaceholder": "Official strategy guides",
+    "adDescLabel": "Description",
+    "adDescDesc": "One or two lines under the title. Max 280 characters.",
+    "adDescPlaceholder": "Patch notes, merch drop, tournament signup. Say what players should know.",
+    "adLinkLabel": "Link",
+    "adLinkDesc": "Where players go when they tap your sponsor spot. Use https://.",
+    "adLinkPlaceholder": "https://yoursite.com",
+    "adImageLabel": "Image URL",
+    "adImageDescFavicon": "Optional. Leave empty to use the link favicon shown above.",
+    "adImageDescUrl": "Optional banner or logo. Public https:// image link only.",
+    "adImagePlaceholder": "https://...",
+    "submitSupport": "Support game",
+    "submitSponsor": "Claim sponsor spot",
+    "submitFree": "Support free ($1)",
+    "freeToggle": "Use my free $1 support",
+    "freeHint": "One free $1 game support per device and network, forever. No card, no checkout.",
+    "freeUsed": "You've already used your free support.",
+    "errorPickGame": "Pick a game first.",
+    "errorSponsorRequired": "Sponsor title and link are required.",
+    "errorSponsorDescRequired": "Sponsor description is required.",
+    "errorSponsorMin": "Minimum sponsor bid is ${min}.",
+    "errorAmountMax": "Maximum bid is $999,999.",
+    "errorTurnstile": "Complete the security check first.",
+    "errorTurnstileExpired": "That check expired. Tick the box again.",
+    "errorTurnstileFailed": "Security check failed. Refresh the page or try again in a moment.",
+    "errorTurnstileLoad": "Could not load the security check. Disable ad blockers or refresh the page.",
+    "errorFallback": "Checkout failed",
+    "errorFreeFallback": "Free support failed"
+  },
+  "card": {
+    "stackedBids": "{count} stacked bid | {count} stacked bids",
+    "sponsor": "sponsor",
+    "decayingIn": "decaying in {days}d",
+    "rankTotal": "Rank total",
+    "support": "Support",
+    "outbid": "Outbid",
+    "claim": "Claim",
+    "noSponsor": "No sponsor yet",
+    "claimFrom": "Claim the sponsor spot from {price}.",
+    "moreAbout": "More about this game",
+    "top": "Top supporter",
+    "latest": "Latest supporter",
+    "visit": "Visit",
+    "clicks": "{count} click | {count} clicks",
+    "total": "Total",
+    "openSummary": "Open game details for the full IGDB summary."
+  },
+  "activity": {
+    "title": "Latest activity",
+    "tookFirst": "{game} took #1",
+    "climbedTo": "{game} climbed to #{rank}",
+    "hitRank": "{game} hit #{rank}",
+    "sponsorFlipped": "Sponsor flipped on {game}",
+    "leftBoard": "{game} left the board",
+    "sponsorDecayed": "Sponsor decayed on {game}",
+    "slippedTo": "{game} slipped to #{rank}",
+    "isDecaying": "{game} is decaying",
+    "atRank": "{game} at #{rank}",
+    "bidsExpired": "Bids expired",
+    "was": "Was: {title}"
+  },
+  "stats": {
+    "raised": "Raised",
+    "games": "Games",
+    "paidBids": "Paid bids",
+    "liveSponsors": "Live sponsors",
+    "allTimeSponsors": "All-time sponsors",
+    "livePlayers": "Live players",
+    "livePlayersNote": "24h",
+    "allTimePlayers": "All-time players",
+    "sponsorClicks": "Sponsor clicks",
+    "sponsorRaised": "Sponsor raised"
+  },
+  "sponsors": {
+    "title": "Top sponsors",
+    "on": "on {game}"
+  },
+  "success": {
+    "missingRef": "Missing bid reference",
+    "backToBoard": "Back to leaderboard",
+    "confirmed": "Payment confirmed",
+    "bidLive": "Your bid of {amount} is live on the board.",
+    "stack": "Stack {amount}",
+    "viewPlaque": "View plaque",
+    "leaderboard": "Leaderboard",
+    "notCompleted": "Payment not completed",
+    "notCompletedDesc": "This checkout was cancelled or expired. No charge was made and your bid is not on the board.",
+    "confirming": "Confirming payment...",
+    "confirmingDesc": "Waiting for payment confirmation. This usually takes a few seconds.",
+    "checkingStatus": "Checking status"
+  },
+  "plaque": {
+    "loading": "Loading plaque...",
+    "notFound": "Plaque not found",
+    "notFoundDesc": "Only verified paid bids get a public plaque.",
+    "backToBoard": "Back to leaderboard",
+    "bidPlaque": "Bid plaque",
+    "unranked": "Unranked",
+    "gameBid": "game bid",
+    "sponsorBid": "sponsor bid",
+    "thisBid": "This bid",
+    "stackTotal": "Stack total",
+    "bidDate": "Bid date",
+    "copied": "Copied",
+    "sharePlaque": "Share plaque",
+    "copyLink": "Copy link",
+    "embedTitle": "Embed this game",
+    "embedDesc": "Drop this on a site or README. Badge refreshes about once a minute.",
+    "copyEmbed": "Copy embed"
+  },
+  "gameDetail": {
+    "title": "Game details",
+    "subtitle": "Board standing, game info, and ways to bid.",
+    "loading": "Loading game details...",
+    "boardRank": "Board rank",
+    "rankTotal": "Rank total",
+    "igdbScore": "IGDB score",
+    "sponsorLabel": "Sponsor:",
+    "noSponsorYet": "No sponsor on this card yet.",
+    "viewOnIgdb": "View more",
+    "noSummary": "No summary available for this game yet.",
+    "screenshots": "Screenshots",
+    "embedBadge": "Embed badge",
+    "copied": "Copied",
+    "copyEmbed": "Copy embed",
+    "supportGame": "Support game",
+    "claimSponsor": "Claim sponsor",
+    "released": "Released",
+    "developers": "Developers",
+    "publishers": "Publishers",
+    "genres": "Genres",
+    "platforms": "Platforms",
+    "modes": "Modes"
+  },
+  "contributors": {
+    "count": "{count} contributor | {count} contributors",
+    "searchPlaceholder": "Search contributors",
+    "noMatch": "No contributors match that search.",
+    "none": "No contributors yet.",
+    "bids": "{count} bids"
+  },
+  "search": {
+    "placeholder": "Type a game title..."
+  },
+  "footer": {
+    "tagline": "Get your game on the board.",
+    "desc": "Bid to climb. Sponsor to own the card.",
+    "copyrightBefore": "{year} © mybestgame.lol — built by ",
+    "copyrightAfter": " with love",
+    "legalNav": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "gdpr": "GDPR",
+    "cookies": "Cookies",
+    "refunds": "Refunds"
+  },
+  "locale": {
+    "en": "EN",
+    "tr": "TR"
+  },
+  "common": {
+    "close": "Close",
+    "mAgo": "{n}m ago",
+    "hAgo": "{n}h ago",
+    "dAgo": "{n}d ago",
+    "copied": "Copied"
+  },
+  "seo": {
+    "title": "mybestgame.lol — Pay-to-Rank Video Game Leaderboard",
+    "description": "Bid on your favorite video games and climb the live leaderboard. Stack game bids, claim sponsor spots, and watch ranks change in real time.",
+    "keywords": "video game leaderboard, pay to rank games, game bidding, sponsor spot, IGDB games, mybestgame",
+    "legalDescription": "Legal information for mybestgame.lol, the pay-to-rank video game leaderboard."
+  },
+  "rules": {
+    "title": "Rules",
+    "items": [
+      "Game bids start at $1. Whole dollars only.",
+      "Every paid bid on the same game adds to its total. The more it stacks, the higher it climbs.",
+      "Sponsor bids are separate. They buy the sponsor spot on a game card — the highest paid bid holds it.",
+      "To take a spot that's already claimed, bid at least $1 above the current holder.",
+      "Bids last 30 days. When one expires, that amount comes off the game's total.",
+      "Only confirmed payments count. Abandoned checkouts never appear on the board.",
+      "All sales are final. Bids can't be refunded after payment is confirmed.",
+      "Your display name is optional. Add one and it'll show publicly on the board.",
+      "Rankings refresh in real time as bids are paid or expire."
+    ]
+  },
+  "howToPlay": {
+    "title": "How to play?",
+    "steps": [
+      {
+        "title": "Pick a game",
+        "desc": "Search for the game you want to push up the board."
+      },
+      {
+        "title": "Choose your move",
+        "desc": "Support the game to grow its total, or claim the sponsor spot on its card."
+      },
+      {
+        "title": "Set your amount",
+        "desc": "Game bids start at $1. To take a sponsor spot, bid at least $1 more than the current holder."
+      },
+      {
+        "title": "Pay securely",
+        "desc": "Checkout is encrypted. Your bid goes live as soon as payment clears."
+      },
+      {
+        "title": "Watch the board",
+        "desc": "Rankings update live. Bids last 30 days — keep stacking to stay on top."
+      }
+    ]
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "lastUpdated": "Last updated: August 2026",
+      "sections": [
+        {
+          "heading": "What we collect",
+          "body": "mybestgame.lol collects the minimum data needed to operate the leaderboard. When you place a bid, you may optionally provide a display name (handle). We do not require or store your email address. If you voluntarily enter text that looks like an email, it will be stored as your display name. Your IP address is processed transiently for rate limiting and Cloudflare Turnstile verification but is not persisted in our database."
+        },
+        {
+          "heading": "Payment data",
+          "body": "All payments are processed by Polar.sh. We do not see, store, or have access to your credit card number, billing address, or other payment PII. Polar handles PCI compliance and payment security. We receive only a payment confirmation, order ID, and the metadata we attached (bid ID, game ID, amount)."
+        },
+        {
+          "heading": "Third-party services",
+          "body": "We use the following third-party services: Polar.sh for payment processing; IGDB (via Twitch/Amazon) for game data; Cloudflare Turnstile for bot protection. Each service has its own privacy policy. We do not sell, rent, or share your data with advertisers or data brokers."
+        },
+        {
+          "heading": "Cookies and local storage",
+          "body": "mybestgame.lol does not set first-party tracking cookies. Cloudflare Turnstile may set a functional cookie required for bot verification. We use no analytics or advertising cookies."
+        },
+        {
+          "heading": "Data displayed publicly",
+          "body": "If you provide a display name, it will be shown publicly on the leaderboard, activity feed, plaques, and contributor lists. If the name looks like an email address, we partially mask it (e.g., ab•••{'@'}domain.com). You can bid as Anonymous by leaving the name field empty."
+        },
+        {
+          "heading": "Data retention",
+          "body": "Bid records (display name, bid amount, game, timestamps) are retained for the lifetime of the service for leaderboard integrity and audit purposes. Expired bids (30-day expiry) remain in our database with 'expired' status."
+        },
+        {
+          "heading": "Your rights (GDPR / KVKK)",
+          "body": "You may request access to, correction of, or deletion of your data by emailing privacy{'@'}mybestgame.lol. We will respond within 30 days. Note: deleting bid data may affect leaderboard history."
+        },
+        {
+          "heading": "Data location",
+          "body": "Our database is hosted on infrastructure operated by the service owner. Payment data is processed by Polar.sh in their infrastructure."
+        },
+        {
+          "heading": "Contact",
+          "body": "For privacy inquiries: privacy{'@'}mybestgame.lol. Operator: mybestgame.lol."
+        }
+      ]
+    },
+    "terms": {
+      "title": "Terms of Service",
+      "lastUpdated": "Last updated: August 2026",
+      "sections": [
+        {
+          "heading": "Acceptance",
+          "body": "By using mybestgame.lol, you agree to these Terms of Service. If you do not agree, do not use the site."
+        },
+        {
+          "heading": "Service description",
+          "body": "mybestgame.lol is a pay-to-rank video game leaderboard. Users place monetary bids on games to rank them higher. Sponsor bids buy an advertising/sponsor spot on a game card. The service is provided as-is for entertainment purposes."
+        },
+        {
+          "heading": "Bids and payments",
+          "body": "All bids are processed through Polar.sh. Only verified paid bids appear on the leaderboard. Bids expire 30 days after payment confirmation. All sales are final and non-refundable. We do not guarantee any specific rank outcome — your rank depends on other users' bids."
+        },
+        {
+          "heading": "No accounts",
+          "body": "mybestgame.lol does not have user accounts. Bids are identified by an optional display name. There is no login, password, or profile system."
+        },
+        {
+          "heading": "Sponsor content",
+          "body": "Sponsor bids include user-provided content (title, description, link, optional image URL). We reserve the right to remove sponsor content that is illegal, offensive, misleading, or violates third-party rights without refund."
+        },
+        {
+          "heading": "No guarantees",
+          "body": "We do not guarantee uptime, availability, rank position, or that your bid will remain on the board for any specific duration beyond the 30-day expiry window. Bids may be affected by other users' bids, expiry, or service changes."
+        },
+        {
+          "heading": "Limitation of liability",
+          "body": "mybestgame.lol is provided 'as is' without warranty. To the maximum extent permitted by law, the operator's total liability shall not exceed the amount you paid in the last 30 days. We are not liable for indirect, incidental, or consequential damages."
+        },
+        {
+          "heading": "Modifications",
+          "body": "We may modify these terms at any time. Continued use constitutes acceptance. Material changes will be noted on the site."
+        },
+        {
+          "heading": "Governing law",
+          "body": "These terms are governed by the laws of the Republic of Turkey. Disputes shall be resolved in the courts of Istanbul, Turkey."
+        },
+        {
+          "heading": "Contact",
+          "body": "Questions: privacy{'@'}mybestgame.lol. Operator: mybestgame.lol."
+        }
+      ]
+    },
+    "gdpr": {
+      "title": "GDPR & KVKK Information",
+      "lastUpdated": "Last updated: August 2026",
+      "sections": [
+        {
+          "heading": "Data controller",
+          "body": "The data controller is mybestgame.lol, operated as a personal project. Contact: privacy{'@'}mybestgame.lol."
+        },
+        {
+          "heading": "Legal basis",
+          "body": "We process data on the basis of legitimate interest (operating the leaderboard service) and, where applicable, your consent (providing a display name). Payment processing is necessary for contract performance."
+        },
+        {
+          "heading": "Data processed",
+          "body": "Display name (optional, user-provided), bid amount, game selection, timestamps, and transient IP for rate limiting. We do not process sensitive/special category data."
+        },
+        {
+          "heading": "Recipients",
+          "body": "Polar.sh (payment processing), IGDB/Twitch (game data lookup), Cloudflare (Turnstile verification, hosting). No data is sold to third parties."
+        },
+        {
+          "heading": "Your rights",
+          "body": "Under GDPR (EU) and KVKK (Turkey), you have the right to: access your data, rectify inaccurate data, request erasure, restrict processing, data portability, and object to processing. Submit requests to privacy{'@'}mybestgame.lol. We respond within 30 days."
+        },
+        {
+          "heading": "Retention",
+          "body": "Bid data is retained for the operational life of the service. You may request deletion at any time."
+        },
+        {
+          "heading": "International transfers",
+          "body": "Data may be processed outside the EU/Turkey by our service providers (Polar.sh, Cloudflare). Appropriate safeguards (standard contractual clauses) apply."
+        },
+        {
+          "heading": "Complaints",
+          "body": "You may lodge a complaint with your local data protection authority (e.g., KVKK in Turkey, or your EU supervisory authority)."
+        }
+      ]
+    },
+    "cookies": {
+      "title": "Cookie Policy",
+      "lastUpdated": "Last updated: August 2026",
+      "sections": [
+        {
+          "heading": "Overview",
+          "body": "mybestgame.lol uses minimal cookies. We do not use analytics, advertising, or social media tracking cookies."
+        },
+        {
+          "heading": "Essential cookies",
+          "body": "Cloudflare Turnstile may set a cookie required for bot verification. This is strictly necessary for the service to function and does not require consent under GDPR."
+        },
+        {
+          "heading": "No optional cookies",
+          "body": "We do not set any optional, marketing, or preference cookies. There is no cookie consent banner because we only use strictly necessary cookies."
+        },
+        {
+          "heading": "Third-party cookies",
+          "body": "When you proceed to Polar.sh checkout, their domain may set cookies for payment processing. Refer to Polar's cookie policy for details."
+        },
+        {
+          "heading": "Contact",
+          "body": "Questions about cookies: privacy{'@'}mybestgame.lol."
+        }
+      ]
+    },
+    "refunds": {
+      "title": "Refund Policy",
+      "lastUpdated": "Last updated: August 2026",
+      "sections": [
+        {
+          "heading": "No refunds",
+          "body": "All bids on mybestgame.lol are final and non-refundable once payment is confirmed by Polar.sh. By placing a bid, you acknowledge that you are paying for immediate inclusion on the leaderboard."
+        },
+        {
+          "heading": "Why no refunds",
+          "body": "Bids directly affect the public leaderboard the moment they are confirmed. Refunding a bid would retroactively alter rankings and affect other users' positions. This policy ensures fairness for all participants."
+        },
+        {
+          "heading": "Cancelled checkouts",
+          "body": "If you cancel or abandon the checkout before payment completes, no charge is made and no bid appears on the board. This is not a refund — no money was collected."
+        },
+        {
+          "heading": "Bid expiry",
+          "body": "Bids automatically expire after 30 days. Expiry is not a refund — you received 30 days of leaderboard presence for your bid."
+        },
+        {
+          "heading": "Disputes",
+          "body": "If you believe a payment was made in error or without your authorization, contact Polar.sh support directly as the payment processor. We are unable to issue refunds for authorized, completed transactions."
+        },
+        {
+          "heading": "Contact",
+          "body": "For billing questions: privacy{'@'}mybestgame.lol."
+        }
+      ]
+    }
+  }
+}
