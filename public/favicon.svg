@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="mybestgame">
+  <rect width="64" height="64" rx="14" fill="#ffffff"/>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="none" stroke="#d7dde8" stroke-width="2"/>
+  <path fill="#e11d2e" d="M18 44V20h8.2c6.4 0 10.6 3.4 10.6 9.1 0 3.4-1.5 6-4 7.4L42 44h-9.2l-6.8-9.8H26.2V44H18zm8.2-15.2h2.1c2.4 0 3.8-1.2 3.8-3.3s-1.4-3.2-3.8-3.2h-2.1v6.5z"/>
+  <circle cx="46" cy="24" r="4" fill="#f5b800"/>
+  <circle cx="52" cy="32" r="3" fill="#2eb7e5"/>
+</svg>

@@ -1,0 +1,46 @@
+# Dependencies & build outputs
+node_modules
+.output
+.data
+.nuxt
+.nitro
+.cache
+dist
+
+# Git / IDE
+.git
+.gitignore
+.gitattributes
+.cursor
+.fleet
+.idea
+.vscode
+*.md
+!README.md
+
+# Env & secrets (set these in Coolify)
+.env
+.env.*
+!.env.example
+
+# Local SQLite data
+/data/
+*.db
+*.db-*
+
+# Logs & OS junk
+logs
+*.log
+.DS_Store
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+
+# Tests / scripts not needed at runtime
+coverage
+*.test.ts
+*.spec.ts
+
+# Plans & agent notes
+AGENTS.md
+.cursor/plans
