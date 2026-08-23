@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { LeaderboardEntry } from './Leaderboard.vue'
-import { markdownPlainText } from '../../shared/utils/director-markdown'
+import { markdownPlainText } from '#shared/utils/director-markdown'
 
 const props = defineProps<{
   entries: LeaderboardEntry[]

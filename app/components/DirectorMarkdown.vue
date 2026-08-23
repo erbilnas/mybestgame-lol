@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { renderDirectorMarkdown } from '../../shared/utils/director-markdown'
+import { renderDirectorMarkdown } from '#shared/utils/director-markdown'
 
 const props = defineProps<{
   source: string

@@ -4,7 +4,7 @@ import {
   DIRECTOR_DESC_VISIBLE_MAX,
   MARKDOWN_GUIDE_URL,
   markdownVisibleLength
-} from '../../shared/utils/director-markdown'
+} from '#shared/utils/director-markdown'
 import { overlayCloseButton, overlayCloseUi, overlayHeaderUi } from '~/utils/overlay-close'
 
 export interface BidModalPreset {

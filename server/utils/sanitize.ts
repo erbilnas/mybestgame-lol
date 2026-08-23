@@ -2,7 +2,7 @@ import {
   DIRECTOR_DESC_RAW_MAX,
   DIRECTOR_DESC_VISIBLE_MAX,
   markdownVisibleLength
-} from '../../shared/utils/director-markdown'
+} from '#shared/utils/director-markdown'
 
 const HTML_TAG_RE = /<[^>]*>/g
 
