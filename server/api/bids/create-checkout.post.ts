@@ -98,7 +98,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Invalid game' })
   }
 
-  let gameSummary: string | null = null
+  let gameSummary: string | null
   try {
     const igdbGame = await fetchGameDetails(gameId, slug)
     gameSummary = igdbGame?.summary ?? null

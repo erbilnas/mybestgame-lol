@@ -67,7 +67,7 @@ export default defineEventHandler(async (event) => {
   const totals = await getFreshLeaderboardTotals()
   projectRank(totals, gameId, incrementCents)
 
-  let gameSummary: string | null = null
+  let gameSummary: string | null
   try {
     const igdbGame = await fetchGameDetails(gameId, slug)
     gameSummary = igdbGame?.summary ?? null
