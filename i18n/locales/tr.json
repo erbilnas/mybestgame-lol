@@ -229,7 +229,7 @@
     "items": [
       "Oyun teklifleri 1$'dan başlar. Sadece tam sayılar kabul edilir.",
       "Aynı oyuna verdiğin her teklif birikir. Toplam arttıkça oyun sıralamada yükselir.",
-      "Sponsor teklifi ayrı bir şey: karttaki sponsor koltuğunu satın alır. En yüksek ödenen teklif koltuğu tutar.",
+      "Sponsor teklifi ayrı bir şey: kartta premium özelleştirme (öne çıkan destekçi koltuğu) açar. En yüksek ödenen teklif koltuğu tutar.",
       "Dolu bir koltuğu devralmak için mevcut tekliften en az 1$ fazla vermen gerekir.",
       "Her teklif 30 gün geçerlidir. Süre dolunca tutar, oyunun sıralama toplamından düşer.",
       "Yalnızca onaylanmış ödemeler geçerlidir. Tamamlanmayan ödemeler tahtaya yansımaz.",
@@ -316,7 +316,7 @@
         },
         {
           "heading": "Hizmet tanımı",
-          "body": "mybestgame.lol, ödeme ile sıralanan bir video oyunu liderlik tablosudur. Kullanıcılar oyunları daha yüksek sıralamak için parasal teklifler verir. Sponsor teklifleri bir oyun kartında reklam/sponsor alanı satın alır. Hizmet eğlence amaçlı olduğu gibi sağlanır."
+          "body": "mybestgame.lol, ödeme ile sıralanan bir video oyunu liderlik tablosudur (tüketici eğlence yazılımı). Kullanıcılar oyunlar için dijital sıralama desteği satın alır. Sponsor teklifleri premium kart özelleştirmesi açar — yalnızca platformumuzdaki o oyun kartında görünen öne çıkan destekçi koltuğu. Bu üçüncü taraf reklamcılığı, lead generation veya pazarlama hizmeti değildir. Hizmet eğlence amaçlı olduğu gibi sağlanır."
         },
         {
           "heading": "Teklifler ve ödemeler",
@@ -327,8 +327,8 @@
           "body": "mybestgame.lol'da kullanıcı hesabı yoktur. Teklifler isteğe bağlı bir görünen ad ile tanımlanır. Giriş, şifre veya profil sistemi yoktur."
         },
         {
-          "heading": "Sponsor içeriği",
-          "body": "Sponsor teklifleri kullanıcı tarafından sağlanan içerik (başlık, açıklama, bağlantı, isteğe bağlı görsel URL) içerir. Yasa dışı, saldırgan, yanıltıcı veya üçüncü taraf haklarını ihlal eden sponsor içeriğini iade yapmadan kaldırma hakkını saklı tutarız."
+          "heading": "Premium kart içeriği",
+          "body": "Sponsor teklifleri, teklif aktifken oyun kartında gösterilen kullanıcı tarafından sağlanan premium kart özelleştirmesi (başlık, açıklama, bağlantı, isteğe bağlı görsel URL) içerir. Yasa dışı, saldırgan, yanıltıcı veya üçüncü taraf haklarını ihlal eden içeriği iade yapmadan kaldırma hakkını saklı tutarız."
         },
         {
           "heading": "Garanti yok",

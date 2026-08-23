@@ -229,7 +229,7 @@
     "items": [
       "Game bids start at $1. Whole dollars only.",
       "Every paid bid on the same game adds to its total. The more it stacks, the higher it climbs.",
-      "Sponsor bids are separate. They buy the sponsor spot on a game card — the highest paid bid holds it.",
+      "Sponsor bids are separate. They unlock premium card customization (the featured supporter slot) on a game card — the highest paid bid holds it.",
       "To take a spot that's already claimed, bid at least $1 above the current holder.",
       "Bids last 30 days. When one expires, that amount comes off the game's total.",
       "Only confirmed payments count. Abandoned checkouts never appear on the board.",
@@ -316,7 +316,7 @@
         },
         {
           "heading": "Service description",
-          "body": "mybestgame.lol is a pay-to-rank video game leaderboard. Users place monetary bids on games to rank them higher. Sponsor bids buy an advertising/sponsor spot on a game card. The service is provided as-is for entertainment purposes."
+          "body": "mybestgame.lol is a pay-to-rank video game leaderboard (consumer entertainment software). Users purchase digital leaderboard rank boosts for games. Sponsor bids unlock premium card customization — a featured supporter slot displayed only on that game's card within our platform. This is not third-party advertising, lead generation, or marketing services. The service is provided as-is for entertainment purposes."
         },
         {
           "heading": "Bids and payments",
@@ -327,8 +327,8 @@
           "body": "mybestgame.lol does not have user accounts. Bids are identified by an optional display name. There is no login, password, or profile system."
         },
         {
-          "heading": "Sponsor content",
-          "body": "Sponsor bids include user-provided content (title, description, link, optional image URL). We reserve the right to remove sponsor content that is illegal, offensive, misleading, or violates third-party rights without refund."
+          "heading": "Premium card content",
+          "body": "Sponsor bids include user-provided premium card customization (title, description, link, optional image URL) shown on the game card while the bid is active. We reserve the right to remove content that is illegal, offensive, misleading, or violates third-party rights without refund."
         },
         {
           "heading": "No guarantees",
