@@ -25,3 +25,5 @@ logs
 
 # SQLite database
 /data/
+
+.pnpm-store

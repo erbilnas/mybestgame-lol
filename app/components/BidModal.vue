@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useMediaQuery } from '@vueuse/core'
 import { overlayCloseButton, overlayCloseUi, overlayHeaderUi } from '~/utils/overlay-close'
 
 export interface BidModalPreset {
@@ -16,7 +15,16 @@ const preset = defineModel<BidModalPreset>('preset', { default: () => ({}) })
 
 const { t, locale } = useI18n()
 const config = useRuntimeConfig()
-const isMobile = useMediaQuery('(max-width: 639px)')
+const isMobile = ref(false)
+onMounted(() => {
+  const mq = window.matchMedia('(max-width: 639px)')
+  const sync = () => {
+    isMobile.value = mq.matches
+  }
+  sync()
+  mq.addEventListener('change', sync)
+  onUnmounted(() => mq.removeEventListener('change', sync))
+})
 const bidType = ref<'game' | 'sponsor'>('game')
 const selectedGame = ref<{ id: number, title: string, slug: string, coverUrl: string | null } | null>(null)
 const amount = ref(5)
