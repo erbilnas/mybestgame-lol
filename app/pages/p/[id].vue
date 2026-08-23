@@ -5,7 +5,7 @@ const route = useRoute()
 const config = useRuntimeConfig()
 const bidId = computed(() => String(route.params.id ?? ''))
 
-const { data, error, pending } = await useFetch(() => `/api/bids/status?bid_id=${bidId.value}`, {
+const { data, pending } = await useFetch(() => `/api/bids/status?bid_id=${bidId.value}`, {
   immediate: !!bidId.value,
   watch: [bidId]
 })

@@ -8,6 +8,7 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "typecheck": "nuxt typecheck",
     "db:push": "drizzle-kit push",
     "verify:leaderboard": "node scripts/verify-leaderboard.mjs",
