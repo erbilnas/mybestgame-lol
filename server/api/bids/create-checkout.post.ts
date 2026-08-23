@@ -10,6 +10,7 @@ import {
   validateIncrementCents,
   validateSponsorBidCents
 } from '../../utils/bidding'
+import { checkoutMetadata } from '../../utils/checkout-product'
 import { failBid } from '../../utils/fulfill-bid'
 import { fetchGameDetails } from '../../utils/igdb'
 import { usePolar } from '../../utils/polar'
@@ -78,10 +79,10 @@ export default defineEventHandler(async (event) => {
     adDescription = sanitizeAdDescription(body.adDescription)
 
     if (!adTitle) {
-      throw createError({ statusCode: 400, statusMessage: 'Ad title is required for sponsor bids' })
+      throw createError({ statusCode: 400, statusMessage: 'Sponsor title is required for premium card customization' })
     }
     if (!adDescription) {
-      throw createError({ statusCode: 400, statusMessage: 'Ad description is required for sponsor bids' })
+      throw createError({ statusCode: 400, statusMessage: 'Sponsor description is required for premium card customization' })
     }
   }
 
@@ -176,12 +177,12 @@ export default defineEventHandler(async (event) => {
         }]
       },
       locale: polarLocale,
-      metadata: {
+      metadata: checkoutMetadata(bidType, title, {
         bidId,
         bidType,
         gameId: String(gameId),
         incrementCents: String(incrementCents)
-      },
+      }),
       successUrl,
       returnUrl
     })

@@ -1,6 +1,6 @@
 # mybestgame.lol
 
-Pay-to-rank leaderboard for video games. Users search IGDB games, place stacking bids via Polar.sh, and attach custom ad content to their listing.
+Pay-to-rank leaderboard for video games. Users search IGDB games, place stacking bids via Polar.sh, and optionally add premium card customization to their featured supporter slot.
 
 ## Stack
 
@@ -41,6 +41,19 @@ npm run dev
 4. Set `POLAR_PRODUCT_ID` to your product ID.
 
 Checkouts use ad-hoc fixed prices per bid increment.
+
+### Product description (for Polar onboarding)
+
+Use this wording in your Polar organization and product settings — not "advertising" or "sponsorship placements":
+
+> mybestgame.lol is consumer entertainment software: a pay-to-rank video game leaderboard. Customers purchase one-time digital products on our site:
+>
+> - **Leaderboard rank boost** — increases a game's score and rank on our board (instant fulfillment).
+> - **Premium card customization** — optional featured supporter slot on a game card (title, link, image shown only on our platform). Not third-party advertising, lead gen, or marketing services.
+>
+> Fulfillment is automatic after payment via webhook. All sales are final digital goods.
+
+Checkout metadata includes `productLabel`, `productDescription`, and `productCategory` for each bid.
 
 ### Checkout localization
 
