@@ -7,6 +7,11 @@ const HowToPlaySlideover = defineAsyncComponent(() => import('~/components/HowTo
 
 const { t } = useI18n()
 const localePath = useLocalePath()
+const { eligible: freeEligible, refresh: refreshFreeEligibility } = useFreeEligibility()
+
+onMounted(() => {
+  refreshFreeEligibility()
+})
 
 const bidModalOpen = ref(false)
 const bidModalPreset = ref<BidModalPreset>({})
@@ -82,12 +87,12 @@ const footerLegalLinks = computed(() => [
             class="arcade-cta hidden sm:inline-flex"
             @click="openBidModal()"
           >
-            {{ t('nav.placeBid') }}
+            {{ freeEligible ? t('nav.placeBidFree') : t('nav.placeBid') }}
           </UButton>
           <UButton
             class="arcade-cta sm:hidden"
             icon="i-lucide-plus"
-            :aria-label="t('nav.placeBid')"
+            :aria-label="freeEligible ? t('nav.placeBidFree') : t('nav.placeBid')"
             @click="openBidModal()"
           />
         </div>
@@ -141,6 +146,14 @@ const footerLegalLinks = computed(() => [
                 >
                   {{ link.label }}
                 </NuxtLink>
+              </li>
+              <li>
+                <a
+                  href="/rss/takeovers.xml"
+                  class="inline-flex min-h-[44px] items-center text-sm text-muted transition-colors hover:text-[var(--play-ink)]"
+                >
+                  {{ t('footer.rssTakeovers') }}
+                </a>
               </li>
             </ul>
           </nav>

@@ -1,11 +1,12 @@
 import { and, eq } from 'drizzle-orm'
 import { useDb } from '../database/index'
-import { bids } from '../database/schema'
+import { bids, games } from '../database/schema'
 import { bidExpiresAt, snapshotGameBoard } from './bidding'
 import { invalidateBoardCache } from './board-cache'
 import { insertBoardEvent } from './board-events'
 import { maskContributor } from './contributor'
 import { cancelPolarPaymentForBid } from './polar-cancel'
+import { notifyDiscordTakeover } from './discord'
 
 export function parseMetadataBidId(
   metadata?: Record<string, string | number | boolean> | null
@@ -176,6 +177,23 @@ export async function fulfillBid(
         rank: afterRank
       }
     })
+
+    if (afterRank === 1) {
+      const [gameRow] = await db
+        .select({ slug: games.slug })
+        .from(games)
+        .where(eq(games.id, existing.gameId))
+        .limit(1)
+
+      notifyDiscordTakeover({
+        gameTitle: after.title,
+        gameSlug: gameRow?.slug ?? null,
+        fromRank: beforeRank || null,
+        toRank: afterRank,
+        contributor,
+        amountCents: existing.amount
+      })
+    }
   }
 
   if (after.directorBidId === bidId && before.directorBidId !== bidId) {

@@ -48,6 +48,7 @@ const emit = defineEmits<{
 }>()
 
 const { t, locale } = useI18n()
+const { eligible: freeEligible } = useFreeEligibility()
 const openBidModal = inject<(preset?: BidModalPreset) => void>('openBidModal', () => {})
 
 const searchQuery = ref('')
@@ -184,7 +185,7 @@ onUnmounted(() => {
         class="arcade-cta mt-4"
         @click="openBidModal({})"
       >
-        {{ t('leaderboard.supportFirst') }}
+        {{ freeEligible ? t('home.startFree') : t('leaderboard.supportFirst') }}
       </UButton>
     </div>
 

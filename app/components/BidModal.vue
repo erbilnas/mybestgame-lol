@@ -42,8 +42,7 @@ const turnstileWidgetId = ref<string | null>(null)
 const turnstileError = ref('')
 const directorDetailsOpen = ref(false)
 const useFreeSupport = ref(false)
-const freeEligible = ref(false)
-const freeEligibilityLoaded = ref(false)
+const { eligible: freeEligible, loaded: freeEligibilityLoaded, refresh: refreshFreeEligibilityState } = useFreeEligibility()
 
 const MAX_BID_DOLLARS = 999_999
 
@@ -73,7 +72,7 @@ const gameQuote = ref<{
 let quoteTimer: ReturnType<typeof setTimeout> | undefined
 
 function applyPreset(next: BidModalPreset) {
-  amount.value = next.amountDollars ?? 5
+  amount.value = useFreeSupport.value ? 1 : (next.amountDollars ?? 5)
 
   if (next.gameId && next.title && next.slug) {
     selectedGame.value = {
@@ -91,24 +90,8 @@ function applyPreset(next: BidModalPreset) {
 watch(preset, applyPreset, { deep: true })
 
 async function refreshFreeEligibility() {
-  freeEligibilityLoaded.value = false
-  if (import.meta.dev) {
-    freeEligible.value = true
-    freeEligibilityLoaded.value = true
-    return
-  }
-  try {
-    const result = await $fetch<{ eligible: boolean }>('/api/bids/free-eligibility')
-    freeEligible.value = result.eligible
-    if (!result.eligible) {
-      useFreeSupport.value = false
-    }
-  } catch {
-    freeEligible.value = false
-    useFreeSupport.value = false
-  } finally {
-    freeEligibilityLoaded.value = true
-  }
+  await refreshFreeEligibilityState()
+  useFreeSupport.value = freeEligible.value
 }
 
 watch(useFreeSupport, (enabled) => {
@@ -337,7 +320,7 @@ async function submit() {
       })
 
       freeEligible.value = import.meta.dev
-      useFreeSupport.value = false
+      useFreeSupport.value = import.meta.dev
       window.location.href = `${localePath('/success')}?bid_id=${encodeURIComponent(result.bidId)}`
       return
     }
@@ -396,7 +379,7 @@ async function submit() {
       >
         <div class="rounded-2xl border-2 border-[var(--play-rim)] bg-[var(--play-soft)]/70 px-3.5 py-3">
           <p class="text-sm text-muted text-pretty">
-            {{ t('bid.gameHelpStack') }}
+            {{ freeEligible ? t('bid.gameHelpFree') : t('bid.gameHelpStack') }}
           </p>
         </div>
 
@@ -407,25 +390,9 @@ async function submit() {
           <GameSearch v-model="selectedGame" />
         </UFormField>
 
-        <UFormField
-          :label="t('bid.supportAmount')"
-          :description="amountHint"
-          :error="amountError"
-        >
-          <UInput
-            v-model.number="amount"
-            type="number"
-            :min="1"
-            :max="MAX_BID_DOLLARS"
-            step="1"
-            :disabled="useFreeSupport"
-            class="w-full font-display text-lg font-bold tabular-nums"
-          />
-        </UFormField>
-
         <div
           v-if="freeEligibilityLoaded && freeEligible"
-          class="rounded-2xl border-2 border-[var(--play-rim)] bg-[var(--play-soft)]/70 px-3.5 py-3"
+          class="rounded-2xl border-2 border-[var(--color-play-sun)]/55 bg-[color-mix(in_oklab,var(--color-play-sun)_16%,white)] px-3.5 py-3"
         >
           <label class="flex cursor-pointer items-start gap-3">
             <input
@@ -450,6 +417,22 @@ async function submit() {
         >
           {{ t('bid.freeUsed') }}
         </p>
+
+        <UFormField
+          :label="t('bid.supportAmount')"
+          :description="amountHint"
+          :error="amountError"
+        >
+          <UInput
+            v-model.number="amount"
+            type="number"
+            :min="1"
+            :max="MAX_BID_DOLLARS"
+            step="1"
+            :disabled="useFreeSupport"
+            class="w-full font-display text-lg font-bold tabular-nums"
+          />
+        </UFormField>
 
         <div
           v-if="gameQuote"

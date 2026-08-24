@@ -1,13 +1,16 @@
 {
   "nav": {
     "placeBid": "Destek ver",
+    "placeBidFree": "Ücretsiz 1$",
     "rules": "Kurallar",
     "howToPlay": "Nasıl oynanır?",
     "language": "Dil"
   },
   "home": {
     "tagline": "Destekler birikir, oyunun yükselir.",
+    "freePromo": "İlk desteğin için ücretsiz $1'lik kredi. Karta ihtiyacın yok, bahane yok.",
     "startBidding": "Hadi destek ver",
+    "startFree": "Ücretsiz destekle (1$)",
     "leaderboard": "Sıralama",
     "leaderboardDesc": "Ödemeler onaylandıkça sıralama güncellenir.",
     "refresh": "Yenile",
@@ -30,6 +33,7 @@
     "subtitle": "Oyunu yükseltmek için destek ver. Her destekle isteğe bağlı Oyun Yönetmeni Mesajı bırakabilirsin.",
     "supportGame": "Oyunu destekle",
     "gameHelpStack": "1$'dan başlayarak istediğin kadar ekle. Desteğin öncekilerle birleşir ve oyunu yukarı taşır.",
+    "gameHelpFree": "İlk desteğin ücretsiz 1$. Oyunu seç, kartı unut, tahtadasın.",
     "gameLabel": "Oyun",
     "gameDesc": "Desteklemek istediğin oyunu ara ve seç.",
     "supportAmount": "Destek tutarı (USD)",
@@ -163,7 +167,8 @@
     "publishers": "Yayıncılar",
     "genres": "Türler",
     "platforms": "Platformlar",
-    "modes": "Modlar"
+    "modes": "Modlar",
+    "isBestLink": "Bu en iyisi mi?"
   },
   "contributors": {
     "count": "{count} destekçi",
@@ -185,7 +190,8 @@
     "terms": "Koşullar",
     "gdpr": "KVKK",
     "cookies": "Çerezler",
-    "refunds": "İadeler"
+    "refunds": "İadeler",
+    "rssTakeovers": "Taht RSS"
   },
   "locale": {
     "en": "EN",
@@ -205,6 +211,19 @@
     "keywords": "oyun liderlik tablosu, oyun sıralama, destek ver, oyun yönetmeni mesajı, IGDB oyunlar, mybestgame",
     "legalDescription": "mybestgame.lol canlı oyun panosu için yasal bilgiler."
   },
+  "isBest": {
+    "h1": "{title} şu an en iyi oyun mu?",
+    "loading": "Yükleniyor…",
+    "answerYes": "Evet — şu an mybestgame.lol tahtasında #1.",
+    "answerRanked": "Henüz değil. Canlı tahtada #{rank}. sırada. Destek biriktirip yüksel.",
+    "answerUnranked": "Henüz canlı tahtada yok. İlk sen koy.",
+    "cta": "Bu oyunu destekle",
+    "backBoard": "Tahtaya dön",
+    "seoTitle": "{title} şu an en iyi oyun mu? · mybestgame.lol",
+    "seoDescYes": "{title} mybestgame.lol'da #1 ve {total} birikmiş. Canlı tahtaya bak.",
+    "seoDescRanked": "{title} mybestgame.lol'da #{rank}. sırada, {total} birikmiş. Tahtada yüksel.",
+    "seoDescUnranked": "{title} şu an en iyi oyun mu? Canlı sıralamasına bak ve destekle."
+  },
   "rules": {
     "title": "Kurallar",
     "items": [
@@ -223,7 +242,7 @@
     "steps": [
       {
         "title": "Bir oyun seç",
-        "desc": "Tahtada yükseltmek istediğin oyunu ara."
+        "desc": "Tahtada yükseltmek istediğin oyunu ara. İlk destek ücretsiz 1$."
       },
       {
         "title": "Destekle ve yönetmen ol",
@@ -231,7 +250,7 @@
       },
       {
         "title": "Tutarını belirle",
-        "desc": "Oyun destekleri 1$'dan başlar. Ne kadar çok birikirse, oyun o kadar yükselir ve yönetmen koltuğu o kadar güvende olur."
+        "desc": "Oyun destekleri 1$'dan başlar. İlki bedava. Ne kadar çok birikirse, oyun o kadar yükselir ve yönetmen koltuğu o kadar güvende olur."
       },
       {
         "title": "Güvenli öde",
