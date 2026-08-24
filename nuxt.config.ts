@@ -57,6 +57,8 @@ export default defineNuxtConfig({
     /** Set "true" only behind Cloudflare / a reverse proxy that strips client X-Forwarded-For. */
     trustProxy: '',
     databaseUrl: './data/mybestgame.db',
+    /** Optional Discord incoming webhook for crown takeovers + daily crown post. */
+    discordWebhookUrl: '',
     public: {
       siteUrl: 'http://localhost:3000',
       turnstileSiteKey: '',
@@ -65,6 +67,12 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    experimental: {
+      tasks: true
+    },
+    scheduledTasks: {
+      '0 15 * * *': ['crown-daily']
+    },
     routeRules: {
       '/api/webhooks/polar': {
         // @ts-expect-error Nitro supports bodyParser at runtime for raw-body webhook verification

@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import { desc, eq } from 'drizzle-orm'
+import { desc, eq, inArray } from 'drizzle-orm'
 import { boardEvents, games, type BoardEventType } from '../database/schema'
 import { useDb } from '../database/index'
 import type { ActivityItem } from './bidding'
@@ -82,6 +82,63 @@ export async function getRecentBoardEvents(limit = 8): Promise<ActivityItem[]> {
         directorTitle,
         leftBoard: payload.leftBoard ?? false
       }
+    }
+  })
+}
+
+export interface TakeoverFeedEvent {
+  id: string
+  type: 'rank_takeover' | 'director_takeover'
+  gameId: number
+  gameTitle: string
+  gameSlug: string
+  bidId: string | null
+  createdAt: Date
+  payload: BoardEventPayload
+}
+
+const TAKEOVER_TYPES: BoardEventType[] = ['rank_takeover', 'director_takeover']
+
+export async function getTakeoverFeedEvents(limit = 50): Promise<TakeoverFeedEvent[]> {
+  const db = useDb()
+  const safeLimit = Math.min(Math.max(1, limit), 100)
+
+  const rows = await db
+    .select({
+      id: boardEvents.id,
+      type: boardEvents.type,
+      gameId: boardEvents.gameId,
+      bidId: boardEvents.bidId,
+      payload: boardEvents.payload,
+      createdAt: boardEvents.createdAt,
+      gameTitle: games.title,
+      gameSlug: games.slug
+    })
+    .from(boardEvents)
+    .innerJoin(games, eq(boardEvents.gameId, games.id))
+    .where(inArray(boardEvents.type, TAKEOVER_TYPES))
+    .orderBy(desc(boardEvents.createdAt))
+    .limit(safeLimit)
+
+  return rows.map((row) => {
+    let payload: BoardEventPayload = { gameTitle: row.gameTitle }
+    try {
+      payload = { ...payload, ...JSON.parse(row.payload) as BoardEventPayload }
+    } catch {
+      // ponytail: bad payload rows stay readable with game title only
+    }
+
+    const type = row.type === 'director_takeover' ? 'director_takeover' : 'rank_takeover'
+
+    return {
+      id: row.id,
+      type,
+      gameId: row.gameId,
+      gameTitle: payload.gameTitle || row.gameTitle,
+      gameSlug: row.gameSlug,
+      bidId: row.bidId,
+      createdAt: row.createdAt,
+      payload
     }
   })
 }

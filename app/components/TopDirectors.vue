@@ -46,9 +46,10 @@ function rankClass(rank: number) {
   return 'director-rank'
 }
 
-function directorAria(director: { title: string, description: string | null }) {
-  if (!director.description) return director.title
-  return `${director.title}. ${markdownPlainText(director.description)}`
+function directorAria(director: { title: string, gameTitle: string, description: string | null }) {
+  const onGame = t('directors.on', { game: director.gameTitle })
+  if (!director.description) return `${director.title}. ${onGame}`
+  return `${director.title}. ${onGame}. ${markdownPlainText(director.description)}`
 }
 </script>
 
@@ -66,7 +67,7 @@ function directorAria(director: { title: string, description: string | null }) {
         v-for="(director, index) in directors"
         :key="director.bidId"
         tabindex="0"
-        class="group relative flex items-start gap-2.5 px-2 py-2 text-sm outline-none"
+        class="group relative flex items-start gap-2.5 rounded-lg px-2 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-[var(--play-rim)]"
         :class="rowClass(index + 1)"
         :aria-label="directorAria(director)"
       >
@@ -91,12 +92,20 @@ function directorAria(director: { title: string, description: string | null }) {
           {{ formatDollars(director.amountCents) }}
         </span>
 
-        <DirectorMarkdown
-          v-if="director.description"
-          class="director-tip line-clamp-3"
+        <span
+          class="hover-tip"
           role="tooltip"
-          :source="director.description"
-        />
+        >
+          <span class="block font-semibold text-[var(--play-ink)]">{{ director.title }}</span>
+          <span class="mt-0.5 block text-muted">
+            {{ t('directors.on', { game: director.gameTitle }) }}
+          </span>
+          <DirectorMarkdown
+            v-if="director.description"
+            class="mt-1.5 line-clamp-3"
+            :source="director.description"
+          />
+        </span>
       </li>
     </ol>
   </aside>

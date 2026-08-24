@@ -1,3 +1,7 @@
+import { and, ne, sql } from 'drizzle-orm'
+import { useDb } from '../database/index'
+import { games } from '../database/schema'
+
 const STATIC_PATHS = [
   '/',
   '/privacy',
@@ -23,25 +27,54 @@ function escapeXml(value: string) {
     .replace(/'/g, '&apos;')
 }
 
-export default defineEventHandler((event) => {
+function urlEntry(options: {
+  loc: string
+  lastmod: string
+  changefreq: string
+  priority: string
+}) {
+  return [
+    '  <url>',
+    `    <loc>${escapeXml(options.loc)}</loc>`,
+    `    <lastmod>${options.lastmod}</lastmod>`,
+    `    <changefreq>${options.changefreq}</changefreq>`,
+    `    <priority>${options.priority}</priority>`,
+    '  </url>'
+  ].join('\n')
+}
+
+export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
   const siteUrl = String(config.public.siteUrl).replace(/\/$/, '')
   const lastmod = new Date().toISOString().slice(0, 10)
 
-  const urls = LOCALE_CODES.flatMap((locale) =>
-    STATIC_PATHS.map((path) => {
-      const loc = `${siteUrl}${localizedPath(locale, path)}`
-      const priority = path === '/' ? '1.0' : '0.5'
-      const changefreq = path === '/' ? 'hourly' : 'monthly'
-      return [
-        '  <url>',
-        `    <loc>${escapeXml(loc)}</loc>`,
-        `    <lastmod>${lastmod}</lastmod>`,
-        `    <changefreq>${changefreq}</changefreq>`,
-        `    <priority>${priority}</priority>`,
-        '  </url>'
-      ].join('\n')
-    })
+  const staticUrls = LOCALE_CODES.flatMap((locale) =>
+    STATIC_PATHS.map((path) =>
+      urlEntry({
+        loc: `${siteUrl}${localizedPath(locale, path)}`,
+        lastmod,
+        changefreq: path === '/' ? 'hourly' : 'monthly',
+        priority: path === '/' ? '1.0' : '0.5'
+      })
+    )
+  )
+
+  const db = useDb()
+  const gameRows = await db
+    .select({ slug: games.slug })
+    .from(games)
+    .where(and(ne(games.slug, ''), sql`length(trim(${games.slug})) > 0`))
+    .limit(5000)
+
+  const seoUrls = LOCALE_CODES.flatMap((locale) =>
+    gameRows.map((row) =>
+      urlEntry({
+        loc: `${siteUrl}${localizedPath(locale, `/is/${encodeURIComponent(row.slug)}`)}`,
+        lastmod,
+        changefreq: 'daily',
+        priority: '0.7'
+      })
+    )
   )
 
   setHeader(event, 'Content-Type', 'application/xml; charset=utf-8')
@@ -50,7 +83,8 @@ export default defineEventHandler((event) => {
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...urls,
+    ...staticUrls,
+    ...seoUrls,
     '</urlset>'
   ].join('\n')
 })

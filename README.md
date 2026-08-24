@@ -70,6 +70,19 @@ Enable the **Checkout Localization** feature flag in your Polar organization das
 | `/api/bids/create-checkout` | POST | Create Polar checkout |
 | `/api/bids/status?bid_id=` | GET | Poll bid payment status |
 | `/api/webhooks/polar` | POST | Polar payment webhook |
+| `/api/games/by-slug/:slug` | GET | Game + board by slug |
+| `/api/og/crown` | GET | Daily crown PNG (current #1) |
+| `/rss/takeovers.xml` | GET | Rank / director takeover RSS |
+| `/is/:slug` | GET | “Is this the best game right now?” SEO page |
+
+## Discord + daily crown
+
+Optional: set `NUXT_DISCORD_WEBHOOK_URL` to an incoming webhook.
+
+- Live notify when a game takes #1
+- Nitro scheduled task `crown-daily` at 15:00 UTC posts a crown PNG
+
+Launch copy for Product Hunt, itch.io, and manual Reddit/X posts: see [`docs/launch/`](docs/launch/).
 
 ## Bidding rules
 
