@@ -395,7 +395,7 @@ button[data-slot='close'] [data-slot='leadingIcon'] {
   color: #4a2208;
 }
 
-.director-tip {
+.hover-tip {
   position: absolute;
   left: 0;
   right: 0;
@@ -407,12 +407,19 @@ button[data-slot='close'] [data-slot='leadingIcon'] {
   padding: 0.5rem 0.625rem;
   font-size: 0.75rem;
   line-height: 1.35;
+  overflow-wrap: anywhere;
   color: var(--play-ink);
   box-shadow: 0 4px 12px color-mix(in oklab, var(--play-ink) 8%, transparent);
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+.activity-row:nth-last-child(-n+2) .hover-tip,
+.director-row:nth-last-child(-n+2) .hover-tip {
+  top: auto;
+  bottom: calc(100% + 0.35rem);
 }
 
 .director-md {
@@ -485,8 +492,10 @@ button[data-slot='close'] [data-slot='leadingIcon'] {
   text-decoration-color: var(--play-ink);
 }
 
-.director-row:hover .director-tip,
-.director-row:focus-within .director-tip {
+.director-row:hover .hover-tip,
+.director-row:focus-within .hover-tip,
+.activity-row:hover .hover-tip,
+.activity-row:focus-within .hover-tip {
   opacity: 1;
   visibility: visible;
 }

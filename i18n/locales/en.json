@@ -1,13 +1,16 @@
 {
   "nav": {
     "placeBid": "Contribute",
+    "placeBidFree": "Free $1",
     "rules": "Rules",
     "howToPlay": "How to play?",
     "language": "Language"
   },
   "home": {
     "tagline": "Contributions stack up, your game rises.",
+    "freePromo": "First support is a free $1 credit. No card required.",
     "startBidding": "Start contributing",
+    "startFree": "Support free ($1)",
     "leaderboard": "Leaderboard",
     "leaderboardDesc": "Rank totals update as payments clear.",
     "refresh": "Refresh",
@@ -30,6 +33,7 @@
     "subtitle": "Support a game to climb the board. Any support can include an optional Game Director Message.",
     "supportGame": "Support game",
     "gameHelpStack": "Add any amount from $1 up. Your contribution stacks with past supporters and moves this game up the board.",
+    "gameHelpFree": "First support is a free $1. Pick a game, skip the card, and you're on the board.",
     "gameLabel": "Game",
     "gameDesc": "Search and pick the game you want to support.",
     "supportAmount": "Support amount (USD)",
@@ -163,7 +167,8 @@
     "publishers": "Publishers",
     "genres": "Genres",
     "platforms": "Platforms",
-    "modes": "Modes"
+    "modes": "Modes",
+    "isBestLink": "Is this the best?"
   },
   "contributors": {
     "count": "{count} contributor | {count} contributors",
@@ -185,7 +190,8 @@
     "terms": "Terms",
     "gdpr": "GDPR",
     "cookies": "Cookies",
-    "refunds": "Refunds"
+    "refunds": "Refunds",
+    "rssTakeovers": "Takeovers RSS"
   },
   "locale": {
     "en": "EN",
@@ -205,6 +211,19 @@
     "keywords": "video game leaderboard, pay to rank games, game contributions, game director message, IGDB games, mybestgame",
     "legalDescription": "Legal information for mybestgame.lol, a live video-game entertainment board."
   },
+  "isBest": {
+    "h1": "Is {title} the best game right now?",
+    "loading": "Loading…",
+    "answerYes": "Yes — it holds #1 on the live mybestgame.lol board right now.",
+    "answerRanked": "Not yet. It sits at #{rank} on the live board. Stack support to climb.",
+    "answerUnranked": "Not on the live board yet. Be the first to put it there.",
+    "cta": "Support this game",
+    "backBoard": "View the board",
+    "seoTitle": "Is {title} the best game right now? · mybestgame.lol",
+    "seoDescYes": "{title} is #1 on mybestgame.lol with {total} stacked. See the live board.",
+    "seoDescRanked": "{title} is #{rank} on mybestgame.lol with {total} stacked. Climb the board.",
+    "seoDescUnranked": "Is {title} the best game right now? Check its live standing on mybestgame.lol and support it."
+  },
   "rules": {
     "title": "Rules",
     "items": [
@@ -223,7 +242,7 @@
     "steps": [
       {
         "title": "Pick a game",
-        "desc": "Search for the game you want to push up the board."
+        "desc": "Search for the game you want to push up the board. First support is a free $1."
       },
       {
         "title": "Support and direct",
@@ -231,7 +250,7 @@
       },
       {
         "title": "Set your amount",
-        "desc": "Contributions start at $1. Stack more to move your game higher and secure the Game Director spot."
+        "desc": "Contributions start at $1. Your first one is free. Stack more to move your game higher and secure the Game Director spot."
       },
       {
         "title": "Pay securely",

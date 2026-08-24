@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { BidModalPreset } from '~/components/BidModal.vue'
+import { overlayCloseButton, overlayCloseUi, overlayHeaderUi } from '~/utils/overlay-close'
 
 export interface GameDetail {
   id: number
@@ -31,7 +32,33 @@ const gameId = defineModel<number | null>('gameId', { default: null })
 const openBidModal = inject<(preset?: BidModalPreset) => void>('openBidModal', () => {})
 const config = useRuntimeConfig()
 const { t, locale } = useI18n()
+const localePath = useLocalePath()
 const embedCopied = ref(false)
+const isMobile = ref(false)
+
+onMounted(() => {
+  const mq = window.matchMedia('(max-width: 639px)')
+  const sync = () => {
+    isMobile.value = mq.matches
+  }
+  sync()
+  mq.addEventListener('change', sync)
+  onUnmounted(() => mq.removeEventListener('change', sync))
+})
+
+const modalUi = computed(() => ({
+  overlay: 'bg-[var(--play-ink)]/40',
+  content: isMobile.value
+    ? 'w-full max-w-none max-h-none h-dvh overflow-y-auto rounded-none border-0 shadow-none ring-0 divide-y-0'
+    : 'w-full max-w-2xl max-h-[min(92dvh,52rem)] overflow-y-auto rounded-[1.75rem] border-2 border-[var(--play-rim)] shadow-none ring-0 divide-y-0',
+  header: `sticky top-0 z-10 border-b-2 border-[var(--play-rim)] bg-[var(--play-soft)]/95 backdrop-blur-sm ${overlayHeaderUi.header}`,
+  body: 'bg-[var(--play-panel)]',
+  footer: 'sticky bottom-0 border-t-2 border-[var(--play-rim)] bg-[var(--play-soft)]/95 backdrop-blur-sm',
+  title: 'font-display text-xl font-bold text-[var(--play-ink)] sm:text-2xl',
+  description: 'mt-1 text-sm text-muted text-pretty',
+  wrapper: overlayHeaderUi.wrapper,
+  close: overlayCloseUi
+}))
 
 const detail = ref<GameDetail | null>(null)
 const pending = ref(false)
@@ -140,24 +167,12 @@ const metaRows = computed(() => {
 <template>
   <UModal
     v-model:open="open"
-    :ui="{
-      overlay: 'bg-[var(--play-ink)]/40',
-      content: 'w-full max-w-2xl max-h-[min(92dvh,52rem)] overflow-y-auto rounded-[1.75rem] border-2 border-[var(--play-rim)] shadow-none ring-0 divide-y-0',
-      header: 'sticky top-0 z-10 border-b-2 border-[var(--play-rim)] bg-[var(--play-soft)]/95 backdrop-blur-sm',
-      body: 'bg-[var(--play-panel)]',
-      footer: 'sticky bottom-0 border-t-2 border-[var(--play-rim)] bg-[var(--play-soft)]/95 backdrop-blur-sm'
-    }"
+    :fullscreen="isMobile"
+    :title="detail?.title ?? t('gameDetail.title')"
+    :description="t('gameDetail.subtitle')"
+    :close="overlayCloseButton"
+    :ui="modalUi"
   >
-    <template #header>
-      <div class="min-w-0 pr-8">
-        <h2 class="font-display text-xl font-bold text-[var(--play-ink)] sm:text-2xl">
-          {{ detail?.title ?? t('gameDetail.title') }}
-        </h2>
-        <p class="mt-1 text-sm text-muted text-pretty">
-          {{ t('gameDetail.subtitle') }}
-        </p>
-      </div>
-    </template>
 
     <template #body>
       <div
@@ -178,11 +193,11 @@ const metaRows = computed(() => {
         v-else-if="detail"
         class="space-y-4"
       >
-        <div class="flex gap-4">
+        <div class="flex flex-col gap-4 sm:flex-row">
           <GameCover
             :src="detail.coverUrl"
             :alt="detail.title"
-            class="aspect-[3/4] w-24 shrink-0 rounded-2xl border-2 border-[var(--play-rim)] object-cover sm:w-28"
+            class="aspect-[3/4] w-28 shrink-0 self-start rounded-2xl border-2 border-[var(--play-rim)] object-cover sm:w-28"
           />
 
           <div class="min-w-0 flex-1 space-y-3">
@@ -253,6 +268,15 @@ const metaRows = computed(() => {
                 class="size-3.5"
               />
             </a>
+
+            <NuxtLink
+              v-if="detail.slug"
+              :to="localePath(`/is/${detail.slug}`)"
+              class="block text-sm font-semibold text-[var(--play-ink)]/70 underline decoration-[var(--play-rim)] underline-offset-2 transition-colors hover:text-primary"
+              @click="open = false"
+            >
+              {{ t('gameDetail.isBestLink') }}
+            </NuxtLink>
           </div>
         </div>
 
@@ -344,7 +368,7 @@ const metaRows = computed(() => {
     >
       <div class="flex w-full flex-col gap-2 sm:flex-row sm:justify-end">
         <UButton
-          class="arcade-cta"
+          class="arcade-cta w-full sm:w-auto"
           @click="startSupport"
         >
           {{ t('gameDetail.supportGame') }}

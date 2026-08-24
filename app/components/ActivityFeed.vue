@@ -104,7 +104,7 @@ function subline(item: ActivityItem) {
 <template>
   <aside
     v-if="items.length"
-    class="arcade-shell rounded-[1.35rem] p-4"
+    class="arcade-shell overflow-visible rounded-[1.35rem] p-4"
   >
     <h2 class="font-display text-base font-bold text-[var(--play-ink)]">
       {{ t('activity.title') }}
@@ -114,13 +114,15 @@ function subline(item: ActivityItem) {
       <li
         v-for="item in items"
         :key="`${item.type ?? 'bid'}-${item.gameId}-${item.at}`"
-        class="flex items-start justify-between gap-3 text-sm"
+        tabindex="0"
+        class="activity-row relative flex items-start justify-between gap-3 rounded-lg text-sm outline-none focus-visible:ring-2 focus-visible:ring-[var(--play-rim)]"
+        :aria-label="`${headline(item)}. ${subline(item)}`"
       >
         <div class="min-w-0">
           <p class="truncate text-[var(--play-ink)]">
             <span class="font-semibold">{{ headline(item) }}</span>
           </p>
-          <p class="text-xs text-muted">
+          <p class="truncate text-xs text-muted">
             {{ subline(item) }}
           </p>
         </div>
@@ -130,6 +132,16 @@ function subline(item: ActivityItem) {
         >
           {{ timeAgo(item.at) }}
         </time>
+        <span
+          class="hover-tip"
+          role="tooltip"
+        >
+          <span class="block font-semibold text-[var(--play-ink)]">{{ headline(item) }}</span>
+          <span
+            v-if="subline(item)"
+            class="mt-0.5 block text-muted"
+          >{{ subline(item) }}</span>
+        </span>
       </li>
     </ul>
   </aside>
