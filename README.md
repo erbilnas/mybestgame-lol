@@ -72,6 +72,7 @@ Enable the **Checkout Localization** feature flag in your Polar organization das
 | `/api/webhooks/polar` | POST | Polar payment webhook |
 | `/api/games/by-slug/:slug` | GET | Game + board by slug |
 | `/api/og/crown` | GET | Daily crown PNG (current #1) |
+| `/api/og/game/:slug` | GET | Share PNG for a game's live rank |
 | `/rss/takeovers.xml` | GET | Rank / director takeover RSS |
 | `/is/:slug` | GET | “Is this the best game right now?” SEO page |
 

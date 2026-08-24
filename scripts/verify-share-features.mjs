@@ -83,6 +83,64 @@ if (!svg.includes('<svg') || !svg.includes('#1') || !svg.includes('$7')) {
   process.exit(1)
 }
 
+function rankAfterRemovingCents(totals, gameId, removeCents) {
+  const simulated = totals
+    .map((entry) =>
+      entry.gameId === gameId
+        ? { ...entry, totalCents: entry.totalCents - removeCents }
+        : entry
+    )
+    .filter((entry) => entry.totalCents > 0)
+    .sort((a, b) => b.totalCents - a.totalCents)
+  const index = simulated.findIndex((entry) => entry.gameId === gameId)
+  return index < 0 ? null : index + 1
+}
+
+const prev = rankAfterRemovingCents(
+  [
+    { gameId: 1, totalCents: 1500 },
+    { gameId: 2, totalCents: 800 },
+    { gameId: 3, totalCents: 400 }
+  ],
+  1,
+  800
+)
+if (prev !== 2) {
+  console.error('FAIL: previous rank should drop to #2 after removing $8', prev)
+  process.exit(1)
+}
+
+const leftBoard = rankAfterRemovingCents(
+  [{ gameId: 1, totalCents: 100 }],
+  1,
+  100
+)
+if (leftBoard !== null) {
+  console.error('FAIL: first bid should leave the board when removed', leftBoard)
+  process.exit(1)
+}
+
+function formatExpiryClock(remainingMs, units) {
+  const totalSec = Math.max(0, Math.floor(remainingMs / 1000))
+  const days = Math.floor(totalSec / 86400)
+  const hours = Math.floor((totalSec % 86400) / 3600)
+  const minutes = Math.floor((totalSec % 3600) / 60)
+  const seconds = totalSec % 60
+  const pad = (n) => String(n).padStart(2, '0')
+  if (days > 0) return `${days}${units.day} ${pad(hours)}${units.hour} ${pad(minutes)}${units.minute}`
+  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`
+}
+
+const clock = formatExpiryClock((2 * 86400 + 4 * 3600 + 3 * 60) * 1000, {
+  day: 'd',
+  hour: 'h',
+  minute: 'm'
+})
+if (clock !== '2d 04h 03m') {
+  console.error('FAIL: expiry clock format', clock)
+  process.exit(1)
+}
+
 console.log('OK: events and svg helpers', {
   bidId,
   eventType: eventRow.type

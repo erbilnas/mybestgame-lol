@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LeaderboardEntry } from './Leaderboard.vue'
 
-defineProps<{
+const props = defineProps<{
   entry: LeaderboardEntry
   formatDollars: (cents: number) => string
 }>()
@@ -12,6 +12,21 @@ const emit = defineEmits<{
 }>()
 
 const { t } = useI18n()
+const { mounted, remainingMs } = useExpiryCountdown(() => props.entry.nextExpiresAt)
+
+const holdTime = computed(() => {
+  if (remainingMs.value === null) return null
+  if (remainingMs.value <= 0) return t('card.expired')
+  if (!mounted.value) {
+    const days = Math.ceil(remainingMs.value / (24 * 60 * 60 * 1000))
+    return t('card.daysShort', { n: Math.max(0, days) })
+  }
+  return formatExpiryClock(remainingMs.value, {
+    day: t('card.clockDay'),
+    hour: t('card.clockHour'),
+    minute: t('card.clockMinute')
+  })
+})
 
 function podiumCardClass(rank: number) {
   if (rank === 1) return 'podium-card podium-card--gold'
@@ -40,27 +55,14 @@ function timeAgo(isoDate: string) {
   if (hours < 48) return t('common.hAgo', { n: hours })
   return t('common.dAgo', { n: Math.floor(hours / 24) })
 }
-
-function daysUntil(iso: string | null | undefined) {
-  if (!iso) return null
-  const ms = new Date(iso).getTime() - Date.now()
-  if (ms <= 0) return 0
-  return Math.ceil(ms / (24 * 60 * 60 * 1000))
-}
-
-function decayingSoon(iso: string | null | undefined) {
-  const days = daysUntil(iso)
-  return days !== null && days <= 7
-}
 </script>
 
 <template>
   <article
-    class="lb-row overflow-hidden border"
+    class="lb-row lb-row--podium overflow-hidden border"
     :class="podiumCardClass(entry.rank)"
   >
     <div class="space-y-3 p-4 sm:space-y-3.5 sm:p-5">
-      <!-- Identity + totals + desktop actions -->
       <div class="flex items-start gap-3 sm:gap-4">
         <div
           class="podium-rail flex size-10 shrink-0 items-center justify-center rounded-xl border-2 sm:size-11"
@@ -91,9 +93,12 @@ function decayingSoon(iso: string | null | undefined) {
           </h3>
           <p class="mt-0.5 text-xs text-muted sm:text-sm">
             {{ t('card.stackedBids', { count: entry.bidCount }) }}
-            <template v-if="decayingSoon(entry.nextExpiresAt)">
-              · {{ t('card.decayingIn', { days: daysUntil(entry.nextExpiresAt) }) }}
-            </template>
+          </p>
+          <p
+            v-if="holdTime"
+            class="mt-1 font-display text-sm font-bold tabular-nums tracking-wide text-[var(--play-ink)] sm:text-base"
+          >
+            {{ t('card.holdsFor', { time: holdTime }) }}
           </p>
         </div>
 
@@ -120,7 +125,6 @@ function decayingSoon(iso: string | null | undefined) {
         </div>
       </div>
 
-      <!-- Summary + contributors -->
       <div class="space-y-2">
         <p
           v-if="truncate(entry.summary)"
@@ -172,7 +176,6 @@ function decayingSoon(iso: string | null | undefined) {
         </div>
       </div>
 
-      <!-- Director message strip (text only) -->
       <div
         v-if="entry.director"
         class="rounded-xl border-2 podium-surface px-3 py-2.5 sm:px-4 sm:py-3"
@@ -212,7 +215,6 @@ function decayingSoon(iso: string | null | undefined) {
         </UButton>
       </div>
 
-      <!-- Mobile actions + total -->
       <div class="flex flex-col gap-2 border-t-2 border-[var(--play-rim)]/50 pt-3 sm:hidden">
         <div class="flex items-baseline justify-between">
           <p class="text-xs text-muted">

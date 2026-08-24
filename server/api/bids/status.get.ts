@@ -22,6 +22,7 @@ export default defineEventHandler(async (event) => {
     slug: plaque.slug,
     coverUrl: plaque.coverUrl,
     rank: plaque.rank,
+    previousRank: plaque.previousRank,
     totalCents: plaque.totalCents,
     expiresAt: plaque.expiresAt,
     createdAt: plaque.createdAt,
