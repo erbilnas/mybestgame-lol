@@ -30,6 +30,7 @@ const defaultLeaderboard = (): LeaderboardPage => ({
 })
 
 const { t } = useI18n()
+const { eligible: freeEligible } = useFreeEligibility()
 const config = useRuntimeConfig()
 const route = useRoute()
 const router = useRouter()
@@ -307,6 +308,12 @@ onUnmounted(() => {
                 {{ t('home.tagline') }}
               </p>
             </div>
+            <p
+              v-if="freeEligible"
+              class="mt-1.5 text-sm font-semibold text-[var(--play-ink)] text-pretty"
+            >
+              {{ t('home.freePromo') }}
+            </p>
           </div>
 
           <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
@@ -319,7 +326,7 @@ onUnmounted(() => {
               class="arcade-cta w-full shrink-0 px-5 sm:w-auto sm:self-center"
               @click="openBidModal()"
             >
-              {{ t('home.startBidding') }}
+              {{ freeEligible ? t('home.startFree') : t('home.startBidding') }}
             </UButton>
           </div>
         </div>
@@ -376,7 +383,7 @@ onUnmounted(() => {
         />
       </section>
 
-      <div class="min-w-0 space-y-6 lg:sticky lg:top-[5.75rem]">
+      <div class="min-w-0 space-y-6 overflow-visible lg:sticky lg:top-[5.75rem]">
         <TopDirectors :entries="topDirectors" />
         <ActivityFeed :items="statsData?.activity ?? []" />
       </div>
