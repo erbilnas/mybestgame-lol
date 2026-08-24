@@ -10,7 +10,9 @@ interface BidStatus {
   bidType?: string
   gameTitle?: string
   coverUrl?: string | null
+  slug?: string | null
   rank?: number | null
+  previousRank?: number | null
   totalCents?: number
   expiresAt?: string | null
   contributor?: string
@@ -67,6 +69,44 @@ function formatDollars(cents: number) {
     maximumFractionDigits: 0
   }).format(cents / 100)
 }
+
+type RankDelta = 'entered' | 'climbed' | 'held'
+
+const rankDelta = computed((): RankDelta | null => {
+  const paid = data.value
+  if (!paid || paid.status !== 'paid' || !paid.rank) return null
+  if (!paid.previousRank) return 'entered'
+  if (paid.previousRank > paid.rank) return 'climbed'
+  return 'held'
+})
+
+const climbPlaces = computed(() => {
+  const paid = data.value
+  if (!paid?.rank || !paid.previousRank) return 0
+  return Math.max(0, paid.previousRank - paid.rank)
+})
+
+function rankLineFor(delta: RankDelta, rank: number): string {
+  switch (delta) {
+    case 'entered':
+      return t('success.enteredAt', { rank })
+    case 'climbed':
+      return t('success.climbed', { n: climbPlaces.value, rank })
+    case 'held':
+      return t('success.held', { rank })
+    default: {
+      const _never: never = delta
+      return _never
+    }
+  }
+}
+
+const rankLine = computed(() => {
+  const paid = data.value
+  const delta = rankDelta.value
+  if (!paid?.rank || !delta) return t('success.onTheBoard')
+  return rankLineFor(delta, paid.rank)
+})
 </script>
 
 <template>
@@ -85,61 +125,72 @@ function formatDollars(cents: number) {
       </template>
 
       <template v-else-if="data?.status === 'paid'">
-        <div class="space-y-2">
-          <UIcon
-            name="i-lucide-circle-check"
-            class="mx-auto size-10 text-[var(--color-play-leaf)]"
-          />
-          <h1 class="font-display text-2xl font-bold text-[var(--play-ink)]">
-            {{ t('success.confirmed') }}
-          </h1>
-          <p class="text-muted text-pretty">
-            {{ t('success.bidLive', { amount: formatDollars(data.amount) }) }}
+        <p class="font-display text-sm font-semibold text-muted">
+          {{ t('success.confirmed') }}
+        </p>
+
+        <div
+          v-if="data.rank"
+          class="flex justify-center"
+        >
+          <p class="font-display text-6xl font-bold tabular-nums leading-none text-primary sm:text-7xl">
+            #{{ data.rank }}
           </p>
         </div>
 
+        <h1 class="font-display text-2xl font-bold text-[var(--play-ink)] text-pretty sm:text-3xl">
+          {{ rankLine }}
+        </h1>
+        <p class="text-muted text-pretty">
+          {{ t('success.bidLive', { amount: formatDollars(data.amount) }) }}
+        </p>
+
         <div
           v-if="data.gameTitle"
-          class="mx-auto flex max-w-sm items-center gap-3 rounded-2xl border-2 border-[var(--play-rim)] bg-[var(--play-soft)]/50 p-3 text-left"
+          class="mx-auto flex max-w-sm items-center gap-4 rounded-2xl border-2 border-[var(--play-rim)] bg-[var(--play-soft)]/50 p-3 text-left"
         >
           <img
             v-if="data.coverUrl"
             :src="data.coverUrl"
             :alt="data.gameTitle"
-            class="aspect-[3/4] w-12 rounded-xl border-2 border-[var(--play-rim)] object-cover"
+            class="aspect-[3/4] w-20 rounded-xl border-2 border-[var(--play-rim)] object-cover sm:w-24"
           >
+          <div
+            v-else
+            class="aspect-[3/4] w-20 rounded-xl border-2 border-[var(--play-rim)] bg-muted sm:w-24"
+          />
           <div class="min-w-0">
-            <p class="font-display text-lg font-bold text-[var(--play-ink)]">
-              <span
-                v-if="data.rank"
-                class="text-primary"
-              >#{{ data.rank }}</span>
+            <p class="font-display text-lg font-bold text-[var(--play-ink)] text-pretty">
               {{ data.gameTitle }}
             </p>
             <p
+              v-if="data.previousRank && data.rank && data.previousRank !== data.rank"
+              class="mt-1 text-sm text-muted"
+            >
+              {{ t('success.wasRank', { rank: data.previousRank }) }}
+            </p>
+            <p
               v-if="data.totalCents != null"
-              class="text-xs text-muted"
+              class="mt-1 text-sm tabular-nums text-[var(--play-ink)]"
             >
               {{ t('success.stack', { amount: formatDollars(data.totalCents) }) }}
             </p>
           </div>
         </div>
 
-        <div class="flex flex-col gap-2 sm:flex-row sm:justify-center">
+        <div class="flex flex-col items-center gap-3">
           <UButton
             :to="localePath(`/p/${bidId}`)"
             class="arcade-cta"
           >
             {{ t('success.viewPlaque') }}
           </UButton>
-          <UButton
+          <NuxtLink
             :to="localePath('/')"
-            variant="soft"
-            color="neutral"
-            class="rounded-2xl border-2"
+            class="text-sm font-semibold text-[var(--play-ink)] underline decoration-[var(--play-rim)] underline-offset-4"
           >
             {{ t('success.leaderboard') }}
-          </UButton>
+          </NuxtLink>
         </div>
       </template>
 

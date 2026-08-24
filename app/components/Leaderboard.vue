@@ -193,14 +193,20 @@ onUnmounted(() => {
       v-else
       class="space-y-4"
     >
-      <LeaderboardRow
-        v-for="entry in podiumEntries"
-        :key="entry.gameId"
-        :entry="entry"
-        :format-dollars="formatDollars"
-        @open-game="emit('open-game', $event)"
-        @support-game="emit('support-game', entry)"
-      />
+      <TransitionGroup
+        name="lb-move"
+        tag="div"
+        class="flex flex-col gap-4"
+      >
+        <LeaderboardRow
+          v-for="entry in podiumEntries"
+          :key="entry.gameId"
+          :entry="entry"
+          :format-dollars="formatDollars"
+          @open-game="emit('open-game', $event)"
+          @support-game="emit('support-game', entry)"
+        />
+      </TransitionGroup>
 
       <div
         v-if="belowEntries.length > 0 || remoteSearch"
@@ -248,9 +254,11 @@ onUnmounted(() => {
           {{ t('leaderboard.noResults') }}
         </div>
 
-        <div
+        <TransitionGroup
           v-else
-          class="space-y-2"
+          name="lb-move"
+          tag="div"
+          class="flex flex-col gap-2"
         >
           <LeaderboardRowMinimal
             v-for="entry in filteredBelow"
@@ -260,7 +268,7 @@ onUnmounted(() => {
             @open-game="emit('open-game', $event)"
             @support-game="emit('support-game', entry)"
           />
-        </div>
+        </TransitionGroup>
 
         <div
           v-if="canLoadMore || loadingMore"
