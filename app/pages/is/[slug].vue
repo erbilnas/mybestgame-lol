@@ -61,7 +61,7 @@ const answerText = computed(() => {
 useSiteSeo({
   title: pageTitle,
   description: pageDescription,
-  ogImage: () => data.value?.coverUrl || undefined,
+  ogImage: () => data.value ? `/api/og/game/${encodeURIComponent(data.value.slug)}` : undefined,
   ogType: 'article',
   jsonLd: () => {
     if (!data.value) return undefined

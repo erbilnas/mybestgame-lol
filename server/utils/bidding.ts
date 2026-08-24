@@ -345,28 +345,59 @@ export async function getGameDirectorMessage(gameId: number): Promise<DirectorBi
   return getGameDirectorMessageWithoutExpire(gameId)
 }
 
+function sortTotals(totals: LeaderboardTotal[]): LeaderboardTotal[] {
+  return [...totals].sort((a, b) => {
+    if (b.totalCents !== a.totalCents) return b.totalCents - a.totalCents
+    return a.firstBidAt.getTime() - b.firstBidAt.getTime()
+  })
+}
+
 export function projectRank(
   totals: LeaderboardTotal[],
   gameId: number,
   incrementCents: number
 ): { projectedRank: number, projectedTotalCents: number, currentTotalCents: number } {
-  const currentTotalCents = totals.find(entry => entry.gameId === gameId)?.totalCents ?? 0
+  const current = totals.find(entry => entry.gameId === gameId)
+  const currentTotalCents = current?.totalCents ?? 0
   const projectedTotalCents = currentTotalCents + incrementCents
 
-  const simulated = totals
-    .filter(entry => entry.gameId !== gameId)
-    .concat([{
-      gameId,
-      totalCents: projectedTotalCents,
-      firstBidAt: totals.find(entry => entry.gameId === gameId)?.firstBidAt ?? new Date()
-    }])
-    .sort((a, b) => {
-      if (b.totalCents !== a.totalCents) return b.totalCents - a.totalCents
-      return a.firstBidAt.getTime() - b.firstBidAt.getTime()
-    })
+  const simulated = sortTotals(
+    totals
+      .filter(entry => entry.gameId !== gameId)
+      .concat([{
+        gameId,
+        totalCents: projectedTotalCents,
+        firstBidAt: current?.firstBidAt ?? new Date()
+      }])
+  )
 
   const projectedRank = simulated.findIndex(entry => entry.gameId === gameId) + 1
   return { projectedRank, projectedTotalCents, currentTotalCents }
+}
+
+/** Rank the game would hold if `removeCents` were not in its stack. Null if it would leave the board. */
+export function rankAfterRemovingCents(
+  totals: LeaderboardTotal[],
+  gameId: number,
+  removeCents: number
+): number | null {
+  if (removeCents <= 0) {
+    const index = sortTotals(totals).findIndex(entry => entry.gameId === gameId)
+    return index < 0 ? null : index + 1
+  }
+
+  const simulated = sortTotals(
+    totals
+      .map(entry =>
+        entry.gameId === gameId
+          ? { ...entry, totalCents: entry.totalCents - removeCents }
+          : entry
+      )
+      .filter(entry => entry.totalCents > 0)
+  )
+
+  const index = simulated.findIndex(entry => entry.gameId === gameId)
+  return index < 0 ? null : index + 1
 }
 
 export function bidExpiresAt(): Date {
@@ -578,6 +609,9 @@ export async function getPaidBidPlaque(bidId: string) {
   const totals = await getLeaderboardTotalsWithoutExpire()
   const rank = totals.findIndex(entry => entry.gameId === row.gameId) + 1
   const totalCents = totals.find(entry => entry.gameId === row.gameId)?.totalCents ?? 0
+  const previousRank = row.status === 'paid'
+    ? rankAfterRemovingCents(totals, row.gameId, row.amount)
+    : null
 
   return {
     id: row.id,
@@ -589,6 +623,7 @@ export async function getPaidBidPlaque(bidId: string) {
     slug: row.slug,
     coverUrl: row.coverUrl,
     rank: rank > 0 ? rank : null,
+    previousRank,
     totalCents,
     expiresAt: row.expiresAt ? row.expiresAt.toISOString() : null,
     createdAt: row.createdAt.toISOString(),
