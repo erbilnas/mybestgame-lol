@@ -40,21 +40,7 @@ npm run dev
 3. Subscribe to `order.paid`.
 4. Set `POLAR_PRODUCT_ID` to your product ID.
 
-Checkouts use ad-hoc fixed prices per bid increment.
-
-### Product description (for Polar onboarding)
-
-Paste this into your Polar **organization** and **product** descriptions. Avoid the words advertising, sponsorship, rank boost, and paid placement:
-
-> mybestgame.lol is consumer entertainment software: a live video-game board where fans buy one-time digital participation credits.
->
-> Each purchase is fulfilled instantly on our site (API webhook): the credit is added to that game’s public board listing. Credits stack. The board is an interactive entertainment product, not a third-party ad network.
->
-> Buyers may optionally attach a short on-site text note (title + message only). Notes have no outbound links, images, or click tracking. A note only appears on the card when that buyer is the top contributor for the game.
->
-> This is not advertising, lead generation, sponsorship inventory, or marketing services. All sales are final digital goods.
-
-Checkout metadata uses `productLabel: Board participation credit`, matching the above.
+Checkouts use ad-hoc fixed prices per bid increment. Keep the Polar product **private** (not a public catalog listing).
 
 ### Checkout localization
 

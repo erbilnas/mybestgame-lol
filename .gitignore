@@ -27,3 +27,5 @@ logs
 /data/
 
 .pnpm-store
+.cursor/
+AGENTS.md
